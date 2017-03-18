@@ -73,7 +73,7 @@
                                                         <rect key="frame" x="86.5" y="0.0" width="256.5" height="30"/>
                                                         <nil key="textColor"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" secureTextEntry="YES"/>
                                                     </textField>
                                                 </subviews>
                                             </stackView>
@@ -81,6 +81,9 @@
                                                 <rect key="frame" x="0.0" y="562" width="343" height="35"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                 <state key="normal" title="Login"/>
+                                                <connections>
+                                                    <action selector="login:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BhR-e3-jNg"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>

@@ -22,13 +22,23 @@ class LoginController: UIViewController, UITextFieldDelegate {
         passwordTextField.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
+        usernameTextField.text = Constants.Debug.MY_USERNAME
     }
     
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        return false
+        return true
     }
+    
+    @IBAction func login(_ sender: UIButton) {
+        let udacityClient = UdacityClient.sharedInstance()
+        let username = usernameTextField.text!
+        let pwd = passwordTextField.text!
+        udacityClient.login(username: username, password: pwd)
+    }
+    
 
 }
 
@@ -38,17 +48,18 @@ extension LoginController {
     func keyboardWillShow(notification: NSNotification) {
         
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            print("show keyboard size: \(keyboardSize)")
             if self.view.frame.origin.y == 0{
                 self.view.frame.origin.y -= keyboardSize.height
             }
         }
-        
     }
     
     func keyboardWillHide(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            print("hdie keyboard size: \(keyboardSize)")
             if self.view.frame.origin.y != 0{
-                self.view.frame.origin.y += keyboardSize.height
+                self.view.frame.origin.y = 0
             }
         }
     }
