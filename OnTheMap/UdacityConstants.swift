@@ -17,6 +17,7 @@ extension UdacityClient {
     
     struct Methods {
         static let SESSION = "session"
+        static let USER = "users"
     }
     
     struct RequestParamNames {

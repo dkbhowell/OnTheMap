@@ -39,9 +39,6 @@ class UdacityClient {
                     return
                 }
                 
-                print("Session Data: \n\(sessionData)")
-                print("Account Data: \n\(accountData)")
-                
                 guard let sessionId = sessionData[ResponseKeys.SESSION_ID] as? String else {
                     print("error: Key named '\(ResponseKeys.SESSION_ID)' not found in response: \(sessionData)")
                     return
@@ -62,10 +59,36 @@ class UdacityClient {
                 print("---User id: \(userId)")
                 print("---registered: \(isRegistered)")
                 
+                self.getUserInfo(userId: userId)
+                
             case .failure(let error):
                 print("Error: \(error)")
             }
         }
+    }
+    
+    func getUserInfo(userId: String) {
+        let newMethod = Methods.USER + "/\(userId)"
+        _ = taskForGET(newMethod, params: nil, completion: { (result) in
+            switch result {
+            case .success(let data):
+//                let stringValue = String(data: data, encoding: .utf8)!
+//                let prettyData = stringValue.data(using: .utf8)
+//                let prettyString = String(data: prettyData, encoding: .utf8)
+//                print(prettyString)
+                
+                guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
+                    print("Error parsing JSON Data: \(data)")
+                    return
+                }
+                
+                let prettyData = try! JSONSerialization.data(withJSONObject: result, options: .prettyPrinted)
+                let prettyString = String(data: prettyData, encoding: .utf8)
+                print(prettyString ?? "No Data")
+            case .failure(let error):
+                print(error)
+            }
+        })
     }
     
     // Task Execution Methods
