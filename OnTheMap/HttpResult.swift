@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum HttpResult {
-    case success(Any)
-    case failure(AppError)
+enum HttpResult<T, E: Error> {
+    case success(T)
+    case failure(E)
 }

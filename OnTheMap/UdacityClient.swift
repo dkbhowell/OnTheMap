@@ -21,10 +21,47 @@ class UdacityClient {
         
         _ = taskForPOST(Methods.SESSION, params: nil, jsonDataForBody: body) { (result) in
             switch result {
-            case .success(let value):
-                let dataValue = value as! Data
-                let stringValue = String(data: dataValue, encoding: .utf8)!
+            case .success(let data):
+                let stringValue = String(data: data, encoding: .utf8)!
                 print(stringValue)
+                guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
+                    print("Error converting result to dict")
+                    return
+                }
+                
+                guard let sessionData = result[ResponseKeys.SESSION] as? [String:Any] else {
+                    print("Error: No session data found in response")
+                    return
+                }
+                
+                guard let accountData = result[ResponseKeys.ACCOUNT] as? [String:Any] else {
+                    print("Error: No account data found in response")
+                    return
+                }
+                
+                print("Session Data: \n\(sessionData)")
+                print("Account Data: \n\(accountData)")
+                
+                guard let sessionId = sessionData[ResponseKeys.SESSION_ID] as? String else {
+                    print("error: Key named '\(ResponseKeys.SESSION_ID)' not found in response: \(sessionData)")
+                    return
+                }
+                
+                guard let userId = accountData[ResponseKeys.USER_ID] as? String else {
+                    print("error: Key named '\(ResponseKeys.USER_ID)' not found in response: \(accountData)")
+                    return
+                }
+                
+                guard let isRegistered = accountData[ResponseKeys.REGISTERED] as? Bool else {
+                    print("error: Key named '\(ResponseKeys.REGISTERED)' not found in response: \(accountData)")
+                    return
+                }
+                
+                print("Login Success")
+                print("---Session id: \(sessionId)")
+                print("---User id: \(userId)")
+                print("---registered: \(isRegistered)")
+                
             case .failure(let error):
                 print("Error: \(error)")
             }
@@ -33,7 +70,7 @@ class UdacityClient {
     
     // Task Execution Methods
     
-    func taskForGET(_ method: String, params: [String:Any]?, completion: @escaping (_ result: HttpResult) -> Void) -> URLSessionDataTask {
+    func taskForGET(_ method: String, params: [String:Any]?, completion: @escaping (_ result: HttpResult<Data, AppError>) -> Void) -> URLSessionDataTask {
         
         let url = udacityUrlFromParams(params, withPathExtension: method)
         print("URL: \(url)")
@@ -48,7 +85,7 @@ class UdacityClient {
         return task
     }
     
-    func taskForPOST(_ method: String, params: [String:Any]?, jsonDataForBody data: [String:Any]?, completion: @escaping (_ result: HttpResult) -> Void) -> URLSessionDataTask {
+    func taskForPOST(_ method: String, params: [String:Any]?, jsonDataForBody data: [String:Any]?, completion: @escaping (_ result: HttpResult<Data, AppError>) -> Void) -> URLSessionDataTask {
         
         let url = udacityUrlFromParams(params, withPathExtension: method)
         print("URL: \(url)")
@@ -91,7 +128,7 @@ class UdacityClient {
         return components.url!
     }
     
-    func validateHttpResponse(data: Data?, response: URLResponse?, error: Error?) -> HttpResult {
+    func validateHttpResponse(data: Data?, response: URLResponse?, error: Error?) -> HttpResult<Data, AppError> {
         if let data = data {
             let range = Range(5 ..< data.count)
             let newData = data.subdata(in: range) /* subset response data! */

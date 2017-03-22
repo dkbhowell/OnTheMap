@@ -24,4 +24,12 @@ extension UdacityClient {
         static let USERNAME = "username"
         static let PASSWORD = "password"
     }
+    
+    struct ResponseKeys {
+        static let ACCOUNT = "account"
+        static let SESSION = "session"
+        static let USER_ID = "key"
+        static let SESSION_ID = "id"
+        static let REGISTERED = "registered"
+    }
 }
