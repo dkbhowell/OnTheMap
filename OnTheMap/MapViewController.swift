@@ -14,6 +14,9 @@ class MapViewController: UIViewController {
     // Outlets
     @IBOutlet weak var mapView: MKMapView!
     
+    var students = [UdacityStudent]()
+    var dummyStudents = [("Joe", "Smith", 37.390750, -122.079061), ("Mary", "North", 37.392991, -122.080928), ("Tom", "White", 37.388125, -122.079705)]
+    
     // Locations
     let mountainView = (37.3861, -122.0839)
 
@@ -21,6 +24,19 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
 
         centerMapOnLocation(lat: mountainView.0, lng: mountainView.1, regionDistance: 1000)
+        
+        // create dummy data
+        for stud in dummyStudents {
+            let student = UdacityStudent(firstName: stud.0, lastName: stud.1)
+            student.setLocationMarker(lat: stud.2, lng: stud.3)
+            students.append(student)
+        }
+        
+        let markers = students.map { (student) -> UdacityStudent.StudentLocationMarker in
+            return student.locationMarker!
+        }
+        
+        mapView.addAnnotations(markers)
     }
     
     func centerMapOnLocation(lat: Double, lng: Double, regionDistance: Int) {

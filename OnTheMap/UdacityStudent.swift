@@ -12,6 +12,7 @@ class UdacityStudent {
     let firstName: String
     let lastName: String
     var email: String?
+    var data: String?
     
     var name: String {
         return firstName + " " + lastName
@@ -19,16 +20,21 @@ class UdacityStudent {
     
     var locationMarker: StudentLocationMarker?
     
-    init(firstName: String, lastName:String, email: String? = nil) {
+    init(firstName: String, lastName:String, email: String? = nil, data: String? = nil) {
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
+        self.data = data
     }
     
-    func setLocationMarker(lat: Double, lng: Double, title: String? = nil, subtitle: String? = nil) {
+    func setLocationMarker(lat: Double, lng: Double) {
         let location = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-        let marker = StudentLocationMarker(title: title, subtitle: subtitle, coordinate: location)
-        locationMarker = marker
+        if let marker = locationMarker {
+            marker.coordinate = location
+        } else {
+            let marker = StudentLocationMarker(title: name, subtitle: data, coordinate: location)
+            locationMarker = marker
+        }
     }
 }
 
