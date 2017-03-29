@@ -35,6 +35,7 @@ extension UdacityClient {
         static let USER_INFO = "user"
         static let NICKNAME = "nickname"
         static let LAST_NAME = "last_name"
+        static let FIRST_NAME = "first_name"
         static let EMAIL = "email"
         static let EMAIL_ADDRESS = "address"
     }

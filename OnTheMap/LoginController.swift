@@ -46,6 +46,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 }
             case .failure(let msg):
                 print("Failure!!!! 😩")
+                udacityClient.reset()
                 performUpdatesOnMain {
                     self.errorLabel.text = msg
                 }

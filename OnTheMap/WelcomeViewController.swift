@@ -15,6 +15,7 @@ class WelcomeViewController: UIViewController {
     // Outlets
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var nickameLabel: UILabel!
+    @IBOutlet weak var firstNameLabel: UILabel!
     @IBOutlet weak var lastNameLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var sessionIdLabel: UILabel!
@@ -26,6 +27,10 @@ class WelcomeViewController: UIViewController {
         
         if let nickname = udacityClient.nickname {
             nickameLabel.text = nickname
+        }
+        
+        if let firstName = udacityClient.firstName {
+            firstNameLabel.text = firstName
         }
         
         if let lastName = udacityClient.lastName {

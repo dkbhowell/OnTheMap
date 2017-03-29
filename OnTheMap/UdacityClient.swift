@@ -16,6 +16,7 @@ class UdacityClient {
     var sessionId: String?
     var userId: String?
     var nickname: String?
+    var firstName: String?
     var lastName: String?
     var email: String?
     
@@ -117,6 +118,11 @@ class UdacityClient {
                     return
                 }
                 
+                guard let firstName = userInfo[ResponseKeys.FIRST_NAME] as? String else {
+                    completionForUserInfo(.failure("Error - key '\(ResponseKeys.FIRST_NAME)' not found in Dict: \(userInfo)"))
+                    return
+                }
+                
                 guard let lastName = userInfo[ResponseKeys.LAST_NAME] as? String else {
                     completionForUserInfo(.failure("Error - key '\(ResponseKeys.LAST_NAME)' not found in Dict: \(userInfo)"))
                     return
@@ -137,6 +143,7 @@ class UdacityClient {
                 print("---Last Name: \(lastName)")
                 print("---Email: \(email)")
                 self.nickname = nickname
+                self.firstName = firstName
                 self.lastName = lastName
                 self.email = email
                 
@@ -188,6 +195,15 @@ class UdacityClient {
         
         task.resume()
         return task
+    }
+    
+    func reset() {
+        sessionId = nil
+        userId = nil
+        firstName = nil
+        nickname = nil
+        lastName = nil
+        email = nil
     }
     
     // Helper Methods
