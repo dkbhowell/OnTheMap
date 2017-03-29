@@ -42,7 +42,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
             case .success( _):
                 print("Success!!!! 😀")
                 performUpdatesOnMain {
-                    self.errorLabel.text = " "
+                    self.completeLogin()
                 }
             case .failure(let msg):
                 print("Failure!!!! 😩")
@@ -51,6 +51,12 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
+    }
+    
+    func completeLogin() {
+        errorLabel.text = " "
+        let controller = storyboard!.instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeViewController
+        present(controller, animated: true, completion: nil)
     }
     
 
