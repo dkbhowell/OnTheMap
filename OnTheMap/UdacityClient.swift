@@ -50,32 +50,32 @@ class UdacityClient {
                 let stringValue = String(data: data, encoding: .utf8)!
                 print(stringValue)
                 guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
-                    print("Error converting result to dict")
+                    completionForLogin(.failure("Error converting result to dict"))
                     return
                 }
                 
                 guard let sessionData = result[ResponseKeys.SESSION] as? [String:Any] else {
-                    print("Error: No session data found in response")
+                    completionForLogin(.failure("Error: No session data found in response"))
                     return
                 }
                 
                 guard let accountData = result[ResponseKeys.ACCOUNT] as? [String:Any] else {
-                    print("Error: No account data found in response")
+                    completionForLogin(.failure("Error: No account data found in response"))
                     return
                 }
                 
                 guard let sessionId = sessionData[ResponseKeys.SESSION_ID] as? String else {
-                    print("error: Key named '\(ResponseKeys.SESSION_ID)' not found in response: \(sessionData)")
+                    completionForLogin(.failure("error: Key named '\(ResponseKeys.SESSION_ID)' not found in response: \(sessionData)"))
                     return
                 }
                 
                 guard let userId = accountData[ResponseKeys.USER_ID] as? String else {
-                    print("error: Key named '\(ResponseKeys.USER_ID)' not found in response: \(accountData)")
+                    completionForLogin(.failure("error: Key named '\(ResponseKeys.USER_ID)' not found in response: \(accountData)"))
                     return
                 }
                 
                 guard let isRegistered = accountData[ResponseKeys.REGISTERED] as? Bool else {
-                    print("error: Key named '\(ResponseKeys.REGISTERED)' not found in response: \(accountData)")
+                    completionForLogin(.failure("error: Key named '\(ResponseKeys.REGISTERED)' not found in response: \(accountData)"))
                     return
                 }
                 
@@ -85,6 +85,7 @@ class UdacityClient {
                 print("---registered: \(isRegistered)")
                 self.sessionId = sessionId
                 self.userId = userId
+                
                 completionForLogin(.success("Login Successful"))
                 
             case .failure(let error):
@@ -102,32 +103,32 @@ class UdacityClient {
 //                self.prettyPrinted(dataAsJsonDict: data, doPrint: true)
                 
                 guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
-                    print("Error parsing JSON Data: \(data)")
+                    completionForUserInfo(.failure("Error parsing JSON Data: \(data)"))
                     return
                 }
                 
                 guard let userInfo = result[ResponseKeys.USER_INFO] as? [String:Any] else {
-                    print("Error - key '\(ResponseKeys.USER_INFO)' not found in Dict: \(result)")
+                    completionForUserInfo(.failure("Error - key '\(ResponseKeys.USER_INFO)' not found in Dict: \(result)"))
                     return
                 }
                 
                 guard let nickname = userInfo[ResponseKeys.NICKNAME] as? String else {
-                    print("Error - key '\(ResponseKeys.NICKNAME)' not found in Dict: \(userInfo)")
+                    completionForUserInfo(.failure("Error - key '\(ResponseKeys.NICKNAME)' not found in Dict: \(userInfo)"))
                     return
                 }
                 
                 guard let lastName = userInfo[ResponseKeys.LAST_NAME] as? String else {
-                    print("Error - key '\(ResponseKeys.LAST_NAME)' not found in Dict: \(userInfo)")
+                    completionForUserInfo(.failure("Error - key '\(ResponseKeys.LAST_NAME)' not found in Dict: \(userInfo)"))
                     return
                 }
                 
                 guard let emailObj = userInfo[ResponseKeys.EMAIL] as? [String:Any] else {
-                    print("Error - key '\(ResponseKeys.EMAIL)' not found in Dict: \(userInfo)")
+                    completionForUserInfo(.failure("Error - key '\(ResponseKeys.EMAIL)' not found in Dict: \(userInfo)"))
                     return
                 }
                 
                 guard let email = emailObj[ResponseKeys.EMAIL_ADDRESS] as? String else {
-                    print("Error - key '\(ResponseKeys.EMAIL_ADDRESS)' not found in Dict: \(emailObj)")
+                    completionForUserInfo(.failure("Error - key '\(ResponseKeys.EMAIL_ADDRESS)' not found in Dict: \(emailObj)"))
                     return
                 }
                 
