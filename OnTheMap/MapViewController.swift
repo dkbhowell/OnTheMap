@@ -13,11 +13,14 @@ class MapViewController: UIViewController {
     
     // Outlets
     @IBOutlet weak var mapView: MKMapView!
+    
+    // Locations
+    let mountainView = (37.3861, -122.0839)
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        centerMapOnLocation(lat: 37.3861, lng: -122.0839, regionDistance: 1000)
+        centerMapOnLocation(lat: mountainView.0, lng: mountainView.1, regionDistance: 1000)
     }
     
     func centerMapOnLocation(lat: Double, lng: Double, regionDistance: Int) {
