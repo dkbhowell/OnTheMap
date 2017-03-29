@@ -14,6 +14,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var errorLabel: UILabel!
     
 
     override func viewDidLoad() {
@@ -40,8 +41,14 @@ class LoginController: UIViewController, UITextFieldDelegate {
             switch result {
             case .success( _):
                 print("Success!!!! 😀")
-            case .failure( _):
+                performUpdatesOnMain {
+                    self.errorLabel.text = " "
+                }
+            case .failure(let msg):
                 print("Failure!!!! 😩")
+                performUpdatesOnMain {
+                    self.errorLabel.text = msg
+                }
             }
         }
     }

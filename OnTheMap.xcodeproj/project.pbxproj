@@ -18,6 +18,7 @@
 		DA47ADAB1E7CA2BE00860249 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47ADAA1E7CA2BE00860249 /* AppError.swift */; };
 		DA47ADAE1E7CA45400860249 /* HttpResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47ADAD1E7CA45400860249 /* HttpResult.swift */; };
 		DAC9B3F71E8B3772007C19AA /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3F61E8B3772007C19AA /* Result.swift */; };
+		DAC9B3F91E8C2A52007C19AA /* UIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3F81E8C2A52007C19AA /* UIUtil.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		DA47ADAA1E7CA2BE00860249 /* AppError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		DA47ADAD1E7CA45400860249 /* HttpResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpResult.swift; sourceTree = "<group>"; };
 		DAC9B3F61E8B3772007C19AA /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		DAC9B3F81E8C2A52007C19AA /* UIUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIUtil.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				DA47ADAA1E7CA2BE00860249 /* AppError.swift */,
 				DA47ADAD1E7CA45400860249 /* HttpResult.swift */,
 				DAC9B3F61E8B3772007C19AA /* Result.swift */,
+				DAC9B3F81E8C2A52007C19AA /* UIUtil.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -185,6 +188,7 @@
 				DA47AD8F1E7C8BB800860249 /* AppDelegate.swift in Sources */,
 				DA47ADA11E7C9D0000860249 /* Constants.swift in Sources */,
 				DA47ADAE1E7CA45400860249 /* HttpResult.swift in Sources */,
+				DAC9B3F91E8C2A52007C19AA /* UIUtil.swift in Sources */,
 				DAC9B3F71E8B3772007C19AA /* Result.swift in Sources */,
 				DA47ADAB1E7CA2BE00860249 /* AppError.swift in Sources */,
 			);

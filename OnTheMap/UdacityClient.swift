@@ -89,7 +89,7 @@ class UdacityClient {
                 completionForLogin(.success("Login Successful"))
                 
             case .failure(let error):
-                print("Error: \(error)")
+                completionForLogin(.failure("Error with request: \(error)"))
             }
         }
     }
@@ -132,9 +132,10 @@ class UdacityClient {
                     return
                 }
                 
-                print("Nickname: \(nickname)")
-                print("Last Name: \(lastName)")
-                print("Email: \(email)")
+                print("User Info Success:")
+                print("---Nickname: \(nickname)")
+                print("---Last Name: \(lastName)")
+                print("---Email: \(email)")
                 self.nickname = nickname
                 self.lastName = lastName
                 self.email = email
@@ -142,7 +143,7 @@ class UdacityClient {
                 completionForUserInfo(.success("User Info Fetched Successfully"))
                 
             case .failure(let error):
-                print(error)
+                completionForUserInfo(.failure("Error with request: \(error)"))
             }
         })
     }

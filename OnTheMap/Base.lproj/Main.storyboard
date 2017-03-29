@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,10 +41,10 @@
                                         <rect key="frame" x="0.0" y="42" width="343" height="597"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="map_pin" translatesAutoresizingMaskIntoConstraints="NO" id="rzQ-Px-a2g">
-                                                <rect key="frame" x="0.0" y="0.0" width="343" height="478"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="400"/>
                                             </imageView>
                                             <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="255" verticalHuggingPriority="255" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Aaq-Wv-hCL" userLabel="Username Stack">
-                                                <rect key="frame" x="0.0" y="486" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="408" width="343" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="255" verticalHuggingPriority="255" text="Username:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Em9-QU-33S">
                                                         <rect key="frame" x="0.0" y="0.0" width="83.5" height="30"/>
@@ -61,7 +61,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="255" verticalHuggingPriority="255" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="CoW-vB-pOa" userLabel="Password Stack">
-                                                <rect key="frame" x="0.0" y="524" width="343" height="30"/>
+                                                <rect key="frame" x="0.0" y="446" width="343" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="255" verticalHuggingPriority="255" text="Password:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nzk-0y-H06">
                                                         <rect key="frame" x="0.0" y="0.0" width="78.5" height="30"/>
@@ -78,13 +78,19 @@
                                                 </subviews>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="255" verticalHuggingPriority="255" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u5z-b8-DxN">
-                                                <rect key="frame" x="0.0" y="562" width="343" height="35"/>
+                                                <rect key="frame" x="0.0" y="484" width="343" height="35"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                 <state key="normal" title="Login"/>
                                                 <connections>
                                                     <action selector="login:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BhR-e3-jNg"/>
                                                 </connections>
                                             </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="800" verticalCompressionResistancePriority="800" text=" " textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="1cD-iD-T3H">
+                                                <rect key="frame" x="0.0" y="527" width="343" height="70"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                <color key="textColor" red="0.55091959379805444" green="0.038200929693411205" blue="0.091267032906920204" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -99,6 +105,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="errorLabel" destination="1cD-iD-T3H" id="XOp-OI-Uz2"/>
                         <outlet property="loginButton" destination="u5z-b8-DxN" id="8J4-x1-vPh"/>
                         <outlet property="passwordTextField" destination="SJa-N9-9Ek" id="GJy-Sr-UHX"/>
                         <outlet property="usernameTextField" destination="TnD-OC-pbu" id="qPO-uy-z4y"/>
