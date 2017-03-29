@@ -10,4 +10,5 @@ import Foundation
 
 enum AppError: Error {
     case NetworkingError(domain: String, description: String)
+    case UnexpectedResult(domain: String, description: String)
 }

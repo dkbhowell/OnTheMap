@@ -12,7 +12,32 @@ class UdacityClient {
     
     let httpSession = URLSession.shared
     
-    func login(username: String, password: String) {
+    // state
+    var sessionId: String?
+    var userId: String?
+    var nickname: String?
+    var lastName: String?
+    var email: String?
+    
+    func authenticate(username: String, password: String, completionForAuth: @escaping (Result) -> () ) {
+        login(username: username, password: password) { (result) in
+            switch result {
+            case .success(_):
+                self.getUserInfo(userId: self.userId!, completionForUserInfo: { (result) in
+                    switch result {
+                    case .success(_):
+                        completionForAuth(.success("Login Successful"))
+                    case .failure(let description):
+                        completionForAuth(.failure("Login Unsuccessful: \(description)"))
+                    }
+                })
+            case .failure(let description):
+                completionForAuth(.failure("Login Unsuccessful: \(description)"))
+            }
+        }
+    }
+    
+    func login(username: String, password: String, completionForLogin: @escaping (Result) -> () ) {
         var body = [String:Any]()
         var udacityDict = [String:String]()
         udacityDict[RequestParamNames.USERNAME] = username
@@ -58,8 +83,9 @@ class UdacityClient {
                 print("---Session id: \(sessionId)")
                 print("---User id: \(userId)")
                 print("---registered: \(isRegistered)")
-                
-                self.getUserInfo(userId: userId)
+                self.sessionId = sessionId
+                self.userId = userId
+                completionForLogin(.success("Login Successful"))
                 
             case .failure(let error):
                 print("Error: \(error)")
@@ -67,24 +93,53 @@ class UdacityClient {
         }
     }
     
-    func getUserInfo(userId: String) {
+    func getUserInfo(userId: String, completionForUserInfo: @escaping (Result) -> () ) {
         let newMethod = Methods.USER + "/\(userId)"
         _ = taskForGET(newMethod, params: nil, completion: { (result) in
             switch result {
             case .success(let data):
-//                let stringValue = String(data: data, encoding: .utf8)!
-//                let prettyData = stringValue.data(using: .utf8)
-//                let prettyString = String(data: prettyData, encoding: .utf8)
-//                print(prettyString)
+                
+//                self.prettyPrinted(dataAsJsonDict: data, doPrint: true)
                 
                 guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
                     print("Error parsing JSON Data: \(data)")
                     return
                 }
                 
-                let prettyData = try! JSONSerialization.data(withJSONObject: result, options: .prettyPrinted)
-                let prettyString = String(data: prettyData, encoding: .utf8)
-                print(prettyString ?? "No Data")
+                guard let userInfo = result[ResponseKeys.USER_INFO] as? [String:Any] else {
+                    print("Error - key '\(ResponseKeys.USER_INFO)' not found in Dict: \(result)")
+                    return
+                }
+                
+                guard let nickname = userInfo[ResponseKeys.NICKNAME] as? String else {
+                    print("Error - key '\(ResponseKeys.NICKNAME)' not found in Dict: \(userInfo)")
+                    return
+                }
+                
+                guard let lastName = userInfo[ResponseKeys.LAST_NAME] as? String else {
+                    print("Error - key '\(ResponseKeys.LAST_NAME)' not found in Dict: \(userInfo)")
+                    return
+                }
+                
+                guard let emailObj = userInfo[ResponseKeys.EMAIL] as? [String:Any] else {
+                    print("Error - key '\(ResponseKeys.EMAIL)' not found in Dict: \(userInfo)")
+                    return
+                }
+                
+                guard let email = emailObj[ResponseKeys.EMAIL_ADDRESS] as? String else {
+                    print("Error - key '\(ResponseKeys.EMAIL_ADDRESS)' not found in Dict: \(emailObj)")
+                    return
+                }
+                
+                print("Nickname: \(nickname)")
+                print("Last Name: \(lastName)")
+                print("Email: \(email)")
+                self.nickname = nickname
+                self.lastName = lastName
+                self.email = email
+                
+                completionForUserInfo(.success("User Info Fetched Successfully"))
+                
             case .failure(let error):
                 print(error)
             }
@@ -157,8 +212,38 @@ class UdacityClient {
             let newData = data.subdata(in: range) /* subset response data! */
             return HttpResult.success(newData)
         }
-        let responseCode = (response as? HTTPURLResponse)?.statusCode
-        return HttpResult.failure(AppError.NetworkingError(domain: "Udacity", description: "Response Code: \(responseCode) Error: \(error)"))
+        
+        guard let responseCode = (response as? HTTPURLResponse)?.statusCode else {
+            return .failure(AppError.UnexpectedResult(domain: "Udacity", description: "No response code in response"))
+        }
+        
+        guard let error = error else {
+            return .failure(AppError.UnexpectedResult(domain: "Udacity", description: "Error is nil"))
+        }
+        
+        return .failure(AppError.NetworkingError(domain: "Udacity", description: "Response Code: \(responseCode) Error: \(error)"))
+    }
+    
+    func prettyPrinted(dataAsJsonDict data: Data, doPrint:Bool = false) -> String {
+        guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
+            if doPrint{
+                print("Error parsing JSON Data: \(data)")
+            }
+            return "Error parsing JSON Data: \(data)"
+        }
+        
+        guard let prettyData = try? JSONSerialization.data(withJSONObject: result, options: .prettyPrinted) else {
+            if doPrint {
+                print("Error serializing dictionary into Data")
+            }
+            return "Error serializaing dictionary into Data"
+        }
+        
+        let prettyString = String(data: prettyData, encoding: .utf8)!
+        if doPrint {
+            print(prettyString)
+        }
+        return prettyString
     }
     
     

@@ -36,7 +36,14 @@ class LoginController: UIViewController, UITextFieldDelegate {
         let udacityClient = UdacityClient.sharedInstance()
         let username = usernameTextField.text!
         let pwd = passwordTextField.text!
-        udacityClient.login(username: username, password: pwd)
+        udacityClient.authenticate(username: username, password: pwd) { (result) in
+            switch result {
+            case .success( _):
+                print("Success!!!! 😀")
+            case .failure( _):
+                print("Failure!!!! 😩")
+            }
+        }
     }
     
 

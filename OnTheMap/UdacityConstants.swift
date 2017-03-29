@@ -32,5 +32,10 @@ extension UdacityClient {
         static let USER_ID = "key"
         static let SESSION_ID = "id"
         static let REGISTERED = "registered"
+        static let USER_INFO = "user"
+        static let NICKNAME = "nickname"
+        static let LAST_NAME = "last_name"
+        static let EMAIL = "email"
+        static let EMAIL_ADDRESS = "address"
     }
 }

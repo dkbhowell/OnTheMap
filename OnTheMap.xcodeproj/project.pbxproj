@@ -17,6 +17,7 @@
 		DA47ADA71E7C9FC200860249 /* UdacityConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47ADA61E7C9FC200860249 /* UdacityConstants.swift */; };
 		DA47ADAB1E7CA2BE00860249 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47ADAA1E7CA2BE00860249 /* AppError.swift */; };
 		DA47ADAE1E7CA45400860249 /* HttpResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47ADAD1E7CA45400860249 /* HttpResult.swift */; };
+		DAC9B3F71E8B3772007C19AA /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3F61E8B3772007C19AA /* Result.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		DA47ADA61E7C9FC200860249 /* UdacityConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConstants.swift; sourceTree = "<group>"; };
 		DA47ADAA1E7CA2BE00860249 /* AppError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		DA47ADAD1E7CA45400860249 /* HttpResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpResult.swift; sourceTree = "<group>"; };
+		DAC9B3F61E8B3772007C19AA /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 			children = (
 				DA47ADAA1E7CA2BE00860249 /* AppError.swift */,
 				DA47ADAD1E7CA45400860249 /* HttpResult.swift */,
+				DAC9B3F61E8B3772007C19AA /* Result.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -182,6 +185,7 @@
 				DA47AD8F1E7C8BB800860249 /* AppDelegate.swift in Sources */,
 				DA47ADA11E7C9D0000860249 /* Constants.swift in Sources */,
 				DA47ADAE1E7CA45400860249 /* HttpResult.swift in Sources */,
+				DAC9B3F71E8B3772007C19AA /* Result.swift in Sources */,
 				DA47ADAB1E7CA2BE00860249 /* AppError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -346,6 +350,7 @@
 				DA47AD9F1E7C8BB800860249 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
