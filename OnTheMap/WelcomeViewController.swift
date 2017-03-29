@@ -48,7 +48,13 @@ class WelcomeViewController: UIViewController {
         if let userId = udacityClient.userId {
             userIdLabel.text = userId
         }
-        
     }
+    
+    @IBAction func goMapGo(_ sender: UIButton) {
+        let controller = storyboard!.instantiateViewController(withIdentifier: "TestMapController")
+        present(controller, animated: true, completion: nil)
+    }
+    
+    
 
 }

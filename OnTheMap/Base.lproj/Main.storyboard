@@ -115,6 +115,38 @@
             </objects>
             <point key="canvasLocation" x="136.80000000000001" y="138.98050974512745"/>
         </scene>
+        <!--Test Map Controller-->
+        <scene sceneID="TPt-vc-W95">
+            <objects>
+                <viewController storyboardIdentifier="TestMapController" id="7RB-Ug-pPz" userLabel="Test Map Controller" customClass="MapViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="8v4-gn-KH4"/>
+                        <viewControllerLayoutGuide type="bottom" id="wgi-ZR-Grs"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="638-jx-OVr">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="JA4-fS-Afr">
+                                <rect key="frame" x="16" y="20" width="343" height="627"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="JA4-fS-Afr" firstAttribute="top" secondItem="8v4-gn-KH4" secondAttribute="bottom" id="5VW-nM-6Ep"/>
+                            <constraint firstItem="JA4-fS-Afr" firstAttribute="leading" secondItem="638-jx-OVr" secondAttribute="leadingMargin" id="Gks-5D-4qN"/>
+                            <constraint firstItem="JA4-fS-Afr" firstAttribute="trailing" secondItem="638-jx-OVr" secondAttribute="trailingMargin" id="GmN-94-gOk"/>
+                            <constraint firstItem="wgi-ZR-Grs" firstAttribute="top" secondItem="JA4-fS-Afr" secondAttribute="bottom" constant="20" id="a1u-Bh-vJW"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mapView" destination="JA4-fS-Afr" id="blw-s1-Eih"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ftw-dV-Dqv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="525.60000000000002" y="822.63868065967017"/>
+        </scene>
         <!--Welcome Controller-->
         <scene sceneID="yJP-tP-IL9">
             <objects>
@@ -249,8 +281,23 @@
                                             </label>
                                         </subviews>
                                     </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l74-Pp-6bu">
+                                        <rect key="frame" x="0.0" y="143.5" width="343" height="25"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="25" id="QK9-qB-60c"/>
+                                        </constraints>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="800" verticalCompressionResistancePriority="800" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pNR-KE-nkm">
+                                        <rect key="frame" x="0.0" y="168.5" width="343" height="36"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                        <state key="normal" title="Go Map Go"/>
+                                        <connections>
+                                            <action selector="goMapGo:" destination="ehn-dK-u0G" eventType="touchUpInside" id="KU8-hN-f3n"/>
+                                        </connections>
+                                    </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2nC-1m-pjk">
-                                        <rect key="frame" x="0.0" y="143.5" width="343" height="483.5"/>
+                                        <rect key="frame" x="0.0" y="204.5" width="343" height="422.5"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
                                 </subviews>

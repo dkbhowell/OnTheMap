@@ -20,6 +20,7 @@
 		DAC9B3F71E8B3772007C19AA /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3F61E8B3772007C19AA /* Result.swift */; };
 		DAC9B3F91E8C2A52007C19AA /* UIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3F81E8C2A52007C19AA /* UIUtil.swift */; };
 		DAC9B3FB1E8C32D6007C19AA /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3FA1E8C32D6007C19AA /* WelcomeViewController.swift */; };
+		DAC9B3FD1E8C5CEA007C19AA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3FC1E8C5CEA007C19AA /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		DAC9B3F61E8B3772007C19AA /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		DAC9B3F81E8C2A52007C19AA /* UIUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIUtil.swift; sourceTree = "<group>"; };
 		DAC9B3FA1E8C32D6007C19AA /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		DAC9B3FC1E8C5CEA007C19AA /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 				DA47AD8E1E7C8BB800860249 /* AppDelegate.swift */,
 				DA47AD901E7C8BB800860249 /* LoginController.swift */,
 				DAC9B3FA1E8C32D6007C19AA /* WelcomeViewController.swift */,
+				DAC9B3FC1E8C5CEA007C19AA /* MapViewController.swift */,
 				DA47ADA01E7C9D0000860249 /* Constants.swift */,
 				DA47AD921E7C8BB800860249 /* Main.storyboard */,
 				DA47AD951E7C8BB800860249 /* Assets.xcassets */,
@@ -185,6 +188,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAC9B3FD1E8C5CEA007C19AA /* MapViewController.swift in Sources */,
 				DA47ADA51E7C9E8C00860249 /* UdacityClient.swift in Sources */,
 				DAC9B3FB1E8C32D6007C19AA /* WelcomeViewController.swift in Sources */,
 				DA47ADA71E7C9FC200860249 /* UdacityConstants.swift in Sources */,
