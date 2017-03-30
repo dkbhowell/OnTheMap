@@ -32,9 +32,9 @@ class MapViewController: UIViewController {
             students.append(student)
         }
         
-        let markers = students.map { (student) -> UdacityStudent.StudentLocationMarker in
-            return student.locationMarker!
-        }
+        let markers = students.map {
+            $0.locationMarker
+        }.flatMap { $0 }
         
         mapView.addAnnotations(markers)
     }
