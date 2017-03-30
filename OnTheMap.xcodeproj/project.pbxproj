@@ -23,6 +23,7 @@
 		DAC9B3FD1E8C5CEA007C19AA /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3FC1E8C5CEA007C19AA /* MapViewController.swift */; };
 		DAC9B4001E8C63B9007C19AA /* UdacityStudent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3FF1E8C63B9007C19AA /* UdacityStudent.swift */; };
 		DAC9B4021E8D6234007C19AA /* StateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B4011E8D6234007C19AA /* StateController.swift */; };
+		DAC9B4051E8D7912007C19AA /* MapViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B4041E8D7912007C19AA /* MapViewDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		DAC9B3FC1E8C5CEA007C19AA /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		DAC9B3FF1E8C63B9007C19AA /* UdacityStudent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityStudent.swift; sourceTree = "<group>"; };
 		DAC9B4011E8D6234007C19AA /* StateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateController.swift; sourceTree = "<group>"; };
+		DAC9B4041E8D7912007C19AA /* MapViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				DAC9B4011E8D6234007C19AA /* StateController.swift */,
+				DAC9B4041E8D7912007C19AA /* MapViewDelegate.swift */,
 			);
 			name = "Model Controllers";
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 				DA47ADA71E7C9FC200860249 /* UdacityConstants.swift in Sources */,
 				DA47AD911E7C8BB800860249 /* LoginController.swift in Sources */,
 				DA47AD8F1E7C8BB800860249 /* AppDelegate.swift in Sources */,
+				DAC9B4051E8D7912007C19AA /* MapViewDelegate.swift in Sources */,
 				DA47ADA11E7C9D0000860249 /* Constants.swift in Sources */,
 				DA47ADAE1E7CA45400860249 /* HttpResult.swift in Sources */,
 				DAC9B4021E8D6234007C19AA /* StateController.swift in Sources */,

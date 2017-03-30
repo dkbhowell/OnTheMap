@@ -44,6 +44,9 @@ class StateController {
         let dummyStudentData = [("Joe", "Smith", 37.390750, -122.079061), ("Mary", "North", 37.392991, -122.080928), ("Tom", "White", 37.388125, -122.079705)]
         for stud in dummyStudentData {
             let student = UdacityStudent(firstName: stud.0, lastName: stud.1)
+            if student.firstName == "Mary" {
+                student.data = "http://www.google.com"
+            }
             student.setLocationMarker(lat: stud.2, lng: stud.3)
             addStudent(student: student)
         }

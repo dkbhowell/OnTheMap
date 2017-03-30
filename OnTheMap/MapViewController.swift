@@ -15,6 +15,7 @@ class MapViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     
     let state = StateController.sharedInstance
+    let delegate = MapViewDelegate()
     
     
     // Locations
@@ -22,11 +23,11 @@ class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        centerMapOnLocation(lat: mountainView.0, lng: mountainView.1, regionDistance: 1000)
+        
+        mapView.delegate = delegate
         
         let markers = state.getMarkers
-        mapView.addAnnotations(markers)
+        mapView.showAnnotations(markers, animated: true)
     }
     
     func centerMapOnLocation(lat: Double, lng: Double, regionDistance: Int) {
