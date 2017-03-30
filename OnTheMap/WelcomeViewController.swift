@@ -10,7 +10,7 @@ import UIKit
 
 class WelcomeViewController: UIViewController {
     
-    let udacityClient = UdacityClient.sharedInstance()
+    let state = StateController.sharedInstance
     
     // Outlets
     @IBOutlet weak var usernameLabel: UILabel!
@@ -25,27 +25,27 @@ class WelcomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let nickname = udacityClient.nickname {
+        if let nickname = state.nickname {
             nickameLabel.text = nickname
         }
         
-        if let firstName = udacityClient.firstName {
+        if let firstName = state.firstName {
             firstNameLabel.text = firstName
         }
         
-        if let lastName = udacityClient.lastName {
+        if let lastName = state.lastName {
             lastNameLabel.text = lastName
         }
         
-        if let email = udacityClient.email {
+        if let email = state.email {
             emailLabel.text = email
         }
         
-        if let sessionId = udacityClient.sessionId {
+        if let sessionId = state.sessionId {
             sessionIdLabel.text = sessionId
         }
         
-        if let userId = udacityClient.userId {
+        if let userId = state.userId {
             userIdLabel.text = userId
         }
     }

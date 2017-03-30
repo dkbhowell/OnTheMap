@@ -12,6 +12,8 @@ class UdacityClient {
     
     let httpSession = URLSession.shared
     
+    let state = StateController.sharedInstance
+    
     // state
     var sessionId: String?
     var userId: String?
@@ -24,7 +26,7 @@ class UdacityClient {
         login(username: username, password: password) { (result) in
             switch result {
             case .success(_):
-                self.getUserInfo(userId: self.userId!, completionForUserInfo: { (result) in
+                self.getUserInfo(userId: self.state.userId!, completionForUserInfo: { (result) in
                     switch result {
                     case .success(_):
                         completionForAuth(.success("Login Successful"))
@@ -84,8 +86,8 @@ class UdacityClient {
                 print("---Session id: \(sessionId)")
                 print("---User id: \(userId)")
                 print("---registered: \(isRegistered)")
-                self.sessionId = sessionId
-                self.userId = userId
+                self.state.sessionId = sessionId
+                self.state.userId = userId
                 
                 completionForLogin(.success("Login Successful"))
                 
@@ -142,10 +144,10 @@ class UdacityClient {
                 print("---Nickname: \(nickname)")
                 print("---Last Name: \(lastName)")
                 print("---Email: \(email)")
-                self.nickname = nickname
-                self.firstName = firstName
-                self.lastName = lastName
-                self.email = email
+                self.state.nickname = nickname
+                self.state.firstName = firstName
+                self.state.lastName = lastName
+                self.state.email = email
                 
                 completionForUserInfo(.success("User Info Fetched Successfully"))
                 

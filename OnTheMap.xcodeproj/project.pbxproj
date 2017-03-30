@@ -24,6 +24,8 @@
 		DAC9B4001E8C63B9007C19AA /* UdacityStudent.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3FF1E8C63B9007C19AA /* UdacityStudent.swift */; };
 		DAC9B4021E8D6234007C19AA /* StateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B4011E8D6234007C19AA /* StateController.swift */; };
 		DAC9B4051E8D7912007C19AA /* MapViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B4041E8D7912007C19AA /* MapViewDelegate.swift */; };
+		DAC9B4081E8DCB23007C19AA /* ParseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B4071E8DCB23007C19AA /* ParseConstants.swift */; };
+		DAC9B40A1E8DCB36007C19AA /* ParseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B4091E8DCB36007C19AA /* ParseClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		DAC9B3FF1E8C63B9007C19AA /* UdacityStudent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityStudent.swift; sourceTree = "<group>"; };
 		DAC9B4011E8D6234007C19AA /* StateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateController.swift; sourceTree = "<group>"; };
 		DAC9B4041E8D7912007C19AA /* MapViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewDelegate.swift; sourceTree = "<group>"; };
+		DAC9B4071E8DCB23007C19AA /* ParseConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseConstants.swift; sourceTree = "<group>"; };
+		DAC9B4091E8DCB36007C19AA /* ParseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +102,7 @@
 		DA47ADA21E7C9E6F00860249 /* Clients */ = {
 			isa = PBXGroup;
 			children = (
+				DAC9B4061E8DCB0C007C19AA /* Parse */,
 				DA47ADA31E7C9E7800860249 /* Udacity */,
 			);
 			name = Clients;
@@ -138,6 +143,15 @@
 				DAC9B4041E8D7912007C19AA /* MapViewDelegate.swift */,
 			);
 			name = "Model Controllers";
+			sourceTree = "<group>";
+		};
+		DAC9B4061E8DCB0C007C19AA /* Parse */ = {
+			isa = PBXGroup;
+			children = (
+				DAC9B4091E8DCB36007C19AA /* ParseClient.swift */,
+				DAC9B4071E8DCB23007C19AA /* ParseConstants.swift */,
+			);
+			name = Parse;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -219,8 +233,10 @@
 				DA47ADA71E7C9FC200860249 /* UdacityConstants.swift in Sources */,
 				DA47AD911E7C8BB800860249 /* LoginController.swift in Sources */,
 				DA47AD8F1E7C8BB800860249 /* AppDelegate.swift in Sources */,
+				DAC9B40A1E8DCB36007C19AA /* ParseClient.swift in Sources */,
 				DAC9B4051E8D7912007C19AA /* MapViewDelegate.swift in Sources */,
 				DA47ADA11E7C9D0000860249 /* Constants.swift in Sources */,
+				DAC9B4081E8DCB23007C19AA /* ParseConstants.swift in Sources */,
 				DA47ADAE1E7CA45400860249 /* HttpResult.swift in Sources */,
 				DAC9B4021E8D6234007C19AA /* StateController.swift in Sources */,
 				DAC9B3F91E8C2A52007C19AA /* UIUtil.swift in Sources */,
