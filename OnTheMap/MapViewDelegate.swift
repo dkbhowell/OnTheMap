@@ -24,7 +24,13 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
             return
         }
         
-        UIApplication.shared.openURL(url)
+        guard UIApplication.shared.canOpenURL(url) else {
+            print("Cannot open URL")
+            return
+        }
+        
+        print("opening url")
+        UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {

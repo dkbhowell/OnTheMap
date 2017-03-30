@@ -47,6 +47,9 @@ class StateController {
             if student.firstName == "Mary" {
                 student.data = "http://www.google.com"
             }
+            if student.firstName == "Joe" {
+                student.data = "GoergeWentToFlyAkite"
+            }
             student.setLocationMarker(lat: stud.2, lng: stud.3)
             addStudent(student: student)
         }
