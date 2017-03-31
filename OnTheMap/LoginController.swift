@@ -48,7 +48,6 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 }
             case .failure(let msg):
                 print("Failure!!!! 😩")
-                state.resetAuth()
                 performUpdatesOnMain {
                     self.errorLabel.text = msg
                 }

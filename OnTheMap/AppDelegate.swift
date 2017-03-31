@@ -10,6 +10,8 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    static let DEBUG = true
 
     var window: UIWindow?
 

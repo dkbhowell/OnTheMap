@@ -13,20 +13,24 @@ class UdacityClient {
     let httpSession = URLSession.shared
     
     let state = StateController.sharedInstance
+    var sessionId: String?
+    var userId: String?
     
     func authenticate(username: String, password: String, completionForAuth: @escaping (Result) -> () ) {
         login(username: username, password: password) { (result) in
             switch result {
             case .success(_):
-                self.getUserInfo(userId: self.state.userId!, completionForUserInfo: { (result) in
+                self.getUserInfo(userId: self.userId!, completionForUserInfo: { (result) in
                     switch result {
                     case .success(_):
                         completionForAuth(.success("Login Successful"))
                     case .failure(let description):
+                        self.reset()
                         completionForAuth(.failure("Login Unsuccessful: \(description)"))
                     }
                 })
             case .failure(let description):
+                self.reset()
                 completionForAuth(.failure("Login Unsuccessful: \(description)"))
             }
         }
@@ -78,8 +82,8 @@ class UdacityClient {
                 print("---Session id: \(sessionId)")
                 print("---User id: \(userId)")
                 print("---registered: \(isRegistered)")
-                self.state.sessionId = sessionId
-                self.state.userId = userId
+                self.sessionId = sessionId
+                self.userId = userId
                 
                 completionForLogin(.success("Login Successful"))
                 
@@ -225,6 +229,11 @@ class UdacityClient {
         }
         
         return .failure(AppError.NetworkingError(domain: "Udacity", description: "Response Code: \(responseCode) Error: \(error)"))
+    }
+    
+    func reset() {
+        userId = nil
+        sessionId = nil
     }
     
     func prettyPrinted(dataAsJsonDict data: Data, doPrint:Bool = false) -> String {

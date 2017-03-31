@@ -11,6 +11,7 @@ import UIKit
 class WelcomeViewController: UIViewController {
     
     let state = StateController.sharedInstance
+    let udacityClient = UdacityClient.sharedInstance()
     
     // Outlets
     @IBOutlet weak var usernameLabel: UILabel!
@@ -41,11 +42,11 @@ class WelcomeViewController: UIViewController {
             emailLabel.text = email
         }
         
-        if let sessionId = state.sessionId {
+        if let sessionId = udacityClient.sessionId {
             sessionIdLabel.text = sessionId
         }
         
-        if let userId = state.userId {
+        if let userId = udacityClient.userId {
             userIdLabel.text = userId
         }
     }

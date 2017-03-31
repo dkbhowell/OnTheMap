@@ -12,13 +12,11 @@ import MapKit
 class StateController {
     // Singleton
     static let sharedInstance = StateController()
-    private init() { generateDummyData() }
+    private init() { if AppDelegate.DEBUG { generateDummyData() } }
     
     // Properties
     private var students: [UdacityStudent] = []
     var user: UdacityStudent?
-    var sessionId: String?
-    var userId: String?
     var nickname: String?
     var firstName: String?
     var lastName: String?
@@ -29,8 +27,6 @@ class StateController {
             .flatMap { $0 }
         return markers
     }
-    
-    
     
     func addStudent(student: UdacityStudent) {
         students.append(student)
@@ -47,10 +43,8 @@ class StateController {
         }
     }
     
-    func resetAuth() {
+    func resetState() {
         user = nil
-        sessionId = nil
-        userId = nil
         nickname = nil
         firstName = nil
         lastName = nil
