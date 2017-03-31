@@ -14,14 +14,6 @@ class UdacityClient {
     
     let state = StateController.sharedInstance
     
-    // state
-    var sessionId: String?
-    var userId: String?
-    var nickname: String?
-    var firstName: String?
-    var lastName: String?
-    var email: String?
-    
     func authenticate(username: String, password: String, completionForAuth: @escaping (Result) -> () ) {
         login(username: username, password: password) { (result) in
             switch result {
@@ -197,15 +189,6 @@ class UdacityClient {
         
         task.resume()
         return task
-    }
-    
-    func reset() {
-        sessionId = nil
-        userId = nil
-        firstName = nil
-        nickname = nil
-        lastName = nil
-        email = nil
     }
     
     // Helper Methods

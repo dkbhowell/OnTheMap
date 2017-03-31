@@ -10,6 +10,8 @@ import UIKit
 
 class LoginController: UIViewController, UITextFieldDelegate {
     
+    let state = StateController.sharedInstance
+    
     // Outlets
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -46,7 +48,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
                 }
             case .failure(let msg):
                 print("Failure!!!! 😩")
-                udacityClient.reset()
+                state.resetAuth()
                 performUpdatesOnMain {
                     self.errorLabel.text = msg
                 }

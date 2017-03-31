@@ -47,6 +47,16 @@ class StateController {
         }
     }
     
+    func resetAuth() {
+        user = nil
+        sessionId = nil
+        userId = nil
+        nickname = nil
+        firstName = nil
+        lastName = nil
+        email = nil
+    }
+    
     private func generateDummyData() {
         let dummyStudentData = [("Joe", "Smith", 37.390750, -122.079061), ("Mary", "North", 37.392991, -122.080928), ("Tom", "White", 37.388125, -122.079705)]
         for stud in dummyStudentData {
