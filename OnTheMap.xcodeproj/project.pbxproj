@@ -26,6 +26,7 @@
 		DAC9B4051E8D7912007C19AA /* MapViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B4041E8D7912007C19AA /* MapViewDelegate.swift */; };
 		DAC9B4081E8DCB23007C19AA /* ParseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B4071E8DCB23007C19AA /* ParseConstants.swift */; };
 		DAC9B40A1E8DCB36007C19AA /* ParseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B4091E8DCB36007C19AA /* ParseClient.swift */; };
+		DAC9B40C1E8F0ED2007C19AA /* DataResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B40B1E8F0ED2007C19AA /* DataResult.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		DAC9B4041E8D7912007C19AA /* MapViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewDelegate.swift; sourceTree = "<group>"; };
 		DAC9B4071E8DCB23007C19AA /* ParseConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseConstants.swift; sourceTree = "<group>"; };
 		DAC9B4091E8DCB36007C19AA /* ParseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseClient.swift; sourceTree = "<group>"; };
+		DAC9B40B1E8F0ED2007C19AA /* DataResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataResult.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 				DA47ADAD1E7CA45400860249 /* HttpResult.swift */,
 				DAC9B3F61E8B3772007C19AA /* Result.swift */,
 				DAC9B3F81E8C2A52007C19AA /* UIUtil.swift */,
+				DAC9B40B1E8F0ED2007C19AA /* DataResult.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 				DA47ADA51E7C9E8C00860249 /* UdacityClient.swift in Sources */,
 				DAC9B3FB1E8C32D6007C19AA /* WelcomeViewController.swift in Sources */,
 				DA47ADA71E7C9FC200860249 /* UdacityConstants.swift in Sources */,
+				DAC9B40C1E8F0ED2007C19AA /* DataResult.swift in Sources */,
 				DA47AD911E7C8BB800860249 /* LoginController.swift in Sources */,
 				DA47AD8F1E7C8BB800860249 /* AppDelegate.swift in Sources */,
 				DAC9B40A1E8DCB36007C19AA /* ParseClient.swift in Sources */,

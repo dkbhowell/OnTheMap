@@ -9,6 +9,7 @@
 import MapKit
 
 class UdacityStudent {
+    let id: String
     let firstName: String
     let lastName: String
     var email: String?
@@ -20,7 +21,8 @@ class UdacityStudent {
     
     var locationMarker: StudentLocationMarker?
     
-    init(firstName: String, lastName:String, email: String? = nil, data: String? = nil) {
+    init(id: String, firstName: String, lastName:String, email: String? = nil, data: String? = nil) {
+        self.id = id
         self.firstName = firstName
         self.lastName = lastName
         self.email = email

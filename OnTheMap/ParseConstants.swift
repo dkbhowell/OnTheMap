@@ -27,7 +27,17 @@ extension ParseClient {
     }
     
     struct ResponseKeys {
-        
+        static let RESULTS = "results"
+        static let FIRST_NAME = "firstName"
+        static let LAST_NAME = "lastName"
+        static let LAT = "latitude"
+        static let LNG = "longitude"
+        static let MAP_STRING = "mapString"
+        static let MEDIA_URL = "mediaURL"
+        static let OBJECT_ID = "objectId"
+        static let UNIQUE_KEY = "uniqueKey"
+        static let UPDATED_AT = "updatedAt"
+        static let CREATED_AT = "createdAt"
     }
     
     
