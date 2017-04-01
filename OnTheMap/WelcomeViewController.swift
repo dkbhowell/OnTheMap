@@ -50,15 +50,6 @@ class WelcomeViewController: UIViewController {
         if let userId = udacityClient.userId {
             userIdLabel.text = userId
         }
-        
-        parseClient.getStudents { (result) in
-            switch result {
-            case .success(let students):
-                print("Success, Students!: \(students)")
-            case .failure(let reason):
-                print("Failed.. reason: \(reason)")
-            }
-        }
     }
     
     @IBAction func goMapGo(_ sender: UIButton) {

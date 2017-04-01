@@ -43,6 +43,10 @@ class StateController {
         }
     }
     
+    func setStudents(students: [UdacityStudent]) {
+        self.students = students
+    }
+    
     func resetState() {
         user = nil
         nickname = nil

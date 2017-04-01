@@ -125,7 +125,7 @@ class ParseClient {
             let createdAt = studentDict[ResponseKeys.CREATED_AT] as? String
             
             let newStudent = UdacityStudent(id: objectId, firstName: firstName, lastName: lastName, email: nil, data: mediaUrl)
-            newStudent.data = mapString
+            newStudent.data = mediaUrl
             newStudent.setLocationMarker(lat: lat, lng: lng)
             students.append(newStudent)
         }

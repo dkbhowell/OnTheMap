@@ -15,6 +15,7 @@ class MapViewController: UIViewController {
     @IBOutlet weak var mapView: MKMapView!
     
     let state = StateController.sharedInstance
+    let parseClient = ParseClient.sharedInstance
     let delegate = MapViewDelegate()
     
     
@@ -28,6 +29,20 @@ class MapViewController: UIViewController {
         
         let markers = state.getMarkers
         mapView.showAnnotations(markers, animated: true)
+        
+        parseClient.getStudents { (result) in
+            switch result {
+            case .success(let students):
+                print("Success, Students!: \(students)")
+                self.state.setStudents(students: students)
+                let markers = self.state.getMarkers
+                performUpdatesOnMain {
+                    self.mapView.showAnnotations(markers, animated: true)
+                }
+            case .failure(let reason):
+                print("Failed.. reason: \(reason)")
+            }
+        }
     }
     
     func centerMapOnLocation(lat: Double, lng: Double, regionDistance: Int) {
