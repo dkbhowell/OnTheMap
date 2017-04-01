@@ -37,7 +37,10 @@ class ParseClient {
     
     private func runGetTask(method: String, params: [String:Any], completion: @escaping (HttpResult<Data, AppError>) -> () ) -> URLSessionDataTask {
         let url = buildURL(params: params, withPathExtension: method)
-        let request = URLRequest(url: url)
+        print("Parse URL: \(url)")
+        var request = URLRequest(url: url)
+        request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
         
         let task = httpClient.dataTask(with: request) { (data, resp, err) in
             // TO-DO
@@ -72,12 +75,12 @@ class ParseClient {
             return .success(data)
         }
         
-        guard let statusCode = (resp as? HTTPURLResponse)?.statusCode else {
-            return .failure(AppError.UnexpectedResult(domain: "Parse Client", description: "No Status Code in Response"))
-        }
         guard let err = err else {
             return .failure(AppError.UnexpectedResult(domain: "Parse Client", description: "No Data, No Error in Response"))
         }
+        
+        let statusCode = ((resp as? HTTPURLResponse)?.statusCode).map { "\($0)" } ?? "None"
+        
         return .failure(AppError.NetworkingError(domain: "Parse Client", description: "Status Code: \(statusCode) \nError: \(err)"))
     }
     

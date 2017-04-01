@@ -12,6 +12,7 @@ class WelcomeViewController: UIViewController {
     
     let state = StateController.sharedInstance
     let udacityClient = UdacityClient.sharedInstance()
+    let parseClient = ParseClient.sharedInstance
     
     // Outlets
     @IBOutlet weak var usernameLabel: UILabel!
@@ -48,6 +49,15 @@ class WelcomeViewController: UIViewController {
         
         if let userId = udacityClient.userId {
             userIdLabel.text = userId
+        }
+        
+        parseClient.getStudents { (result) in
+            switch result {
+            case .success(let students):
+                print("Success, Students!: \(students)")
+            case .failure(let reason):
+                print("Failed.. reason: \(reason)")
+            }
         }
     }
     

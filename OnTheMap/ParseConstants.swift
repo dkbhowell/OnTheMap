@@ -12,7 +12,7 @@ extension ParseClient {
     
     struct UrlComponents {
         static let SCHEME = "https"
-        static let HOST = "www.parse.udacity.com"
+        static let HOST = "parse.udacity.com"
         static let PATH = "/parse/classes/"
     }
     
