@@ -155,7 +155,7 @@ class UdacityClient {
     
     // Task Execution Methods
     
-    func taskForGET(_ method: String, params: [String:Any]?, completion: @escaping (_ result: HttpResult<Data, AppError>) -> Void) -> URLSessionDataTask {
+    func taskForGET(_ method: String, params: [String:Any]?, completion: @escaping (_ result: DataResult<Data, AppError>) -> Void) -> URLSessionDataTask {
         
         let url = udacityUrlFromParams(params, withPathExtension: method)
         print("URL: \(url)")
@@ -170,7 +170,7 @@ class UdacityClient {
         return task
     }
     
-    func taskForPOST(_ method: String, params: [String:Any]?, jsonDataForBody data: [String:Any]?, completion: @escaping (_ result: HttpResult<Data, AppError>) -> Void) -> URLSessionDataTask {
+    func taskForPOST(_ method: String, params: [String:Any]?, jsonDataForBody data: [String:Any]?, completion: @escaping (_ result: DataResult<Data, AppError>) -> Void) -> URLSessionDataTask {
         
         let url = udacityUrlFromParams(params, withPathExtension: method)
         print("URL: \(url)")
@@ -213,11 +213,11 @@ class UdacityClient {
         return components.url!
     }
     
-    func validateHttpResponse(data: Data?, response: URLResponse?, error: Error?) -> HttpResult<Data, AppError> {
+    func validateHttpResponse(data: Data?, response: URLResponse?, error: Error?) -> DataResult<Data, AppError> {
         if let data = data {
             let range = Range(5 ..< data.count)
             let newData = data.subdata(in: range) /* subset response data! */
-            return HttpResult.success(newData)
+            return .success(newData)
         }
         
         guard let responseCode = (response as? HTTPURLResponse)?.statusCode else {

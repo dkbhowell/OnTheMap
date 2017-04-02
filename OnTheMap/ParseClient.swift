@@ -15,27 +15,102 @@ class ParseClient {
     
     // helper functions
     
-    func getStudents(completion: @escaping (DataResult<[UdacityStudent]>) -> () ) {
+    func getStudents(completion: @escaping (DataResult<[UdacityStudent], AppError>) -> () ) {
         let params = [
             RequestParamaterNames.LIMIT: 100
         ]
         _ = runGetTask(method: "StudentLocation", params: params) { (networkResult) in
             switch networkResult {
             case .success(let data):
-                let parseResult = self.parse(data: data)
-                switch parseResult {
-                case .success(let students):
-                    completion(.success(students))
-                case .failure(let appError):
-                    completion(.failure("\(appError)"))
+                
+                guard let parseResult: [String:Any] = self.parse(data: data) else {
+                    completion(.failure(.ParseError(domain: "Parse Client", description: "Error parsing data into JSON")))
+                    return
                 }
+                guard let results = parseResult[ResponseKeys.RESULTS] as? [[String:Any]] else {
+                    completion(.failure(.ParseError(domain: "Parse Client", description: "Error retrieving value for key: '\(ResponseKeys.RESULTS)' from dict: \(parseResult)")))
+                    return
+                }
+                
+                var students = [UdacityStudent]()
+                for studentDict in results {
+                    // REQUIRED
+                    guard let objectId = studentDict[ResponseKeys.OBJECT_ID] as? String else {
+                        print("Error finding student key '\(ResponseKeys.OBJECT_ID)' in \(studentDict)")
+                        continue
+                    }
+                    guard let firstName = studentDict[ResponseKeys.FIRST_NAME] as? String else {
+                        print("Error finding student key '\(ResponseKeys.FIRST_NAME)' in \(studentDict)")
+                        continue
+                    }
+                    guard let lastName = studentDict[ResponseKeys.LAST_NAME] as? String else {
+                        print("Error finding student key '\(ResponseKeys.LAST_NAME)' in \(studentDict)")
+                        continue
+                    }
+                    guard let lat = studentDict[ResponseKeys.LAT] as? Double else {
+                        print("Error finding student key '\(ResponseKeys.LAT)' in \(studentDict)")
+                        continue
+                    }
+                    guard let lng = studentDict[ResponseKeys.LNG] as? Double else {
+                        print("Error finding student key '\(ResponseKeys.LNG)' in \(studentDict)")
+                        continue
+                    }
+                    
+                    // OPTIONAL
+                    let mediaUrl = studentDict[ResponseKeys.MEDIA_URL] as? String
+                    _ = studentDict[ResponseKeys.MAP_STRING] as? String
+                    _ = studentDict[ResponseKeys.UNIQUE_KEY] as? String
+                    _ = studentDict[ResponseKeys.UPDATED_AT] as? String
+                    _ = studentDict[ResponseKeys.CREATED_AT] as? String
+                    
+                    let newStudent = UdacityStudent(id: objectId, firstName: firstName, lastName: lastName, email: nil, data: mediaUrl)
+                    newStudent.data = mediaUrl
+                    newStudent.setLocationMarker(lat: lat, lng: lng)
+                    students.append(newStudent)
+                }
+                
+                completion(.success(students))
             case .failure(let appError):
-                completion(.failure("\(appError)"))
+                completion(.failure(appError))
             }
         }
     }
     
-    private func runGetTask(method: String, params: [String:Any], completion: @escaping (HttpResult<Data, AppError>) -> () ) -> URLSessionDataTask {
+    func getStudent(withUdacityID id: String, completion: @escaping (DataResult<UdacityStudent?, AppError>) -> () ) {
+        let whereClause = "{\"uniqueKey\":\"\(id)\"}"
+        let params = [
+            RequestParamaterNames.WHERE: whereClause
+        ]
+        
+        _ = runGetTask(method: "StudentLocation", params: params) { (networkResult) in
+            switch networkResult {
+            case .success(let data):
+                
+                guard let parseResult: [String:Any] = self.parse(data: data) else {
+                    completion(.failure(.ParseError(domain:"Parse Client", description: "Error parsing data into JSON")))
+                    return
+                }
+                guard let results = parseResult[ResponseKeys.RESULTS] as? [[String:Any]] else {
+                    completion(.failure(.ParseError(domain:"Parse Client", description: "Error: Key '\(ResponseKeys.RESULTS)' not found in dict: \(parseResult)")))
+                    return
+                }
+                
+                if results.count > 0 {
+                    let firstStudent = results[0]
+                    if let student = self.buildStudent(fromDict: firstStudent) {
+                        completion(.success(student))
+                    }
+                }
+                
+                completion(.success((nil)))
+                
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    private func runGetTask(method: String, params: [String:Any], completion: @escaping (DataResult<Data, AppError>) -> () ) -> URLSessionDataTask {
         let url = buildURL(params: params, withPathExtension: method)
         print("Parse URL: \(url)")
         var request = URLRequest(url: url)
@@ -70,7 +145,7 @@ class ParseClient {
         return components.url!
     }
     
-    private func validateResponse(data: Data?, resp: URLResponse?, err: Error?) -> HttpResult<Data, AppError> {
+    private func validateResponse(data: Data?, resp: URLResponse?, err: Error?) -> DataResult<Data, AppError> {
         if let data = data {
             return .success(data)
         }
@@ -84,62 +159,37 @@ class ParseClient {
         return .failure(AppError.NetworkingError(domain: "Parse Client", description: "Status Code: \(statusCode) \nError: \(err)"))
     }
     
-    private func parse(data: Data) -> HttpResult<[UdacityStudent], AppError> {
+    private func parse(data: Data) -> [String:Any]? {
         guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
-            return .failure(.ParseError(domain: "Parse Client", description: "Error converting data to JSON"))
+            return nil
         }
-        
-        guard let results = result[ResponseKeys.RESULTS] as? [[String:Any]] else {
-            return .failure(.ParseError(domain: "Parse Client", description: "Error retrieving value for key: '\(ResponseKeys.RESULTS)' from dict: \(result)"))
-        }
-        
-        var students = [UdacityStudent]()
-        for studentDict in results {
-            // REQUIRED
-            guard let objectId = studentDict[ResponseKeys.OBJECT_ID] as? String else {
-                print("Error finding student key '\(ResponseKeys.OBJECT_ID)' in \(studentDict)")
-                continue
-            }
-            guard let firstName = studentDict[ResponseKeys.FIRST_NAME] as? String else {
-                print("Error finding student key '\(ResponseKeys.FIRST_NAME)' in \(studentDict)")
-                continue
-            }
-            guard let lastName = studentDict[ResponseKeys.LAST_NAME] as? String else {
-                print("Error finding student key '\(ResponseKeys.LAST_NAME)' in \(studentDict)")
-                continue
-            }
-            guard let lat = studentDict[ResponseKeys.LAT] as? Double else {
-                print("Error finding student key '\(ResponseKeys.LAT)' in \(studentDict)")
-                continue
-            }
-            guard let lng = studentDict[ResponseKeys.LNG] as? Double else {
-                print("Error finding student key '\(ResponseKeys.LNG)' in \(studentDict)")
-                continue
-            }
-            
-            // OPTIONAL
-            let mapString = studentDict[ResponseKeys.MAP_STRING] as? String
-            let mediaUrl = studentDict[ResponseKeys.MEDIA_URL] as? String
-            let uniqueKey = studentDict[ResponseKeys.UNIQUE_KEY] as? String
-            let updatedAt = studentDict[ResponseKeys.UPDATED_AT] as? String
-            let createdAt = studentDict[ResponseKeys.CREATED_AT] as? String
-            
-            let newStudent = UdacityStudent(id: objectId, firstName: firstName, lastName: lastName, email: nil, data: mediaUrl)
-            newStudent.data = mediaUrl
-            newStudent.setLocationMarker(lat: lat, lng: lng)
-            students.append(newStudent)
-        }
-        
-        return .success(students)
-        
+        return result
     }
     
+    private func parse(data: Data) -> [[String:Any]]? {
+        guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [[String:Any]] else {
+            return nil
+        }
+        return result
+    }
     
-    
-    
-    
-    
-    
-    
+    private func buildStudent(fromDict dict: [String:Any]) -> UdacityStudent? {
+        guard let firstName = dict[ResponseKeys.FIRST_NAME] as? String else {
+            return nil
+        }
+        
+        guard let lastName = dict[ResponseKeys.LAST_NAME] as? String else {
+            return nil
+        }
+        
+        guard let objectId = dict[ResponseKeys.OBJECT_ID] as? String else {
+            return nil
+        }
+
+        _ = dict[ResponseKeys.UNIQUE_KEY] as? String
+        let mediaUrl = dict[ResponseKeys.MEDIA_URL] as? String
+        
+        return UdacityStudent(id: objectId, firstName: firstName, lastName: lastName, email: nil, data: mediaUrl)
+    }
     
 }

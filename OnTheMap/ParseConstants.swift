@@ -24,6 +24,7 @@ extension ParseClient {
         static let LIMIT = "limit"
         static let SKIP = "skip"
         static let ORDER = "order"
+        static let WHERE = "where"
     }
     
     struct ResponseKeys {
