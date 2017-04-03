@@ -27,29 +27,26 @@ class WelcomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let nickname = state.nickname {
-            nickameLabel.text = nickname
+        if let user = state.getUser() {
+            if let nickname = user.nickname {
+                nickameLabel.text = nickname
+            }
+            firstNameLabel.text = user.firstName
+            lastNameLabel.text = user.lastName
+            
+            if let email = user.email {
+                emailLabel.text = email
+            }
+            
+            if let sessionId = udacityClient.sessionId {
+                sessionIdLabel.text = sessionId
+            }
+            
+            if let userId = udacityClient.userId {
+                userIdLabel.text = userId
+            }
         }
         
-        if let firstName = state.firstName {
-            firstNameLabel.text = firstName
-        }
-        
-        if let lastName = state.lastName {
-            lastNameLabel.text = lastName
-        }
-        
-        if let email = state.email {
-            emailLabel.text = email
-        }
-        
-        if let sessionId = udacityClient.sessionId {
-            sessionIdLabel.text = sessionId
-        }
-        
-        if let userId = udacityClient.userId {
-            userIdLabel.text = userId
-        }
     }
     
     @IBAction func goMapGo(_ sender: UIButton) {

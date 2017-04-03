@@ -106,44 +106,11 @@ class UdacityClient {
                     return
                 }
                 
-                guard let userInfo = result[ResponseKeys.USER_INFO] as? [String:Any] else {
-                    completionForUserInfo(.failure("Error - key '\(ResponseKeys.USER_INFO)' not found in Dict: \(result)"))
-                    return
+                if let newUser = User(dictionary: result) {
+                    self.state.setUser(user: newUser)
+                } else {
+                    completionForUserInfo(.failure("Error parsing data into user"))
                 }
-                
-                guard let nickname = userInfo[ResponseKeys.NICKNAME] as? String else {
-                    completionForUserInfo(.failure("Error - key '\(ResponseKeys.NICKNAME)' not found in Dict: \(userInfo)"))
-                    return
-                }
-                
-                guard let firstName = userInfo[ResponseKeys.FIRST_NAME] as? String else {
-                    completionForUserInfo(.failure("Error - key '\(ResponseKeys.FIRST_NAME)' not found in Dict: \(userInfo)"))
-                    return
-                }
-                
-                guard let lastName = userInfo[ResponseKeys.LAST_NAME] as? String else {
-                    completionForUserInfo(.failure("Error - key '\(ResponseKeys.LAST_NAME)' not found in Dict: \(userInfo)"))
-                    return
-                }
-                
-                guard let emailObj = userInfo[ResponseKeys.EMAIL] as? [String:Any] else {
-                    completionForUserInfo(.failure("Error - key '\(ResponseKeys.EMAIL)' not found in Dict: \(userInfo)"))
-                    return
-                }
-                
-                guard let email = emailObj[ResponseKeys.EMAIL_ADDRESS] as? String else {
-                    completionForUserInfo(.failure("Error - key '\(ResponseKeys.EMAIL_ADDRESS)' not found in Dict: \(emailObj)"))
-                    return
-                }
-                
-                print("User Info Success:")
-                print("---Nickname: \(nickname)")
-                print("---Last Name: \(lastName)")
-                print("---Email: \(email)")
-                self.state.nickname = nickname
-                self.state.firstName = firstName
-                self.state.lastName = lastName
-                self.state.email = email
                 
                 completionForUserInfo(.success("User Info Fetched Successfully"))
                 

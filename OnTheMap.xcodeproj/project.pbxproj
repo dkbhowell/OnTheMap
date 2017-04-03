@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA1C9BD31E92D0BA008A9531 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1C9BD21E92D0BA008A9531 /* User.swift */; };
 		DA47AD8F1E7C8BB800860249 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47AD8E1E7C8BB800860249 /* AppDelegate.swift */; };
 		DA47AD911E7C8BB800860249 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47AD901E7C8BB800860249 /* LoginController.swift */; };
 		DA47AD941E7C8BB800860249 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA47AD921E7C8BB800860249 /* Main.storyboard */; };
@@ -29,6 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DA1C9BD21E92D0BA008A9531 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DA47AD8B1E7C8BB800860249 /* OnTheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA47AD8E1E7C8BB800860249 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA47AD901E7C8BB800860249 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				DAC9B3FF1E8C63B9007C19AA /* UdacityStudent.swift */,
+				DA1C9BD21E92D0BA008A9531 /* User.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -234,6 +237,7 @@
 				DA47AD911E7C8BB800860249 /* LoginController.swift in Sources */,
 				DA47AD8F1E7C8BB800860249 /* AppDelegate.swift in Sources */,
 				DAC9B40A1E8DCB36007C19AA /* ParseClient.swift in Sources */,
+				DA1C9BD31E92D0BA008A9531 /* User.swift in Sources */,
 				DAC9B4051E8D7912007C19AA /* MapViewDelegate.swift in Sources */,
 				DA47ADA11E7C9D0000860249 /* Constants.swift in Sources */,
 				DAC9B4081E8DCB23007C19AA /* ParseConstants.swift in Sources */,

@@ -21,7 +21,7 @@ class MapViewController: UIViewController {
     
     // Actions
     @IBAction func postPin(_ sender: UIBarButtonItem) {
-        if let userPin = state.userPin {
+        if let userPin = state.getUser()?.locationMarker {
             // alert that there is already a pin, ask to update it
             let alert = UIAlertController(title: "Pin Already Exists", message: "Would you like to overwrite your old pin?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
@@ -72,7 +72,7 @@ class MapViewController: UIViewController {
                 case .success(let student):
                     if let student = student, let pin = student.locationMarker {
                         print("Pin Exists for Student: \(student)")
-                        self.state.userPin = pin
+                        self.state.getUser()?.locationMarker = pin
                     } else {
                         print("No pin exists for student")
                     }

@@ -16,13 +16,8 @@ class StateController {
     
     // Properties
     private var students: [UdacityStudent] = []
+    private var user: User?
     
-    var nickname: String?
-    var firstName: String?
-    var lastName: String?
-    var email: String?
-    
-    var userPin: UdacityStudent.StudentLocationMarker?
     
     var getMarkers: [MKAnnotation] {
         let markers = students.map { $0.locationMarker }
@@ -49,12 +44,20 @@ class StateController {
         self.students = students
     }
     
-    func resetState() {
-        nickname = nil
-        firstName = nil
-        lastName = nil
-        email = nil
+    func setUser(user: User) {
+        self.user = user
     }
+    
+    func getUser() -> User? {
+        return self.user
+    }
+    
+//    func resetState() {
+//        nickname = nil
+//        firstName = nil
+//        lastName = nil
+//        email = nil
+//    }
     
     private func generateDummyData() {
         let dummyStudentData = [("Joe", "Smith", 37.390750, -122.079061), ("Mary", "North", 37.392991, -122.080928), ("Tom", "White", 37.388125, -122.079705)]
