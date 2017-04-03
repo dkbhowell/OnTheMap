@@ -35,38 +35,9 @@ class ParseClient {
                 var students = [UdacityStudent]()
                 for studentDict in results {
                     // REQUIRED
-                    guard let objectId = studentDict[ResponseKeys.OBJECT_ID] as? String else {
-                        print("Error finding student key '\(ResponseKeys.OBJECT_ID)' in \(studentDict)")
-                        continue
+                    if let newStudent = UdacityStudent(dictionary: studentDict) {
+                            students.append(newStudent)
                     }
-                    guard let firstName = studentDict[ResponseKeys.FIRST_NAME] as? String else {
-                        print("Error finding student key '\(ResponseKeys.FIRST_NAME)' in \(studentDict)")
-                        continue
-                    }
-                    guard let lastName = studentDict[ResponseKeys.LAST_NAME] as? String else {
-                        print("Error finding student key '\(ResponseKeys.LAST_NAME)' in \(studentDict)")
-                        continue
-                    }
-                    guard let lat = studentDict[ResponseKeys.LAT] as? Double else {
-                        print("Error finding student key '\(ResponseKeys.LAT)' in \(studentDict)")
-                        continue
-                    }
-                    guard let lng = studentDict[ResponseKeys.LNG] as? Double else {
-                        print("Error finding student key '\(ResponseKeys.LNG)' in \(studentDict)")
-                        continue
-                    }
-                    
-                    // OPTIONAL
-                    let mediaUrl = studentDict[ResponseKeys.MEDIA_URL] as? String
-                    _ = studentDict[ResponseKeys.MAP_STRING] as? String
-                    _ = studentDict[ResponseKeys.UNIQUE_KEY] as? String
-                    _ = studentDict[ResponseKeys.UPDATED_AT] as? String
-                    _ = studentDict[ResponseKeys.CREATED_AT] as? String
-                    
-                    let newStudent = UdacityStudent(id: objectId, firstName: firstName, lastName: lastName, data: mediaUrl)
-                    newStudent.data = mediaUrl
-                    newStudent.setLocationMarker(lat: lat, lng: lng)
-                    students.append(newStudent)
                 }
                 
                 completion(.success(students))
@@ -98,7 +69,7 @@ class ParseClient {
                 if results.count > 0 {
                     print("Found \(results.count) results for student with id \(id)")
                     let firstStudent = results[0]
-                    if let student = self.buildStudent(fromDict: firstStudent) {
+                    if let student = UdacityStudent(dictionary: firstStudent) {
                         completion(.success(student))
                     }
                 }
@@ -173,31 +144,4 @@ class ParseClient {
         }
         return result
     }
-    
-    private func buildStudent(fromDict dict: [String:Any]) -> UdacityStudent? {
-        guard let firstName = dict[ResponseKeys.FIRST_NAME] as? String else {
-            return nil
-        }
-        
-        guard let lastName = dict[ResponseKeys.LAST_NAME] as? String else {
-            return nil
-        }
-        
-        guard let objectId = dict[ResponseKeys.OBJECT_ID] as? String else {
-            return nil
-        }
-
-        _ = dict[ResponseKeys.UNIQUE_KEY] as? String
-        let mediaUrl = dict[ResponseKeys.MEDIA_URL] as? String
-        let lat = dict[ResponseKeys.LAT] as? Double
-        let lng = dict[ResponseKeys.LNG] as? Double
-        
-        let student = UdacityStudent(id: objectId, firstName: firstName, lastName: lastName, data: mediaUrl)
-        if let lat = lat, let lng = lng {
-            student.setLocationMarker(lat: lat, lng: lng)
-        }
-        
-        return student
-    }
-    
 }
