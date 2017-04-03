@@ -65,13 +65,14 @@ class MapViewController: UIViewController {
             }
         }
         
+        // check online for user pin
         if let id = udacityClient.userId {
             parseClient.getStudent(withUdacityID: id, completion: { (result) in
                 switch result {
                 case .success(let student):
-                    if let student = student {
+                    if let student = student, let pin = student.locationMarker {
                         print("Pin Exists for Student: \(student)")
-                        state.userPin = student
+                        self.state.userPin = pin
                     } else {
                         print("No pin exists for student")
                     }

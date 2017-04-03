@@ -21,12 +21,16 @@ class UdacityStudent {
     
     var locationMarker: StudentLocationMarker?
     
-    init(id: String, firstName: String, lastName:String, email: String? = nil, data: String? = nil) {
+    init(id: String, firstName: String, lastName:String, data: String? = nil) {
         self.id = id
         self.firstName = firstName
         self.lastName = lastName
-        self.email = email
         self.data = data
+    }
+    
+    init?(dictionary: [String:Any]) {
+        // TODO
+        return nil
     }
     
     func setLocationMarker(lat: Double, lng: Double) {
@@ -53,4 +57,14 @@ extension UdacityStudent {
             self.coordinate = coordinate
         }
     }
+}
+
+// Serialization
+extension UdacityStudent {
+    
+    func serialize() -> [String:Any] {
+        // TODO
+        return [:]
+    }
+    
 }

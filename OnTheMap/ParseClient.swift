@@ -63,7 +63,7 @@ class ParseClient {
                     _ = studentDict[ResponseKeys.UPDATED_AT] as? String
                     _ = studentDict[ResponseKeys.CREATED_AT] as? String
                     
-                    let newStudent = UdacityStudent(id: objectId, firstName: firstName, lastName: lastName, email: nil, data: mediaUrl)
+                    let newStudent = UdacityStudent(id: objectId, firstName: firstName, lastName: lastName, data: mediaUrl)
                     newStudent.data = mediaUrl
                     newStudent.setLocationMarker(lat: lat, lng: lng)
                     students.append(newStudent)
@@ -96,6 +96,7 @@ class ParseClient {
                 }
                 
                 if results.count > 0 {
+                    print("Found \(results.count) results for student with id \(id)")
                     let firstStudent = results[0]
                     if let student = self.buildStudent(fromDict: firstStudent) {
                         completion(.success(student))
@@ -188,8 +189,15 @@ class ParseClient {
 
         _ = dict[ResponseKeys.UNIQUE_KEY] as? String
         let mediaUrl = dict[ResponseKeys.MEDIA_URL] as? String
+        let lat = dict[ResponseKeys.LAT] as? Double
+        let lng = dict[ResponseKeys.LNG] as? Double
         
-        return UdacityStudent(id: objectId, firstName: firstName, lastName: lastName, email: nil, data: mediaUrl)
+        let student = UdacityStudent(id: objectId, firstName: firstName, lastName: lastName, data: mediaUrl)
+        if let lat = lat, let lng = lng {
+            student.setLocationMarker(lat: lat, lng: lng)
+        }
+        
+        return student
     }
     
 }

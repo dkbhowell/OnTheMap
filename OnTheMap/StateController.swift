@@ -22,7 +22,7 @@ class StateController {
     var lastName: String?
     var email: String?
     
-    var userPin: UdacityStudent?
+    var userPin: UdacityStudent.StudentLocationMarker?
     
     var getMarkers: [MKAnnotation] {
         let markers = students.map { $0.locationMarker }
