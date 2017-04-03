@@ -16,11 +16,13 @@ class StateController {
     
     // Properties
     private var students: [UdacityStudent] = []
-    var user: UdacityStudent?
+    
     var nickname: String?
     var firstName: String?
     var lastName: String?
     var email: String?
+    
+    var userPin: UdacityStudent?
     
     var getMarkers: [MKAnnotation] {
         let markers = students.map { $0.locationMarker }
@@ -48,7 +50,6 @@ class StateController {
     }
     
     func resetState() {
-        user = nil
         nickname = nil
         firstName = nil
         lastName = nil

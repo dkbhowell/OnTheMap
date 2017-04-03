@@ -53,7 +53,7 @@ class WelcomeViewController: UIViewController {
     }
     
     @IBAction func goMapGo(_ sender: UIButton) {
-        let controller = storyboard!.instantiateViewController(withIdentifier: "TestMapController")
+        let controller = storyboard!.instantiateViewController(withIdentifier: "mapNavControlller")
         present(controller, animated: true, completion: nil)
     }
     

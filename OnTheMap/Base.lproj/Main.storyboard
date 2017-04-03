@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="WPU-9r-iFO">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -139,7 +139,13 @@
                             <constraint firstItem="wgi-ZR-Grs" firstAttribute="top" secondItem="JA4-fS-Afr" secondAttribute="bottom" constant="20" id="a1u-Bh-vJW"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Zn4-DB-BB1"/>
+                    <navigationItem key="navigationItem" title="Student Locations" id="Zn4-DB-BB1">
+                        <barButtonItem key="leftBarButtonItem" image="post_pin" id="Zeg-4q-s7E">
+                            <connections>
+                                <action selector="postPin:" destination="7RB-Ug-pPz" id="oU4-rD-gPi"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="JA4-fS-Afr" id="blw-s1-Eih"/>
                     </connections>
@@ -334,10 +340,10 @@
             </objects>
             <point key="canvasLocation" x="1029.5999999999999" y="137.18140929535232"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Map Navigation Controller-->
         <scene sceneID="vdJ-2o-2cI">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="WPU-9r-iFO" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="mapNavControlller" title="Map Navigation Controller" automaticallyAdjustsScrollViewInsets="NO" id="WPU-9r-iFO" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="HJ2-IK-FKV">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -350,10 +356,11 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AKf-oO-09o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="393" y="1016"/>
+            <point key="canvasLocation" x="79" y="1015"/>
         </scene>
     </scenes>
     <resources>
         <image name="map_pin" width="600" height="400"/>
+        <image name="post_pin" width="24" height="24"/>
     </resources>
 </document>
