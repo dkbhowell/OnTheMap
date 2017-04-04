@@ -21,6 +21,8 @@ class MapViewController: UIViewController {
     
     // Locations
     let mountainView = (37.3861, -122.0839)
+    let sunnyVale = (37.365848, -122.036310)
+    let paloAlto = (37.440896, -122.153891)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +38,11 @@ class MapViewController: UIViewController {
             let alert = UIAlertController(title: "Pin Already Exists", message: "Would you like to overwrite your old pin?", preferredStyle: .alert)
             let yesAction = UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 print("overwrite old pin")
-                
+                // choose random location
+                let locations = [self.mountainView, self.sunnyVale, self.paloAlto]
+                let randIndex = Int(arc4random_uniform(UInt32(locations.count)))
+                let randLoc = locations[randIndex]
+                self.postPin(lat: randLoc.0, lng: randLoc.1)
             })
             let noAction = UIAlertAction(title: "No", style: .default, handler: { (action) in
                 print("Keep old pin")
@@ -107,9 +113,11 @@ class MapViewController: UIViewController {
                 switch result {
                 case .success(let student):
                     if let student = student, let pin = student.locationMarker {
+                        // if pin exists, update it
                         print("Pin Exists for Student: \(student)")
                         self.updateExistingStudentLocation(id: student.id, lat: lat, lng: lng)
                     } else {
+                        // if pin does not exist, create a new one
                         self.postNewPin(lat: lat, lng: lng)
                     }
                 case .failure(let error):
@@ -117,16 +125,23 @@ class MapViewController: UIViewController {
                 }
             })
         }
-        
-        // if pin exists, update it
-        
-        // if pin does not exist, create a new one
-        
     }
     
     private func updateExistingStudentLocation(id: String, lat: Double, lng: Double) {
         // TODO
-        
+        parseClient.updateStudentLocation(objectId: id, lat: lat, lng: lng) { (result) in
+            switch result {
+            case .success(let updatedAtString):
+                print("Successful update at: \(updatedAtString)")
+                self.state.getUser()?.setLocationMarker(lat: lat, lng: lng)
+                performUpdatesOnMain {
+                    self.refreshPins()
+                    self.centerMapOnLocation(lat: lat, lng: lng, regionDistance: 6000)
+                }
+            case .failure(let error):
+                print("Error updating student location: \(error)")
+            }
+        }
     }
     
     private func postNewPin(lat: Double, lng: Double) {

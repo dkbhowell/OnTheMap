@@ -33,18 +33,6 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
-    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        print("Annotation selected!!!")
-    }
-    
-    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
-        print("annotations added!")
-    }
-    
-    func mapViewWillStartLoadingMap(_ mapView: MKMapView) {
-        print("loading map")
-    }
-    
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         let defaultView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "student_pin")
         defaultView.canShowCallout = true
