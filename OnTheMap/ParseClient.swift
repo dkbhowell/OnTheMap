@@ -71,11 +71,13 @@ class ParseClient {
                     let firstStudent = results[0]
                     if let student = UdacityStudent(dictionary: firstStudent) {
                         completion(.success(student))
+                        return
+                    } else {
+                        completion(.success((nil)))
                     }
+                } else {
+                    completion(.success(nil))
                 }
-                
-                completion(.success((nil)))
-                
             case .failure(let error):
                 completion(.failure(error))
             }

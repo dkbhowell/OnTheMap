@@ -24,21 +24,38 @@ class MapViewController: UIViewController {
         if let userPin = state.getUser()?.locationMarker {
             // alert that there is already a pin, ask to update it
             let alert = UIAlertController(title: "Pin Already Exists", message: "Would you like to overwrite your old pin?", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
+            let yesAction = UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 print("overwrite old pin")
-            }))
-            alert.addAction(UIAlertAction(title: "No", style: .default, handler: { (action) in
+            })
+            let noAction = UIAlertAction(title: "No", style: .default, handler: { (action) in
                 print("Keep old pin")
-            }))
+            })
+            alert.addAction(yesAction)
+            alert.addAction(noAction)
+            alert.preferredAction = yesAction
+            self.present(alert, animated: true, completion: nil)
         } else {
             // Post a new pin
-            let alert = UIAlertController(title: "Post an alert?", message: "Would you like to post an alert?", preferredStyle: .alert)
+            let alert = UIAlertController(title: "Post a location?", message: "Would you like to post a location?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 print("Add new pin")
+                self.parseClient.postStudentLocation(lat: self.mountainView.0, lng: self.mountainView.1, completion: { (result) in
+                    switch result {
+                    case .success(let objectId):
+                        print("Location Added Successfully!\n---Object ID: \(objectId)")
+                    case .failure(let error):
+                        print("Location Add Unsuccessful!\n---\(error)")
+                    }
+                })
             }))
             self.present(alert, animated: true, completion: nil)
         }
     }
+    
+    @IBAction func reloadPins(_ sender: UIBarButtonItem) {
+        loadPins()
+    }
+    
     
     // Locations
     let mountainView = (37.3861, -122.0839)
@@ -48,22 +65,7 @@ class MapViewController: UIViewController {
         
         mapView.delegate = delegate
         
-        let markers = state.getMarkers
-        mapView.showAnnotations(markers, animated: true)
-        
-        parseClient.getStudents { (result) in
-            switch result {
-            case .success(let students):
-                print("Success! Fetched Students")
-                self.state.setStudents(students: students)
-                let markers = self.state.getMarkers
-                performUpdatesOnMain {
-                    self.mapView.showAnnotations(markers, animated: true)
-                }
-            case .failure(let reason):
-                print("Failed.. reason: \(reason)")
-            }
-        }
+        loadPins()
         
         // check online for user pin
         if let id = udacityClient.userId {
@@ -80,6 +82,24 @@ class MapViewController: UIViewController {
                     print("Error: \(error)")
                 }
             })
+        }
+    }
+    
+    private func loadPins() {
+        parseClient.getStudents { (result) in
+            switch result {
+            case .success(let students):
+                print("Success! Fetched Students")
+                self.state.setStudents(students: students)
+                let markers = self.state.getMarkers
+                performUpdatesOnMain {
+                    self.mapView.removeAnnotations(self.mapView.annotations)
+                    self.mapView.showAnnotations(markers, animated: true)
+                    print("Added annotations")
+                }
+            case .failure(let reason):
+                print("Failed.. reason: \(reason)")
+            }
         }
     }
     

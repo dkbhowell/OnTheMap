@@ -145,6 +145,11 @@
                                 <action selector="postPin:" destination="7RB-Ug-pPz" id="oU4-rD-gPi"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="icon_refresh" id="bDa-q6-9JU">
+                            <connections>
+                                <action selector="reloadPins:" destination="7RB-Ug-pPz" id="5sV-Rb-tep"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="JA4-fS-Afr" id="blw-s1-Eih"/>
@@ -360,6 +365,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="icon_refresh" width="24" height="24"/>
         <image name="map_pin" width="600" height="400"/>
         <image name="post_pin" width="24" height="24"/>
     </resources>
