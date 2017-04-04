@@ -19,6 +19,16 @@ class MapViewController: UIViewController {
     let udacityClient = UdacityClient.sharedInstance()
     let delegate = MapViewDelegate()
     
+    // Locations
+    let mountainView = (37.3861, -122.0839)
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        mapView.delegate = delegate
+        loadUserPin()
+        loadPins()
+    }
+    
     // Actions
     @IBAction func postPin(_ sender: UIBarButtonItem) {
         if let userPin = state.getUser()?.locationMarker {
@@ -26,6 +36,7 @@ class MapViewController: UIViewController {
             let alert = UIAlertController(title: "Pin Already Exists", message: "Would you like to overwrite your old pin?", preferredStyle: .alert)
             let yesAction = UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 print("overwrite old pin")
+                
             })
             let noAction = UIAlertAction(title: "No", style: .default, handler: { (action) in
                 print("Keep old pin")
@@ -39,14 +50,7 @@ class MapViewController: UIViewController {
             let alert = UIAlertController(title: "Post a location?", message: "Would you like to post a location?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 print("Add new pin")
-                self.parseClient.postStudentLocation(lat: self.mountainView.0, lng: self.mountainView.1, completion: { (result) in
-                    switch result {
-                    case .success(let objectId):
-                        print("Location Added Successfully!\n---Object ID: \(objectId)")
-                    case .failure(let error):
-                        print("Location Add Unsuccessful!\n---\(error)")
-                    }
-                })
+                self.postNewPin(lat: self.mountainView.0, lng: self.mountainView.1)
             }))
             self.present(alert, animated: true, completion: nil)
         }
@@ -56,25 +60,16 @@ class MapViewController: UIViewController {
         loadPins()
     }
     
-    
-    // Locations
-    let mountainView = (37.3861, -122.0839)
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        mapView.delegate = delegate
-        
-        loadPins()
-        
-        // check online for user pin
+    private func loadUserPin() {
         if let id = udacityClient.userId {
             parseClient.getStudent(withUdacityID: id, completion: { (result) in
                 switch result {
                 case .success(let student):
                     if let student = student, let pin = student.locationMarker {
                         print("Pin Exists for Student: \(student)")
+                        // set user pin
                         self.state.getUser()?.locationMarker = pin
+                        self.refreshPins()
                     } else {
                         print("No pin exists for student")
                     }
@@ -85,17 +80,43 @@ class MapViewController: UIViewController {
         }
     }
     
+    private func refreshPins() {
+        let markers = state.getMarkers
+        mapView.removeAnnotations(mapView.annotations)
+        mapView.showAnnotations(markers, animated: true)
+    }
+    
+    private func postNewPin(lat: Double, lng: Double) {
+        // local
+        if let currentMarker = state.getUser()?.locationMarker {
+            mapView.removeAnnotation(currentMarker)
+        }
+        
+        if let user = state.getUser() {
+            user.setLocationMarker(lat: lat, lng: lng)
+            if let newMarker = user.locationMarker{
+                mapView.addAnnotation(newMarker)
+            }
+        }
+        
+        // remote
+        self.parseClient.postStudentLocation(lat: lat, lng: lng, completion: { (result) in
+            switch result {
+            case .success(let objectId):
+                print("Location Added Successfully!\n---Object ID: \(objectId)")
+            case .failure(let error):
+                print("Location Add Unsuccessful!\n---\(error)")
+            }
+        })
+    }
+    
     private func loadPins() {
         parseClient.getStudents { (result) in
             switch result {
             case .success(let students):
-                print("Success! Fetched Students")
                 self.state.setStudents(students: students)
-                let markers = self.state.getMarkers
                 performUpdatesOnMain {
-                    self.mapView.removeAnnotations(self.mapView.annotations)
-                    self.mapView.showAnnotations(markers, animated: true)
-                    print("Added annotations")
+                    self.refreshPins()
                 }
             case .failure(let reason):
                 print("Failed.. reason: \(reason)")

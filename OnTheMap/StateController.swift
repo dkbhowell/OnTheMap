@@ -20,8 +20,11 @@ class StateController {
     
     
     var getMarkers: [MKAnnotation] {
-        let markers = students.map { $0.locationMarker }
+        var markers = students.map { $0.locationMarker }
             .flatMap { $0 }
+        if let userPin = user?.locationMarker {
+            markers.append(userPin)
+        }
         return markers
     }
     
