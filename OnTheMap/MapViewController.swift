@@ -86,20 +86,50 @@ class MapViewController: UIViewController {
         mapView.showAnnotations(markers, animated: true)
     }
     
-    private func postNewPin(lat: Double, lng: Double) {
+    private func postPin(lat: Double, lng: Double) {
         // local
-        if let currentMarker = state.getUser()?.locationMarker {
-            mapView.removeAnnotation(currentMarker)
-        }
-        
-        if let user = state.getUser() {
-            user.setLocationMarker(lat: lat, lng: lng)
-            if let newMarker = user.locationMarker{
-                mapView.addAnnotation(newMarker)
-            }
-        }
+//        if let currentMarker = state.getUser()?.locationMarker {
+//            mapView.removeAnnotation(currentMarker)
+//        }
+//        
+//        if let user = state.getUser() {
+//            user.setLocationMarker(lat: lat, lng: lng)
+//            if let newMarker = user.locationMarker{
+//                mapView.addAnnotation(newMarker)
+//            }
+//        }
         
         // remote
+        
+        // check for pin for user
+        if let id = udacityClient.userId {
+            parseClient.getStudent(withUdacityID: id, completion: { (result) in
+                switch result {
+                case .success(let student):
+                    if let student = student, let pin = student.locationMarker {
+                        print("Pin Exists for Student: \(student)")
+                        self.updateExistingStudentLocation(id: student.id, lat: lat, lng: lng)
+                    } else {
+                        self.postNewPin(lat: lat, lng: lng)
+                    }
+                case .failure(let error):
+                    print("Error: \(error)")
+                }
+            })
+        }
+        
+        // if pin exists, update it
+        
+        // if pin does not exist, create a new one
+        
+    }
+    
+    private func updateExistingStudentLocation(id: String, lat: Double, lng: Double) {
+        // TODO
+        
+    }
+    
+    private func postNewPin(lat: Double, lng: Double) {
         self.parseClient.postStudentLocation(lat: lat, lng: lng, completion: { (result) in
             switch result {
             case .success(let objectId):

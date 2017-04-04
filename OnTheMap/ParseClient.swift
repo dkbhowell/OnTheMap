@@ -108,6 +108,34 @@ class ParseClient {
         }
     }
     
+    func updateStudentLocation(objectId: String, lat: Double, lng: Double, completion: @escaping (DataResult<String, AppError>) -> () ) {
+        if let user = StateController.sharedInstance.getUser() {
+            user.setLocationMarker(lat: lat, lng: lng)
+            let studentDict = user.toStudentDict()
+            
+            _ = runPutTask(method: "StudentLocation/\(objectId)", bodyData: studentDict, completion: { (result) in
+                switch result {
+                case .success(let data):
+                    print(data)
+                    guard let parsedResult = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
+                        completion(.failure(.ParseError(domain: "Parse Client", description: "Error parsing result into JSON: \(data)")))
+                        return
+                    }
+                    
+                    guard let updatedTime = parsedResult[ResponseKeys.UPDATED_AT] as? String else {
+                        completion(.failure(.ParseError(domain: "Parse Client", description: "Error finding key '\(ResponseKeys.UPDATED_AT)' in dict: \(parsedResult)")))
+                        return
+                    }
+                    
+                    completion(.success(updatedTime))
+                    
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            })
+        }
+    }
+    
     private func runGetTask(method: String, params: [String:Any]? = nil, completion: @escaping (DataResult<Data, AppError>) -> () ) -> URLSessionDataTask {
         let url = buildURL(params: params, withPathExtension: method)
         print("Parse Get URL: \(url)")
@@ -136,6 +164,28 @@ class ParseClient {
         
         let jsonBodyData = try? JSONSerialization.data(withJSONObject: bodyData)
         request.httpBody = jsonBodyData
+        
+        let task = httpClient.dataTask(with: request) { (data, resp, err) in
+            let result = self.validateResponse(data: data, resp: resp, err: err)
+            completion(result)
+        }
+        
+        task.resume()
+        return task
+    }
+    
+    private func runPutTask(method: String, params: [String:Any]? = nil, bodyData: [String:Any]? = nil, completion: @escaping (DataResult<Data,AppError>) -> () ) -> URLSessionDataTask {
+        let url = buildURL(params: params, withPathExtension: method)
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        if let bodyData = bodyData {
+            let jsonBodyData = try? JSONSerialization.data(withJSONObject: bodyData)
+            request.httpBody = jsonBodyData
+        }
         
         let task = httpClient.dataTask(with: request) { (data, resp, err) in
             let result = self.validateResponse(data: data, resp: resp, err: err)
