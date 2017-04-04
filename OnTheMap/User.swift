@@ -95,4 +95,15 @@ extension User {
         static let EMAIL = "email"
         static let EMAIL_ADDRESS = "address"
     }
+    
+    func toStudentDict() -> [String:Any] {
+        var dict = [String:Any]()
+        dict[UdacityStudent.Keys.FIRST_NAME] = self.firstName
+        dict[UdacityStudent.Keys.LAST_NAME] = self.lastName
+        dict[UdacityStudent.Keys.UNIQUE_KEY] = self.id
+        dict[UdacityStudent.Keys.MEDIA_URL] = self.data
+        dict[UdacityStudent.Keys.LAT] = self.locationMarker?.coordinate.latitude
+        dict[UdacityStudent.Keys.LNG] = self.locationMarker?.coordinate.longitude
+        return dict
+    }
 }

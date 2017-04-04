@@ -82,7 +82,31 @@ class ParseClient {
         }
     }
     
-    private func runGetTask(method: String, params: [String:Any], completion: @escaping (DataResult<Data, AppError>) -> () ) -> URLSessionDataTask {
+    func postStudentLocation(lat: Double, lng: Double, completion: @escaping (DataResult<String, AppError>) -> () ) {
+        if let user = StateController.sharedInstance.getUser() {
+            user.setLocationMarker(lat: lat, lng: lng)
+            let studentDict = user.toStudentDict()
+            
+            _ = runPostTask(method: "StudentLocation", bodyData: studentDict, completion: { (result) in
+                switch result {
+                case .success(let data):
+                    guard let successObj = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
+                        completion(.failure(.ParseError(domain: "Parse Client", description: "Error converting data to JSON Object")))
+                        return
+                    }
+                    guard let objectId = successObj[ResponseKeys.OBJECT_ID] as? String else {
+                        completion(.failure(.ParseError(domain: "Parse Client", description: "Key '\(ResponseKeys.OBJECT_ID)' Not found in dict: \(successObj)")))
+                        return
+                    }
+                    completion(.success(objectId))
+                case .failure(let error):
+                    completion(.failure(error))
+                }
+            })
+        }
+    }
+    
+    private func runGetTask(method: String, params: [String:Any]? = nil, completion: @escaping (DataResult<Data, AppError>) -> () ) -> URLSessionDataTask {
         let url = buildURL(params: params, withPathExtension: method)
         print("Parse Get URL: \(url)")
         var request = URLRequest(url: url)
@@ -99,7 +123,7 @@ class ParseClient {
         return task
     }
     
-    private func runPostTask(method: String, params: [String:Any], bodyData: [String:Any], completion: @escaping (DataResult<Data,AppError>) -> () ) -> URLSessionDataTask {
+    private func runPostTask(method: String, params: [String:Any]? = nil, bodyData: [String:Any], completion: @escaping (DataResult<Data,AppError>) -> () ) -> URLSessionDataTask {
         let url = buildURL(params: params, withPathExtension: method)
         print("Parse Post URL: \(url)")
         var request = URLRequest(url: url)
