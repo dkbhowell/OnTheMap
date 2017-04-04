@@ -84,13 +84,34 @@ class ParseClient {
     
     private func runGetTask(method: String, params: [String:Any], completion: @escaping (DataResult<Data, AppError>) -> () ) -> URLSessionDataTask {
         let url = buildURL(params: params, withPathExtension: method)
-        print("Parse URL: \(url)")
+        print("Parse Get URL: \(url)")
         var request = URLRequest(url: url)
         request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
         request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
         
         let task = httpClient.dataTask(with: request) { (data, resp, err) in
             // TO-DO
+            let result = self.validateResponse(data: data, resp: resp, err: err)
+            completion(result)
+        }
+        
+        task.resume()
+        return task
+    }
+    
+    private func runPostTask(method: String, params: [String:Any], bodyData: [String:Any], completion: @escaping (DataResult<Data,AppError>) -> () ) -> URLSessionDataTask {
+        let url = buildURL(params: params, withPathExtension: method)
+        print("Parse Post URL: \(url)")
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let jsonBodyData = try? JSONSerialization.data(withJSONObject: bodyData)
+        request.httpBody = jsonBodyData
+        
+        let task = httpClient.dataTask(with: request) { (data, resp, err) in
             let result = self.validateResponse(data: data, resp: resp, err: err)
             completion(result)
         }
