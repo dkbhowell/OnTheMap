@@ -159,6 +159,57 @@
             </objects>
             <point key="canvasLocation" x="857" y="1016"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="xnp-7e-alb">
+            <objects>
+                <viewController id="bvK-kD-TZL" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="L87-oV-Ebh"/>
+                        <viewControllerLayoutGuide type="bottom" id="lcd-rL-QCV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ImG-qM-5Pw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="yGW-cZ-4MH">
+                                <rect key="frame" x="16" y="28" width="343" height="619"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="owx-Hu-E7a">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="128"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Where are you studying?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gHI-yo-YO8">
+                                        <rect key="frame" x="0.0" y="128" width="343" height="33.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your Location..." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NmV-aW-ivG">
+                                        <rect key="frame" x="0.0" y="161.5" width="343" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ROg-6q-YWW">
+                                        <rect key="frame" x="0.0" y="191.5" width="343" height="427.5"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="yGW-cZ-4MH" firstAttribute="leading" secondItem="ImG-qM-5Pw" secondAttribute="leadingMargin" id="6Ty-WY-1eH"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="yGW-cZ-4MH" secondAttribute="trailing" id="ASg-ll-NJb"/>
+                            <constraint firstItem="lcd-rL-QCV" firstAttribute="top" secondItem="yGW-cZ-4MH" secondAttribute="bottom" constant="20" id="PYJ-GJ-bzU"/>
+                            <constraint firstItem="yGW-cZ-4MH" firstAttribute="top" secondItem="L87-oV-Ebh" secondAttribute="bottom" constant="8" id="Xeo-Oq-IxR"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kKm-05-4ee" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2293" y="866"/>
+        </scene>
         <!--Welcome Controller-->
         <scene sceneID="yJP-tP-IL9">
             <objects>
@@ -362,6 +413,57 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AKf-oO-09o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="79" y="1015"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="eP6-kK-MLO">
+            <objects>
+                <viewController id="nJY-mx-DXa" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HXg-qC-BDa"/>
+                        <viewControllerLayoutGuide type="bottom" id="oRM-3p-jav"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="QOA-Rz-aff">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="XZ1-bl-erm">
+                                <rect key="frame" x="16" y="28" width="343" height="619"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zgm-as-nGQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="128"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="754" verticalCompressionResistancePriority="754" ambiguous="YES" text="What website would you like to show?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gGF-e7-3wQ">
+                                        <rect key="frame" x="0.0" y="128" width="343" height="67"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="754" verticalCompressionResistancePriority="754" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your Website..." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v0I-fp-s2u">
+                                        <rect key="frame" x="0.0" y="195" width="343" height="30"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9lb-ff-7as">
+                                        <rect key="frame" x="0.0" y="225" width="343" height="394"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    </view>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="XZ1-bl-erm" firstAttribute="leading" secondItem="QOA-Rz-aff" secondAttribute="leadingMargin" id="08n-ps-TcI"/>
+                            <constraint firstItem="oRM-3p-jav" firstAttribute="top" secondItem="XZ1-bl-erm" secondAttribute="bottom" constant="20" id="hdC-if-Gin"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="XZ1-bl-erm" secondAttribute="trailing" id="pvB-ol-wDL"/>
+                            <constraint firstItem="XZ1-bl-erm" firstAttribute="top" secondItem="HXg-qC-BDa" secondAttribute="bottom" constant="8" id="ttP-4t-kFT"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lDZ-ec-SVJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3030" y="866"/>
         </scene>
     </scenes>
     <resources>
