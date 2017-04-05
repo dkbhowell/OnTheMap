@@ -29,6 +29,7 @@
 		DAC9B4051E8D7912007C19AA /* MapViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B4041E8D7912007C19AA /* MapViewDelegate.swift */; };
 		DAC9B4081E8DCB23007C19AA /* ParseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B4071E8DCB23007C19AA /* ParseConstants.swift */; };
 		DAC9B40A1E8DCB36007C19AA /* ParseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B4091E8DCB36007C19AA /* ParseClient.swift */; };
+		DAEA95A31E95AC60008F0623 /* AddSubtitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEA95A21E95AC60008F0623 /* AddSubtitleViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		DAC9B4041E8D7912007C19AA /* MapViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewDelegate.swift; sourceTree = "<group>"; };
 		DAC9B4071E8DCB23007C19AA /* ParseConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseConstants.swift; sourceTree = "<group>"; };
 		DAC9B4091E8DCB36007C19AA /* ParseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseClient.swift; sourceTree = "<group>"; };
+		DAEA95A21E95AC60008F0623 /* AddSubtitleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSubtitleViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 				DAC9B3FA1E8C32D6007C19AA /* WelcomeViewController.swift */,
 				DAC9B3FC1E8C5CEA007C19AA /* MapViewController.swift */,
 				DA21C1E71E95515D0025E3EE /* AddLocationViewController.swift */,
+				DAEA95A21E95AC60008F0623 /* AddSubtitleViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -254,6 +257,7 @@
 				DA1C9BD31E92D0BA008A9531 /* User.swift in Sources */,
 				DAC9B4051E8D7912007C19AA /* MapViewDelegate.swift in Sources */,
 				DA47ADA11E7C9D0000860249 /* Constants.swift in Sources */,
+				DAEA95A31E95AC60008F0623 /* AddSubtitleViewController.swift in Sources */,
 				DAC9B4081E8DCB23007C19AA /* ParseConstants.swift in Sources */,
 				DA47ADAE1E7CA45400860249 /* DataResult.swift in Sources */,
 				DAC9B4021E8D6234007C19AA /* StateController.swift in Sources */,

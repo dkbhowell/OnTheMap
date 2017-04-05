@@ -11,9 +11,16 @@ import MapKit
 
 class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
     
+    weak var hostController: UIViewController?
+    
+    init(textField: UITextField, hostController: UIViewController) {
+        self.hostController = hostController
+        super.init()
+        textField.delegate = self
+    }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        print("Done with location: \(textField.text)")
+        print("Done with location: \(textField.text ?? "none")")
         if let location = textField.text {
             
             CLGeocoder().geocodeAddressString(location, completionHandler: { (placemark, err) in
@@ -37,7 +44,13 @@ class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
                 }
                 
                 print("Successful Geocode: \(location) is at Coordiates (\(lat),\(lng))")
+                guard let hostController = self.hostController else {
+                    print("No host view controller to continue UI flow")
+                    return
+                }
                 
+                let controller = hostController.storyboard!.instantiateViewController(withIdentifier: "AddSubtitleController") as! AddSubtitleViewController
+                hostController.present(controller, animated: true, completion: nil)
             })
         }
         return true

@@ -11,10 +11,10 @@ import UIKit
 class AddLocationViewController: UIViewController {
     
     @IBOutlet weak var locationTextField: UITextField!
-    let tfDelegate: UITextFieldDelegate = LocationTextFieldDelegate()
+    var tfDelegate: UITextFieldDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        locationTextField.delegate = tfDelegate
+        tfDelegate = LocationTextFieldDelegate(textField: locationTextField, hostController: self)
     }
 }

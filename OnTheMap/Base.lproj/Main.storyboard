@@ -417,10 +417,10 @@
             </objects>
             <point key="canvasLocation" x="79" y="1015"/>
         </scene>
-        <!--View Controller-->
+        <!--Add Subtitle View Controller-->
         <scene sceneID="eP6-kK-MLO">
             <objects>
-                <viewController storyboardIdentifier="AddSubtitleController" id="nJY-mx-DXa" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddSubtitleController" id="nJY-mx-DXa" customClass="AddSubtitleViewController" customModule="OnTheMap" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="HXg-qC-BDa"/>
                         <viewControllerLayoutGuide type="bottom" id="oRM-3p-jav"/>
@@ -463,6 +463,9 @@
                             <constraint firstItem="XZ1-bl-erm" firstAttribute="top" secondItem="HXg-qC-BDa" secondAttribute="bottom" constant="8" id="ttP-4t-kFT"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="subtitleTextField" destination="v0I-fp-s2u" id="ela-iD-i9C"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lDZ-ec-SVJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
