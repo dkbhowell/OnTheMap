@@ -11,10 +11,12 @@ import MapKit
 
 class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
     
-    weak var hostController: UIViewController?
+    weak var hostController: UIViewController!
+    weak var errorLabel: UILabel!
     
-    init(textField: UITextField, hostController: UIViewController) {
+    init(textField: UITextField, hostController: UIViewController, errorLabel: UILabel) {
         self.hostController = hostController
+        self.errorLabel = errorLabel
         super.init()
         textField.delegate = self
     }
@@ -26,11 +28,13 @@ class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
             CLGeocoder().geocodeAddressString(location, completionHandler: { (placemark, err) in
                 if let err = err {
                     print("Geocode Error: \(err)")
+                    self.showErrorMessage(msg: "Error Finding Location -- Please enter another city")
                     return
                 }
                 
                 guard let placesFound = placemark, placesFound.count > 0 else {
                     print("Error, No Placemark in Geocode result")
+                    self.showErrorMessage(msg: "Error Finding Location -- Please enter another city")
                     return
                 }
                 
@@ -40,12 +44,14 @@ class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
                 
                 guard let lat = latOpt, let lng = lngOpt else {
                     print("Error getting lat / lng coordinates from geocode result")
+                    self.showErrorMessage(msg: "Error Finding Location -- Please enter another city")
                     return
                 }
                 
                 print("Successful Geocode: \(location) is at Coordiates (\(lat),\(lng))")
                 guard let hostController = self.hostController else {
                     print("No host view controller to continue UI flow")
+                    self.showErrorMessage(msg: "Error Finding Location -- Please enter another city")
                     return
                 }
                 
@@ -59,6 +65,12 @@ class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    private func showErrorMessage(msg: String) {
+        performUpdatesOnMain {
+            self.errorLabel.text = msg
+        }
     }
     
     
