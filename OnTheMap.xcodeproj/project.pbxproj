@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		DA1C9BD31E92D0BA008A9531 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA1C9BD21E92D0BA008A9531 /* User.swift */; };
+		DA21C1E81E95515D0025E3EE /* AddLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA21C1E71E95515D0025E3EE /* AddLocationViewController.swift */; };
+		DA21C1EA1E9551FE0025E3EE /* LocationTextFieldDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA21C1E91E9551FE0025E3EE /* LocationTextFieldDelegate.swift */; };
 		DA47AD8F1E7C8BB800860249 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47AD8E1E7C8BB800860249 /* AppDelegate.swift */; };
 		DA47AD911E7C8BB800860249 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47AD901E7C8BB800860249 /* LoginController.swift */; };
 		DA47AD941E7C8BB800860249 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA47AD921E7C8BB800860249 /* Main.storyboard */; };
@@ -31,6 +33,8 @@
 
 /* Begin PBXFileReference section */
 		DA1C9BD21E92D0BA008A9531 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		DA21C1E71E95515D0025E3EE /* AddLocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddLocationViewController.swift; sourceTree = "<group>"; };
+		DA21C1E91E9551FE0025E3EE /* LocationTextFieldDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationTextFieldDelegate.swift; sourceTree = "<group>"; };
 		DA47AD8B1E7C8BB800860249 /* OnTheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA47AD8E1E7C8BB800860249 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA47AD901E7C8BB800860249 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
@@ -65,6 +69,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DA21C1E61E9551200025E3EE /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DA47AD901E7C8BB800860249 /* LoginController.swift */,
+				DAC9B3FA1E8C32D6007C19AA /* WelcomeViewController.swift */,
+				DAC9B3FC1E8C5CEA007C19AA /* MapViewController.swift */,
+				DA21C1E71E95515D0025E3EE /* AddLocationViewController.swift */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
 		DA47AD821E7C8BB800860249 = {
 			isa = PBXGroup;
 			children = (
@@ -84,14 +99,12 @@
 		DA47AD8D1E7C8BB800860249 /* OnTheMap */ = {
 			isa = PBXGroup;
 			children = (
+				DA21C1E61E9551200025E3EE /* View Controllers */,
 				DAC9B4031E8D6AAA007C19AA /* Model Controllers */,
 				DAC9B3FE1E8C639B007C19AA /* Model */,
 				DA47ADAC1E7CA42800860249 /* Utility */,
 				DA47ADA21E7C9E6F00860249 /* Clients */,
 				DA47AD8E1E7C8BB800860249 /* AppDelegate.swift */,
-				DA47AD901E7C8BB800860249 /* LoginController.swift */,
-				DAC9B3FA1E8C32D6007C19AA /* WelcomeViewController.swift */,
-				DAC9B3FC1E8C5CEA007C19AA /* MapViewController.swift */,
 				DA47ADA01E7C9D0000860249 /* Constants.swift */,
 				DA47AD921E7C8BB800860249 /* Main.storyboard */,
 				DA47AD951E7C8BB800860249 /* Assets.xcassets */,
@@ -144,6 +157,7 @@
 			children = (
 				DAC9B4011E8D6234007C19AA /* StateController.swift */,
 				DAC9B4041E8D7912007C19AA /* MapViewDelegate.swift */,
+				DA21C1E91E9551FE0025E3EE /* LocationTextFieldDelegate.swift */,
 			);
 			name = "Model Controllers";
 			sourceTree = "<group>";
@@ -243,8 +257,10 @@
 				DAC9B4081E8DCB23007C19AA /* ParseConstants.swift in Sources */,
 				DA47ADAE1E7CA45400860249 /* DataResult.swift in Sources */,
 				DAC9B4021E8D6234007C19AA /* StateController.swift in Sources */,
+				DA21C1E81E95515D0025E3EE /* AddLocationViewController.swift in Sources */,
 				DAC9B3F91E8C2A52007C19AA /* UIUtil.swift in Sources */,
 				DAC9B4001E8C63B9007C19AA /* UdacityStudent.swift in Sources */,
+				DA21C1EA1E9551FE0025E3EE /* LocationTextFieldDelegate.swift in Sources */,
 				DAC9B3F71E8B3772007C19AA /* Result.swift in Sources */,
 				DA47ADAB1E7CA2BE00860249 /* AppError.swift in Sources */,
 			);

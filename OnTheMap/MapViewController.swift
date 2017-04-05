@@ -33,16 +33,18 @@ class MapViewController: UIViewController {
     
     // Actions
     @IBAction func postPin(_ sender: UIBarButtonItem) {
-        if let userPin = state.userStudent?.locationMarker {
+        if let _ = state.userStudent?.locationMarker {
             // alert that there is already a pin, ask to update it
             let alert = UIAlertController(title: "Pin Already Exists", message: "Would you like to overwrite your old pin?", preferredStyle: .alert)
             let yesAction = UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 print("overwrite old pin")
                 // choose random location
-                let locations = [self.mountainView, self.sunnyVale, self.paloAlto]
-                let randIndex = Int(arc4random_uniform(UInt32(locations.count)))
-                let randLoc = locations[randIndex]
-                self.postPin(lat: randLoc.0, lng: randLoc.1)
+//                let locations = [self.mountainView, self.sunnyVale, self.paloAlto]
+//                let randIndex = Int(arc4random_uniform(UInt32(locations.count)))
+//                let randLoc = locations[randIndex]
+//                self.postPin(lat: randLoc.0, lng: randLoc.1)
+                let controller = self.storyboard?.instantiateViewController(withIdentifier: "AddLocationController") as! AddLocationViewController
+                self.present(controller, animated: true, completion: nil)
             })
             let noAction = UIAlertAction(title: "No", style: .default, handler: { (action) in
                 print("Keep old pin")
