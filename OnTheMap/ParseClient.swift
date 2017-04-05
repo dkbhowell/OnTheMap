@@ -67,7 +67,7 @@ class ParseClient {
                 }
                 
                 if results.count > 0 {
-                    print("Found \(results.count) results for student with id \(id)")
+                    print("Found \(results.count) results for student with id \(id) -- Using First One")
                     let firstStudent = results[0]
                     if let student = UdacityStudent(dictionary: firstStudent) {
                         completion(.success(student))
@@ -84,10 +84,9 @@ class ParseClient {
         }
     }
     
-    func postStudentLocation(lat: Double, lng: Double, completion: @escaping (DataResult<String, AppError>) -> () ) {
+    func postStudentLocation(lat: Double, lng: Double, data: String, completion: @escaping (DataResult<String, AppError>) -> () ) {
         if let user = StateController.sharedInstance.getUser() {
-            user.setLocationMarker(lat: lat, lng: lng)
-            let studentDict = user.toStudentDict()
+            let studentDict = UdacityStudent.studentDict(fromUser: user, lat: lat, lng: lng, data: data)
             
             _ = runPostTask(method: "StudentLocation", bodyData: studentDict, completion: { (result) in
                 switch result {
@@ -105,13 +104,14 @@ class ParseClient {
                     completion(.failure(error))
                 }
             })
+        } else {
+            completion(.failure(.UnexpectedResult(domain: "Parse Client", description: "No User Found in Model")))
         }
     }
     
-    func updateStudentLocation(objectId: String, lat: Double, lng: Double, completion: @escaping (DataResult<String, AppError>) -> () ) {
+    func updateStudentLocation(objectId: String, lat: Double, lng: Double, data: String, completion: @escaping (DataResult<String, AppError>) -> () ) {
         if let user = StateController.sharedInstance.getUser() {
-            user.setLocationMarker(lat: lat, lng: lng)
-            let studentDict = user.toStudentDict()
+            let studentDict = UdacityStudent.studentDict(fromUser: user, lat: lat, lng: lng, data: data)
             
             _ = runPutTask(method: "StudentLocation/\(objectId)", bodyData: studentDict, completion: { (result) in
                 switch result {

@@ -8,12 +8,19 @@
 
 import MapKit
 
-class UdacityStudent {
+class UdacityStudent: Equatable {
     let id: String
     let firstName: String
     let lastName: String
     var email: String?
-    var data: String?
+    var data: String? {
+        didSet {
+            if let locationMarker = locationMarker {
+                locationMarker.subtitle = data
+            }
+        }
+    }
+    var uniqueKey: String?
     
     var name: String {
         return firstName + " " + lastName
@@ -42,14 +49,13 @@ class UdacityStudent {
             return nil
         }
         
-        _ = dictionary[Keys.UNIQUE_KEY] as? String
+        let uniqueKey = dictionary[Keys.UNIQUE_KEY] as? String
         let mediaUrl = dictionary[Keys.MEDIA_URL] as? String
-        
-        self.init(id: objectId, firstName: firstName, lastName: lastName, data: mediaUrl)
-    
         let lat = dictionary[Keys.LAT] as? Double
         let lng = dictionary[Keys.LNG] as? Double
         
+        self.init(id: objectId, firstName: firstName, lastName: lastName, data: mediaUrl)
+        self.uniqueKey = uniqueKey
         if let lat = lat, let lng = lng {
             self.setLocationMarker(lat: lat, lng: lng)
         }
@@ -63,6 +69,10 @@ class UdacityStudent {
             let marker = StudentLocationMarker(title: name, subtitle: data, coordinate: location)
             locationMarker = marker
         }
+    }
+    
+    static func ==(lhs: UdacityStudent, rhs: UdacityStudent) -> Bool {
+        return lhs.id == rhs.id
     }
 }
 
@@ -106,6 +116,17 @@ extension UdacityStudent {
         dict[Keys.LNG] = locationMarker?.coordinate.longitude
         dict[Keys.OBJECT_ID] = id
         dict[Keys.MEDIA_URL] = data
+        return dict
+    }
+    
+    static func studentDict(fromUser user: User, lat: Double, lng: Double, data: String?) -> [String:Any] {
+        var dict = [String:Any]()
+        dict[UdacityStudent.Keys.FIRST_NAME] = user.firstName
+        dict[UdacityStudent.Keys.LAST_NAME] = user.lastName
+        dict[UdacityStudent.Keys.UNIQUE_KEY] = user.id
+        dict[UdacityStudent.Keys.MEDIA_URL] = data
+        dict[UdacityStudent.Keys.LAT] = lat
+        dict[UdacityStudent.Keys.LNG] = lng
         return dict
     }
     

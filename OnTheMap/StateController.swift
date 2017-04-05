@@ -17,15 +17,18 @@ class StateController {
     // Properties
     private var students: [UdacityStudent] = []
     private var user: User?
+    var userStudent: UdacityStudent?
     
     
     var getMarkers: [MKAnnotation] {
-        var markers = students.map { $0.locationMarker }
-            .flatMap { $0 }
-        if let userPin = user?.locationMarker {
-            markers.append(userPin)
+        if let userStudent = userStudent {
+            var allStudents = self.students
+            allStudents.append(userStudent)
+            return allStudents.map { $0.locationMarker }
+                .flatMap { $0 }
         }
-        return markers
+        return self.students.map { $0.locationMarker }
+            .flatMap { $0 }
     }
     
     func addStudent(student: UdacityStudent) {
@@ -44,7 +47,14 @@ class StateController {
     }
     
     func setStudents(students: [UdacityStudent]) {
-        self.students = students
+        if let userStudent = userStudent {
+            let onlyOthers = students.filter({ (student) -> Bool in
+                student != userStudent
+            })
+            self.students = onlyOthers
+        } else {
+            self.students = students
+        }
     }
     
     func setUser(user: User) {

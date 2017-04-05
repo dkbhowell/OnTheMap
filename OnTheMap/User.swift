@@ -11,20 +11,11 @@ import MapKit
 
 class User {
     
+    var id: String
     var firstName: String
     var lastName: String
-    var id: String
-    
-    var data: String? {
-        didSet {
-            if let locationMarker = locationMarker {
-                locationMarker.subtitle = data
-            }
-        }
-    }
     var nickname: String?
     var email: String?
-    var locationMarker: UdacityStudent.StudentLocationMarker?
     
     var name: String {
         return "\(firstName) \(lastName)"
@@ -68,17 +59,6 @@ class User {
         print("---Last Name: \(self.lastName)")
         print("---Email: \(self.email ?? "None")")
     }
-    
-    func setLocationMarker(lat: Double, lng: Double) {
-        let location = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-        if let marker = locationMarker {
-            marker.coordinate = location
-        } else {
-            let marker = UdacityStudent.StudentLocationMarker(title: name, subtitle: data, coordinate: location)
-            self.locationMarker = marker
-        }
-    }
-    
 }
 
 extension User {
@@ -96,14 +76,4 @@ extension User {
         static let EMAIL_ADDRESS = "address"
     }
     
-    func toStudentDict() -> [String:Any] {
-        var dict = [String:Any]()
-        dict[UdacityStudent.Keys.FIRST_NAME] = self.firstName
-        dict[UdacityStudent.Keys.LAST_NAME] = self.lastName
-        dict[UdacityStudent.Keys.UNIQUE_KEY] = self.id
-        dict[UdacityStudent.Keys.MEDIA_URL] = self.data
-        dict[UdacityStudent.Keys.LAT] = self.locationMarker?.coordinate.latitude
-        dict[UdacityStudent.Keys.LNG] = self.locationMarker?.coordinate.longitude
-        return dict
-    }
 }

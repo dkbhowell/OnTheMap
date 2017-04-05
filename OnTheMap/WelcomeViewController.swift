@@ -47,11 +47,32 @@ class WelcomeViewController: UIViewController {
             }
         }
         
+        loadUserPin()
+        
     }
     
     @IBAction func goMapGo(_ sender: UIButton) {
         let controller = storyboard!.instantiateViewController(withIdentifier: "mapNavControlller")
         present(controller, animated: true, completion: nil)
+    }
+    
+    private func loadUserPin() {
+        if let id = udacityClient.userId {
+            parseClient.getStudent(withUdacityID: id, completion: { (result) in
+                switch result {
+                case .success(let student):
+                    if let student = student {
+                        print("Pin Exists for Student: \(student)")
+                        // set user pin
+                        self.state.userStudent = student
+                    } else {
+                        print("No pin exists for student")
+                    }
+                case .failure(let error):
+                    print("Error: \(error)")
+                }
+            })
+        }
     }
     
     
