@@ -14,7 +14,7 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var errorLabel: UILabel!
     
     var coordinates: (Double, Double)!
-    var completion: ( (Double, Double, String) -> () )!
+    weak var pinDelegate: PostPinDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,24 +22,11 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        let presentingFirst = presentingViewController
-        let presentingSecond = presentingViewController?.presentingViewController
-        print("Presenting: \(presentingFirst)")
-        print("Presenting 2: \(presentingSecond)")
-        
         
         if let text = textField.text {
-            completion(coordinates.0, coordinates.1, text)
+            pinDelegate.postPin(lat: coordinates.0, lng: coordinates.1, subtitle: text)
         }
         
-        let mapController = presentingViewController?.presentingViewController as? MapViewController
-        if let mapController = mapController, let text = textField.text {
-            print("Posting New Pin From Subtitle Controller")
-            mapController.postPin(lat: coordinates.0, lng: coordinates.1, subtitle: text)
-        } else {
-            print("MapController: \(String(describing: mapController))")
-            print("Text: \(String(describing: textField.text))")
-        }
         self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
         
         return true

@@ -58,7 +58,7 @@ class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
                 
                 let controller = hostController.storyboard!.instantiateViewController(withIdentifier: "AddSubtitleController") as! AddSubtitleViewController
                 controller.coordinates = coordinates
-                controller.completion = (hostController as? AddLocationViewController)?.completion
+                controller.pinDelegate = (hostController as? AddLocationViewController)?.pinDelegate
                 hostController.present(controller, animated: true, completion: nil)
             })
         }

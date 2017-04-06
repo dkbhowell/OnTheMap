@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController, PostPinDelegate {
     
     // Outlets
     @IBOutlet weak var mapView: MKMapView!
@@ -64,7 +64,7 @@ class MapViewController: UIViewController {
     
     private func startPostPinFlow() {
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "AddLocationController") as! AddLocationViewController
-        controller.completion = postPin
+        controller.pinDelegate = self
         self.present(controller, animated: true, completion: nil)
     }
     

@@ -30,6 +30,7 @@
 		DAC9B4081E8DCB23007C19AA /* ParseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B4071E8DCB23007C19AA /* ParseConstants.swift */; };
 		DAC9B40A1E8DCB36007C19AA /* ParseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B4091E8DCB36007C19AA /* ParseClient.swift */; };
 		DAEA95A31E95AC60008F0623 /* AddSubtitleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEA95A21E95AC60008F0623 /* AddSubtitleViewController.swift */; };
+		DAEA95A51E96D7D6008F0623 /* PostPinDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAEA95A41E96D7D6008F0623 /* PostPinDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		DAC9B4071E8DCB23007C19AA /* ParseConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseConstants.swift; sourceTree = "<group>"; };
 		DAC9B4091E8DCB36007C19AA /* ParseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParseClient.swift; sourceTree = "<group>"; };
 		DAEA95A21E95AC60008F0623 /* AddSubtitleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddSubtitleViewController.swift; sourceTree = "<group>"; };
+		DAEA95A41E96D7D6008F0623 /* PostPinDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPinDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 				DA47AD8E1E7C8BB800860249 /* AppDelegate.swift */,
 				DA47ADA01E7C9D0000860249 /* Constants.swift */,
 				DA47AD921E7C8BB800860249 /* Main.storyboard */,
+				DAEA95A41E96D7D6008F0623 /* PostPinDelegate.swift */,
 				DA47AD951E7C8BB800860249 /* Assets.xcassets */,
 				DA47AD971E7C8BB800860249 /* LaunchScreen.storyboard */,
 				DA47AD9A1E7C8BB800860249 /* Info.plist */,
@@ -263,6 +266,7 @@
 				DAC9B4021E8D6234007C19AA /* StateController.swift in Sources */,
 				DA21C1E81E95515D0025E3EE /* AddLocationViewController.swift in Sources */,
 				DAC9B3F91E8C2A52007C19AA /* UIUtil.swift in Sources */,
+				DAEA95A51E96D7D6008F0623 /* PostPinDelegate.swift in Sources */,
 				DAC9B4001E8C63B9007C19AA /* UdacityStudent.swift in Sources */,
 				DA21C1EA1E9551FE0025E3EE /* LocationTextFieldDelegate.swift in Sources */,
 				DAC9B3F71E8B3772007C19AA /* Result.swift in Sources */,
