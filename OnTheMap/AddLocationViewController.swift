@@ -14,6 +14,7 @@ class AddLocationViewController: UIViewController {
     @IBOutlet weak var errorLabel: UILabel!
     
     var tfDelegate: UITextFieldDelegate?
+    var completion: ( (Double, Double, String) -> () )!
 
     override func viewDidLoad() {
         super.viewDidLoad()

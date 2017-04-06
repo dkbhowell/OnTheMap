@@ -38,13 +38,7 @@ class MapViewController: UIViewController {
             let alert = UIAlertController(title: "Pin Already Exists", message: "Would you like to overwrite your old pin?", preferredStyle: .alert)
             let yesAction = UIAlertAction(title: "Yes", style: .default, handler: { (action) in
                 print("overwrite old pin")
-                // choose random location
-//                let locations = [self.mountainView, self.sunnyVale, self.paloAlto]
-//                let randIndex = Int(arc4random_uniform(UInt32(locations.count)))
-//                let randLoc = locations[randIndex]
-//                self.postPin(lat: randLoc.0, lng: randLoc.1)
-                let controller = self.storyboard?.instantiateViewController(withIdentifier: "AddLocationController") as! AddLocationViewController
-                self.present(controller, animated: true, completion: nil)
+                self.startPostPinFlow()
             })
             let noAction = UIAlertAction(title: "No", style: .default, handler: { (action) in
                 print("Keep old pin")
@@ -54,13 +48,7 @@ class MapViewController: UIViewController {
             alert.preferredAction = yesAction
             self.present(alert, animated: true, completion: nil)
         } else {
-            // Post a new pin
-            let alert = UIAlertController(title: "Post a location?", message: "Would you like to post a location?", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (action) in
-                print("Add new pin")
-                self.postNewPin(lat: self.mountainView.0, lng: self.mountainView.1, subtitle: self.subtitle)
-            }))
-            self.present(alert, animated: true, completion: nil)
+            startPostPinFlow()
         }
     }
     
@@ -74,18 +62,25 @@ class MapViewController: UIViewController {
         mapView.showAnnotations(markers, animated: true)
     }
     
-    private func postPin(lat: Double, lng: Double) {
+    private func startPostPinFlow() {
+        let controller = self.storyboard?.instantiateViewController(withIdentifier: "AddLocationController") as! AddLocationViewController
+        controller.completion = postPin
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    func postPin(lat: Double, lng: Double, subtitle: String) {
         if let id = udacityClient.userId {
             parseClient.getStudent(withUdacityID: id, completion: { (result) in
                 switch result {
                 case .success(let student):
                     if let student = student {
                         // if pin exists, update it
-                        print("Pin Exists for Student: \(student)")
-                        self.updateExistingStudentLocation(id: student.id, lat: lat, lng: lng, subtitle: self.subtitle)
+                        print("Pin Exists for Student: \(student)\n Updating Pin")
+                        self.updateExistingStudentLocation(id: student.id, lat: lat, lng: lng, subtitle: subtitle)
                     } else {
                         // if pin does not exist, create a new one
-                        self.postNewPin(lat: lat, lng: lng, subtitle: self.subtitle)
+                        print("Pin does not exist for student, posting a brand new pin")
+                        self.postNewPin(lat: lat, lng: lng, subtitle: subtitle)
                     }
                 case .failure(let error):
                     print("Error: \(error)")
@@ -116,6 +111,11 @@ class MapViewController: UIViewController {
             switch result {
             case .success(let objectId):
                 print("Location Added Successfully!\n---Object ID: \(objectId)")
+                self.state.userStudent?.setLocationMarker(lat: lat, lng: lng)
+                performUpdatesOnMain {
+                    self.refreshPins()
+                    self.centerMapOnLocation(lat: lat, lng: lng, regionDistance: 6000)
+                }
             case .failure(let error):
                 print("Location Add Unsuccessful!\n---\(error)")
             }

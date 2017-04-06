@@ -477,6 +477,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="errorLabel" destination="H5d-ZX-dXj" id="fi0-r0-ZnF"/>
                         <outlet property="subtitleTextField" destination="v0I-fp-s2u" id="ela-iD-i9C"/>
                     </connections>
                 </viewController>
