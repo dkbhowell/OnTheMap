@@ -21,6 +21,11 @@ class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
         textField.delegate = self
     }
     
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        print("textFieldShouldBeginEditing")
+        return true
+    }
+    
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         print("Done with location: \(textField.text ?? "none")")
         if let location = textField.text {
@@ -56,10 +61,20 @@ class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
                     return
                 }
                 
+                // show location on mapview
+                let host = (hostController as? AddLocationViewController)
+                let location = UdacityStudent.StudentLocationMarker(title: "New Location", subtitle: nil, coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lng))
+                host?.mapView.showAnnotations([location], animated: true)
+                host?.confirmationButtons.isHidden = false
+                
+                
+                
+                /*
                 let controller = hostController.storyboard!.instantiateViewController(withIdentifier: "AddSubtitleController") as! AddSubtitleViewController
                 controller.coordinates = coordinates
                 controller.pinDelegate = (hostController as? AddLocationViewController)?.pinDelegate
                 hostController.present(controller, animated: true, completion: nil)
+                */
             })
         }
         return true
