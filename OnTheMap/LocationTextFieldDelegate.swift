@@ -11,10 +11,10 @@ import MapKit
 
 class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
     
-    weak var hostController: UIViewController!
+    weak var hostController: AddLocationViewController!
     weak var errorLabel: UILabel!
     
-    init(textField: UITextField, hostController: UIViewController, errorLabel: UILabel) {
+    init(textField: UITextField, hostController: AddLocationViewController, errorLabel: UILabel) {
         self.hostController = hostController
         self.errorLabel = errorLabel
         super.init()
@@ -62,19 +62,11 @@ class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
                 }
                 
                 // show location on mapview
-                let host = (hostController as? AddLocationViewController)
                 let location = UdacityStudent.StudentLocationMarker(title: "New Location", subtitle: nil, coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lng))
-                host?.mapView.showAnnotations([location], animated: true)
-                host?.confirmationButtons.isHidden = false
+                hostController.showAnnotation(annotation: location)
                 
                 
                 
-                /*
-                let controller = hostController.storyboard!.instantiateViewController(withIdentifier: "AddSubtitleController") as! AddSubtitleViewController
-                controller.coordinates = coordinates
-                controller.pinDelegate = (hostController as? AddLocationViewController)?.pinDelegate
-                hostController.present(controller, animated: true, completion: nil)
-                */
             })
         }
         return true

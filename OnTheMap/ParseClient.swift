@@ -24,11 +24,13 @@ class ParseClient {
             case .success(let data):
                 
                 guard let parseResult: [String:Any] = self.parse(data: data) else {
-                    completion(.failure(.ParseError(domain: "Parse Client", description: "Error parsing data into JSON")))
+                    let error = AppError.ParseError(domain: "Parse Client", description: "Error parsing data into JSON")
+                    completion(.failure(error))
                     return
                 }
                 guard let results = parseResult[ResponseKeys.RESULTS] as? [[String:Any]] else {
-                    completion(.failure(.ParseError(domain: "Parse Client", description: "Error retrieving value for key: '\(ResponseKeys.RESULTS)' from dict: \(parseResult)")))
+                    let error = AppError.ParseError(domain: "Parse Client", description: "Error retrieving value for key: '\(ResponseKeys.RESULTS)' from dict: \(parseResult)")
+                    completion(.failure(error))
                     return
                 }
                 
@@ -39,8 +41,8 @@ class ParseClient {
                             students.append(newStudent)
                     }
                 }
-                
                 completion(.success(students))
+                
             case .failure(let appError):
                 completion(.failure(appError))
             }
@@ -214,12 +216,14 @@ class ParseClient {
         return components.url!
     }
     
+    // returns the data from the http call or the appropriate error if something went wrong
     private func validateResponse(data: Data?, resp: URLResponse?, err: Error?) -> DataResult<Data, AppError> {
         if let data = data {
             return .success(data)
         }
         
         guard let err = err else {
+            // something funky happened
             return .failure(AppError.UnexpectedResult(domain: "Parse Client", description: "No Data, No Error in Response"))
         }
         
