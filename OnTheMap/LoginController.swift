@@ -32,6 +32,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        if let text = textField.text, text != "" {
+            login(loginButton)
+        }
         return true
     }
     

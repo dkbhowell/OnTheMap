@@ -28,6 +28,7 @@ class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         print("Done with location: \(textField.text ?? "none")")
+        textField.resignFirstResponder()
         if let location = textField.text {
             
             CLGeocoder().geocodeAddressString(location, completionHandler: { (placemark, err) in
@@ -64,8 +65,6 @@ class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
                 // show location on mapview
                 let location = UdacityStudent.StudentLocationMarker(title: "New Location", subtitle: nil, coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lng))
                 hostController.showAnnotation(annotation: location)
-                
-                
                 
             })
         }
