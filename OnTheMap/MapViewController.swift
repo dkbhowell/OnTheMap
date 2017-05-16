@@ -60,6 +60,10 @@ class MapViewController: UIViewController, PostPinDelegate {
         let markers = state.getMarkers
         mapView.removeAnnotations(mapView.annotations)
         mapView.showAnnotations(markers, animated: true)
+        
+        if let user = state.userStudent, let userPin = user.locationMarker {
+            centerMapOnLocation(lat: userPin.coordinate.latitude, lng: userPin.coordinate.longitude, regionDistance: 2000)
+        }
     }
     
     private func startPostPinFlow() {

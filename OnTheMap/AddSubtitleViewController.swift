@@ -26,15 +26,16 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate {
         if let text = textField.text {
             pinDelegate.postPin(lat: coordinates.0, lng: coordinates.1, subtitle: text)
         }
-        
-        self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
-        
         return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     

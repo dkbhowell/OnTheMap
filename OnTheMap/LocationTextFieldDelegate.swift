@@ -53,7 +53,6 @@ class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
                     self.showErrorMessage(msg: "Error Finding Location -- Please enter another city")
                     return
                 }
-                let coordinates = (lat, lng)
                 
                 print("Successful Geocode: \(location) is at Coordiates (\(lat),\(lng))")
                 guard let hostController = self.hostController else {

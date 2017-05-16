@@ -26,6 +26,19 @@ class AddLocationViewController: UIViewController {
         super.viewDidLoad()
         tfDelegate = LocationTextFieldDelegate(textField: locationTextField, hostController: self, errorLabel: errorLabel)
         centerMapOnLocation(location: initialLocation)
+        print("FIRST RESPONDER")
+        let firstResponder = UIResponder.currentFirstResponder()
+        print(firstResponder)
+        print("RESPONDER CHAIN")
+        printResponderChain(responder: firstResponder)
+    }
+    
+    func printResponderChain(responder: UIResponder?) {
+        guard let responder = responder else {
+            return
+        }
+        print(responder)
+        printResponderChain(responder: responder.next)
     }
     
     func centerMapOnLocation(location: CLLocation) {
@@ -38,6 +51,7 @@ class AddLocationViewController: UIViewController {
             print("Last Location empty when it should have a value")
             return
         }
+        
         let controller = storyboard!.instantiateViewController(withIdentifier: "AddSubtitleController") as! AddSubtitleViewController
         let coordinates = (lastLocation.coordinate.latitude, lastLocation.coordinate.longitude)
         controller.coordinates = coordinates
@@ -72,4 +86,20 @@ class AddLocationViewController: UIViewController {
         }
     }
     
+}
+
+extension UIResponder {
+    // Swift 1.2 finally supports static vars!. If you use 1.1 see:
+    // http://stackoverflow.com/a/24924535/385979
+    private weak static var _currentFirstResponder: UIResponder? = nil
+    
+    public class func currentFirstResponder() -> UIResponder? {
+        UIResponder._currentFirstResponder = nil
+        UIApplication.shared.sendAction(#selector(findFirstResponder(sender:)), to: nil, from: nil, for: nil)
+        return UIResponder._currentFirstResponder
+    }
+    
+    internal func findFirstResponder(sender: AnyObject) {
+        UIResponder._currentFirstResponder = self
+    }
 }

@@ -63,15 +63,10 @@ class LoginController: UIViewController, UITextFieldDelegate {
         let controller = storyboard!.instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeViewController
         present(controller, animated: true, completion: nil)
     }
-    
-
 }
-
-
 
 extension LoginController {
     func keyboardWillShow(notification: NSNotification) {
-        
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             print("show keyboard size: \(keyboardSize)")
             if self.view.frame.origin.y == 0{
