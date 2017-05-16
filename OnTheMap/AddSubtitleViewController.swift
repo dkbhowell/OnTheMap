@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddSubtitleViewController: UIViewController, UITextFieldDelegate {
+class AddSubtitleViewController: UIViewController, UITextFieldDelegate, KeyboardAdaptable {
 
     @IBOutlet weak var subtitleTextField: UITextField!
     @IBOutlet weak var errorLabel: UILabel!
@@ -19,6 +19,8 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         subtitleTextField.delegate = self
+        addKeyboardNotificationObservers()
+        
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
@@ -38,5 +40,16 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate {
         self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
+    func addKeyboardNotificationObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
     
+    func keyboardShow(notification: NSNotification) {
+        keyboardWillShow(notification: notification)
+    }
+    
+    func keyboardHide(notification: NSNotification) {
+        keyboardWillHide(notification: notification)
+    }
 }

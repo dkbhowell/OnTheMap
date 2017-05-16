@@ -20,6 +20,7 @@
 		DA47ADA71E7C9FC200860249 /* UdacityConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47ADA61E7C9FC200860249 /* UdacityConstants.swift */; };
 		DA47ADAB1E7CA2BE00860249 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47ADAA1E7CA2BE00860249 /* AppError.swift */; };
 		DA47ADAE1E7CA45400860249 /* DataResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47ADAD1E7CA45400860249 /* DataResult.swift */; };
+		DA8BACA11ECB7BDF0056AD36 /* KeyboardAdaptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8BACA01ECB7BDF0056AD36 /* KeyboardAdaptable.swift */; };
 		DAC9B3F71E8B3772007C19AA /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3F61E8B3772007C19AA /* Result.swift */; };
 		DAC9B3F91E8C2A52007C19AA /* UIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3F81E8C2A52007C19AA /* UIUtil.swift */; };
 		DAC9B3FB1E8C32D6007C19AA /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3FA1E8C32D6007C19AA /* WelcomeViewController.swift */; };
@@ -49,6 +50,7 @@
 		DA47ADA61E7C9FC200860249 /* UdacityConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityConstants.swift; sourceTree = "<group>"; };
 		DA47ADAA1E7CA2BE00860249 /* AppError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		DA47ADAD1E7CA45400860249 /* DataResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataResult.swift; sourceTree = "<group>"; };
+		DA8BACA01ECB7BDF0056AD36 /* KeyboardAdaptable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardAdaptable.swift; sourceTree = "<group>"; };
 		DAC9B3F61E8B3772007C19AA /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		DAC9B3F81E8C2A52007C19AA /* UIUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIUtil.swift; sourceTree = "<group>"; };
 		DAC9B3FA1E8C32D6007C19AA /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				DA47ADAD1E7CA45400860249 /* DataResult.swift */,
 				DAC9B3F61E8B3772007C19AA /* Result.swift */,
 				DAC9B3F81E8C2A52007C19AA /* UIUtil.swift */,
+				DA8BACA01ECB7BDF0056AD36 /* KeyboardAdaptable.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -263,6 +266,7 @@
 				DAEA95A31E95AC60008F0623 /* AddSubtitleViewController.swift in Sources */,
 				DAC9B4081E8DCB23007C19AA /* ParseConstants.swift in Sources */,
 				DA47ADAE1E7CA45400860249 /* DataResult.swift in Sources */,
+				DA8BACA11ECB7BDF0056AD36 /* KeyboardAdaptable.swift in Sources */,
 				DAC9B4021E8D6234007C19AA /* StateController.swift in Sources */,
 				DA21C1E81E95515D0025E3EE /* AddLocationViewController.swift in Sources */,
 				DAC9B3F91E8C2A52007C19AA /* UIUtil.swift in Sources */,
