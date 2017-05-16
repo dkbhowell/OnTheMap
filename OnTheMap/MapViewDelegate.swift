@@ -11,15 +11,23 @@ import MapKit
 
 class MapViewDelegate: NSObject, MKMapViewDelegate {
     
+    let httpPrefix = "http://"
+    let httpsPrefix = "https://"
+    
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         print("Control tapped!!! 😀 :\(control)")
         
-        guard let website = (view.annotation as? UdacityStudent.StudentLocationMarker)?.subtitle else {
+        guard let subtitleText = (view.annotation as? UdacityStudent.StudentLocationMarker)?.subtitle else {
             print("no subtitle for annotation")
             return
         }
         
-        guard let url = URL(string: website) else {
+        var urlString = subtitleText
+        if !urlString.hasPrefix(httpPrefix) && !urlString.hasPrefix(httpsPrefix) {
+            urlString = "\(httpsPrefix)\(urlString)"
+        }
+        
+        guard let url = URL(string: urlString) else {
             print("subtitle is invalid URL")
             return
         }

@@ -61,13 +61,16 @@ class UdacityStudent: Equatable {
         }
     }
     
-    func setLocationMarker(lat: Double, lng: Double) {
+    func setLocationMarker(lat: Double, lng: Double, subtitle: String? = nil) {
         let location = CLLocationCoordinate2D(latitude: lat, longitude: lng)
         if let marker = locationMarker {
             marker.coordinate = location
         } else {
             let marker = StudentLocationMarker(title: name, subtitle: data, coordinate: location)
             locationMarker = marker
+        }
+        if let subtitle = subtitle {
+            data = subtitle
         }
     }
     

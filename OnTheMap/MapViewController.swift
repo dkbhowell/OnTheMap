@@ -99,7 +99,7 @@ class MapViewController: UIViewController, PostPinDelegate {
             switch result {
             case .success(let updatedAtString):
                 print("Successful update at: \(updatedAtString)")
-                self.state.userStudent?.setLocationMarker(lat: lat, lng: lng)
+                self.state.userStudent?.setLocationMarker(lat: lat, lng: lng, subtitle: subtitle)
                 performUpdatesOnMain {
                     self.refreshPins()
                     self.centerMapOnLocation(lat: lat, lng: lng, regionDistance: 6000)
