@@ -59,7 +59,9 @@ class LoginController: UIViewController, UITextFieldDelegate {
     }
     
     func completeLogin() {
-        errorLabel.text = " "
+        errorLabel.text = ""
+        usernameTextField.text = ""
+        passwordTextField.text = ""
         let controller = storyboard!.instantiateViewController(withIdentifier: "HomeTabViewController") as! HomeTabViewController
         present(controller, animated: true, completion: nil)
     }

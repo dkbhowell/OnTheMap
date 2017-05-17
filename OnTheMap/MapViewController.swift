@@ -163,6 +163,10 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
         })
     }
     
+    @IBAction func logout(_ sender: Any) {
+        (self.tabBarController as? HomeTabViewController)?.logout()
+    }
+    
     func centerMapOnLocation(lat: Double, lng: Double, regionDistance: Int) {
         let location = CLLocation(latitude: lat, longitude: lng)
         let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, CLLocationDistance(regionDistance * 2), CLLocationDistance(regionDistance * 2))

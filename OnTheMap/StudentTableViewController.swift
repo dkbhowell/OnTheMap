@@ -68,8 +68,9 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
     @IBAction func refreshPins(_ sender: Any) {
         
     }
+    
     @IBAction func logout(_ sender: Any) {
-        
+        (self.tabBarController as? HomeTabViewController)?.logout()
     }
     
     

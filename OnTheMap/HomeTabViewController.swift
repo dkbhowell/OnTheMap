@@ -26,8 +26,10 @@ class HomeTabViewController: UITabBarController {
         loadUserPin()
     }
     
-    private func logout() {
+    func logout() {
         // TO DO
+        StateController.sharedInstance.resetState()
+        self.dismiss(animated: true, completion: nil)
     }
     
     private func loadUserPin() {

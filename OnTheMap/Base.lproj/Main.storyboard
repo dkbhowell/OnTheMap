@@ -146,7 +146,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="On The Map" id="Zn4-DB-BB1">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="4sS-LN-XCP"/>
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="4sS-LN-XCP">
+                            <connections>
+                                <action selector="logout:" destination="7RB-Ug-pPz" id="41Y-tf-rWF"/>
+                            </connections>
+                        </barButtonItem>
                         <rightBarButtonItems>
                             <barButtonItem image="icon_refresh" id="Ugh-wd-xpG">
                                 <connections>
