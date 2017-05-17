@@ -21,6 +21,8 @@
 		DA47ADAB1E7CA2BE00860249 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47ADAA1E7CA2BE00860249 /* AppError.swift */; };
 		DA47ADAE1E7CA45400860249 /* DataResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47ADAD1E7CA45400860249 /* DataResult.swift */; };
 		DA8BACA11ECB7BDF0056AD36 /* KeyboardAdaptable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8BACA01ECB7BDF0056AD36 /* KeyboardAdaptable.swift */; };
+		DA8BACA31ECBB72A0056AD36 /* StudentTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8BACA21ECBB72A0056AD36 /* StudentTableViewController.swift */; };
+		DA8BACA51ECBBBDD0056AD36 /* HomeTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8BACA41ECBBBDD0056AD36 /* HomeTabViewController.swift */; };
 		DAC9B3F71E8B3772007C19AA /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3F61E8B3772007C19AA /* Result.swift */; };
 		DAC9B3F91E8C2A52007C19AA /* UIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3F81E8C2A52007C19AA /* UIUtil.swift */; };
 		DAC9B3FB1E8C32D6007C19AA /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9B3FA1E8C32D6007C19AA /* WelcomeViewController.swift */; };
@@ -51,6 +53,8 @@
 		DA47ADAA1E7CA2BE00860249 /* AppError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		DA47ADAD1E7CA45400860249 /* DataResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataResult.swift; sourceTree = "<group>"; };
 		DA8BACA01ECB7BDF0056AD36 /* KeyboardAdaptable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardAdaptable.swift; sourceTree = "<group>"; };
+		DA8BACA21ECBB72A0056AD36 /* StudentTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StudentTableViewController.swift; sourceTree = "<group>"; };
+		DA8BACA41ECBBBDD0056AD36 /* HomeTabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTabViewController.swift; sourceTree = "<group>"; };
 		DAC9B3F61E8B3772007C19AA /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		DAC9B3F81E8C2A52007C19AA /* UIUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIUtil.swift; sourceTree = "<group>"; };
 		DAC9B3FA1E8C32D6007C19AA /* WelcomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -83,6 +87,8 @@
 				DAC9B3FC1E8C5CEA007C19AA /* MapViewController.swift */,
 				DA21C1E71E95515D0025E3EE /* AddLocationViewController.swift */,
 				DAEA95A21E95AC60008F0623 /* AddSubtitleViewController.swift */,
+				DA8BACA21ECBB72A0056AD36 /* StudentTableViewController.swift */,
+				DA8BACA41ECBBBDD0056AD36 /* HomeTabViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -254,9 +260,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAC9B3FD1E8C5CEA007C19AA /* MapViewController.swift in Sources */,
+				DA8BACA31ECBB72A0056AD36 /* StudentTableViewController.swift in Sources */,
 				DA47ADA51E7C9E8C00860249 /* UdacityClient.swift in Sources */,
 				DAC9B3FB1E8C32D6007C19AA /* WelcomeViewController.swift in Sources */,
 				DA47ADA71E7C9FC200860249 /* UdacityConstants.swift in Sources */,
+				DA8BACA51ECBBBDD0056AD36 /* HomeTabViewController.swift in Sources */,
 				DA47AD911E7C8BB800860249 /* LoginController.swift in Sources */,
 				DA47AD8F1E7C8BB800860249 /* AppDelegate.swift in Sources */,
 				DAC9B40A1E8DCB36007C19AA /* ParseClient.swift in Sources */,

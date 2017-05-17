@@ -9,26 +9,19 @@
 import Foundation
 import MapKit
 
-class StateController {
+class StateController: StateSubject {
     // Singleton
     static let sharedInstance = StateController()
     private init() { if AppDelegate.DEBUG { generateDummyData() } }
     
     // Properties
     private var students: [UdacityStudent] = []
+    private var observers: [StateObserver] = []
     private var user: User?
     var userStudent: UdacityStudent?
     
-    
-    var getMarkers: [MKAnnotation] {
-        if let userStudent = userStudent {
-            var allStudents = self.students
-            allStudents.append(userStudent)
-            return allStudents.map { $0.locationMarker }
-                .flatMap { $0 }
-        }
-        return self.students.map { $0.locationMarker }
-            .flatMap { $0 }
+    func getStudents() -> [UdacityStudent] {
+        return students
     }
     
     func addStudent(student: UdacityStudent) {
@@ -55,6 +48,7 @@ class StateController {
         } else {
             self.students = students
         }
+        notifyObservers(newStudents: self.students)
     }
     
     func setUser(user: User) {
@@ -63,6 +57,27 @@ class StateController {
     
     func getUser() -> User? {
         return self.user
+    }
+    
+    func addObserver(_ observer: StateObserver) {
+        observers.append(observer)
+    }
+    
+    func removeObserver(_ observer: StateObserver) {
+        let index = observers.index { (obs) -> Bool in
+            return obs === observer
+        }
+        if let trueIndex = index {
+            observers.remove(at: trueIndex)
+        }
+    }
+    
+    func notifyObservers(newStudents: [UdacityStudent]) {
+        for observer in observers {
+            performUpdatesOnMain {
+                observer.studentsUpdated(students: newStudents)
+            }
+        }
     }
     
 //    func resetState() {
@@ -86,6 +101,14 @@ class StateController {
             addStudent(student: student)
         }
     }
-    
-    
+}
+
+protocol StateObserver: class {
+    func studentsUpdated(students: [UdacityStudent])
+}
+
+protocol StateSubject: class {
+    func addObserver(_ observer: StateObserver)
+    func removeObserver(_ observer: StateObserver)
+    func notifyObservers(newStudents: [UdacityStudent])
 }

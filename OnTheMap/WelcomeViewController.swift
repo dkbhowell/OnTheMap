@@ -52,7 +52,7 @@ class WelcomeViewController: UIViewController {
     }
     
     @IBAction func goMapGo(_ sender: UIButton) {
-        let controller = storyboard!.instantiateViewController(withIdentifier: "mapNavControlller")
+        let controller = storyboard!.instantiateViewController(withIdentifier: "StudentTabController")
         present(controller, animated: true, completion: nil)
     }
     
