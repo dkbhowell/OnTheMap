@@ -60,7 +60,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     
     func completeLogin() {
         errorLabel.text = " "
-        let controller = storyboard!.instantiateViewController(withIdentifier: "WelcomeController") as! WelcomeViewController
+        let controller = storyboard!.instantiateViewController(withIdentifier: "HomeTabViewController") as! HomeTabViewController
         present(controller, animated: true, completion: nil)
     }
 }

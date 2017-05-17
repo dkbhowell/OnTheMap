@@ -25,6 +25,10 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
         return students.count
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Udacity Students"
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let student = students[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "StudentTableCell")
@@ -36,8 +40,7 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
         
         newCell.textLabel?.text = student.name
         newCell.detailTextLabel?.text = student.data
-        
-        print("Returning cell for row: \(indexPath.row)")
+    
         return newCell
     }
     
@@ -46,5 +49,28 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
         tableView.reloadData()
         print("State Changed from Table View Controller!")
     }
+    
+    func getMapController() -> MapViewController? {
+        let navController = self.tabBarController?.viewControllers?[1] as? UINavigationController
+        return navController?.viewControllers[0] as? MapViewController
+    }
+    
+    func goToMapController() {
+        self.tabBarController?.selectedIndex = 1
+    }
+    
+    @IBAction func postPin(_ sender: Any) {
+        goToMapController()
+        let mapController = getMapController()
+        mapController?.postPin(UIBarButtonItem())
+    }
+    
+    @IBAction func refreshPins(_ sender: Any) {
+        
+    }
+    @IBAction func logout(_ sender: Any) {
+        
+    }
+    
     
 }
