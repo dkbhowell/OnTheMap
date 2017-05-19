@@ -33,9 +33,8 @@ class HomeTabViewController: UITabBarController {
     }
     
     private func loadUserPin() {
-        let udacityClient = UdacityClient.sharedInstance()
         let parseClient = ParseClient.sharedInstance
-        if let id = udacityClient.userId {
+        if let id = StateController.sharedInstance.getUser()?.id {
             parseClient.getStudent(withUdacityID: id, completion: { (result) in
                 switch result {
                 case .success(let student):

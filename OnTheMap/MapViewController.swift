@@ -112,7 +112,7 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
     }
     
     func postPin(lat: Double, lng: Double, subtitle: String) {
-        if let id = udacityClient.userId {
+        if let id = StateController.sharedInstance.getUser()?.id {
             parseClient.getStudent(withUdacityID: id, completion: { (result) in
                 switch result {
                 case .success(let student):

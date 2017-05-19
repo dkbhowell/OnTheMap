@@ -14,15 +14,15 @@ class UdacityClient {
     
     let state = StateController.sharedInstance
     var sessionId: String?
-    var userId: String?
     
     func authenticate(username: String, password: String, completionForAuth: @escaping (Result) -> () ) {
         login(username: username, password: password) { (result) in
             switch result {
-            case .success(_):
-                self.getUserInfo(userId: self.userId!, completionForUserInfo: { (result) in
+            case .success(let userId):
+                self.getUserInfo(userId: userId, completionForUserInfo: { (result) in
                     switch result {
-                    case .success(_):
+                    case .success(let user):
+                        self.state.setUser(user: user)
                         completionForAuth(.success("Login Successful"))
                     case .failure(let description):
                         self.reset()
@@ -36,7 +36,7 @@ class UdacityClient {
         }
     }
     
-    func login(username: String, password: String, completionForLogin: @escaping (Result) -> () ) {
+    func login(username: String, password: String, completionForLogin: @escaping (DataResult<String, AppError>) -> () ) {
         var body = [String:Any]()
         var udacityDict = [String:String]()
         udacityDict[RequestParamNames.USERNAME] = username
@@ -49,32 +49,32 @@ class UdacityClient {
                 let stringValue = String(data: data, encoding: .utf8)!
                 print(stringValue)
                 guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
-                    completionForLogin(.failure("Error converting result to dict"))
+                    completionForLogin(.failure(.ParseError(domain: "UdacityClient", description: "Error converting result to dict")))
                     return
                 }
                 
                 guard let sessionData = result[ResponseKeys.SESSION] as? [String:Any] else {
-                    completionForLogin(.failure("Error: No session data found in response"))
+                    completionForLogin(.failure(.ParseError(domain: "UdacityClient", description: "Error: No session data found in response")))
                     return
                 }
                 
                 guard let accountData = result[ResponseKeys.ACCOUNT] as? [String:Any] else {
-                    completionForLogin(.failure("Error: No account data found in response"))
+                    completionForLogin(.failure(.ParseError(domain: "UdacityClient", description: "Error: No account data found in response")))
                     return
                 }
                 
                 guard let sessionId = sessionData[ResponseKeys.SESSION_ID] as? String else {
-                    completionForLogin(.failure("error: Key named '\(ResponseKeys.SESSION_ID)' not found in response: \(sessionData)"))
+                    completionForLogin(.failure(.ParseError(domain: "UdacityClient", description: "error: Key named '\(ResponseKeys.SESSION_ID)' not found in response: \(sessionData)")))
                     return
                 }
                 
                 guard let userId = accountData[ResponseKeys.USER_ID] as? String else {
-                    completionForLogin(.failure("error: Key named '\(ResponseKeys.USER_ID)' not found in response: \(accountData)"))
+                    completionForLogin(.failure(.ParseError(domain: "UdacityClient", description: "error: Key named '\(ResponseKeys.USER_ID)' not found in response: \(accountData)")))
                     return
                 }
                 
                 guard let isRegistered = accountData[ResponseKeys.REGISTERED] as? Bool else {
-                    completionForLogin(.failure("error: Key named '\(ResponseKeys.REGISTERED)' not found in response: \(accountData)"))
+                    completionForLogin(.failure(.ParseError(domain: "UdacityClient", description: "error: Key named '\(ResponseKeys.REGISTERED)' not found in response: \(accountData)")))
                     return
                 }
                 
@@ -83,39 +83,31 @@ class UdacityClient {
                 print("---User id: \(userId)")
                 print("---registered: \(isRegistered)")
                 self.sessionId = sessionId
-                self.userId = userId
                 
-                completionForLogin(.success("Login Successful"))
+                completionForLogin(.success(userId))
                 
             case .failure(let error):
-                completionForLogin(.failure("Error with request: \(error)"))
+                completionForLogin(.failure(.NetworkingError(domain: "UdacityClient", description: "Error with request: \(error)")))
             }
         }
     }
     
-    func getUserInfo(userId: String, completionForUserInfo: @escaping (Result) -> () ) {
+    func getUserInfo(userId: String, completionForUserInfo: @escaping (DataResult<User, AppError>) -> () ) {
         let newMethod = Methods.USER + "/\(userId)"
         _ = taskForGET(newMethod, params: nil, completion: { (result) in
             switch result {
             case .success(let data):
-                
-//                self.prettyPrinted(dataAsJsonDict: data, doPrint: true)
-                
                 guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
-                    completionForUserInfo(.failure("Error parsing JSON Data: \(data)"))
+                    completionForUserInfo(.failure(.ParseError(domain: "UdacityClient", description: "Error parsing JSON Data: \(data)")))
                     return
                 }
-                
                 if let newUser = User(dictionary: result) {
-                    self.state.setUser(user: newUser)
+                    completionForUserInfo(.success(newUser))
                 } else {
-                    completionForUserInfo(.failure("Error parsing data into user"))
+                    completionForUserInfo(.failure(.ParseError(domain: "UdacityClient", description: "Error parsing data into user")))
                 }
-                
-                completionForUserInfo(.success("User Info Fetched Successfully"))
-                
             case .failure(let error):
-                completionForUserInfo(.failure("Error with request: \(error)"))
+                completionForUserInfo(.failure(.NetworkingError(domain: "UdacityClient", description: "Error with request: \(error)")))
             }
         })
     }
@@ -199,7 +191,6 @@ class UdacityClient {
     }
     
     func reset() {
-        userId = nil
         sessionId = nil
     }
     
