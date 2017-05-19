@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 class HomeTabViewController: UITabBarController {
 
@@ -29,6 +31,7 @@ class HomeTabViewController: UITabBarController {
     func logout() {
         // TO DO
         StateController.sharedInstance.resetState()
+        FBSDKLoginManager().logOut()
         self.dismiss(animated: true, completion: nil)
     }
     

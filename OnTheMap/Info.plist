@@ -14,14 +14,14 @@
         <dict>
             <key>CFBundleURLSchemes</key>
             <array>
-                <string>fb644335445761856</string>
+                <string>fb365362206864879</string>
             </array>
         </dict>
     </array>
     <key>FacebookAppID</key>
-    <string>644335445761856</string>
+    <string>365362206864879</string>
     <key>FacebookDisplayName</key>
-    <string>On The Map</string>
+    <string>onthemap</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleExecutable</key>
