@@ -13,3 +13,7 @@ func performUpdatesOnMain(_ updates: @escaping () -> Void) {
         updates()
     }
 }
+
+func performUpdatesOnMain(delayedSeconds: Double, _ updates: @escaping () -> Void) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + delayedSeconds, execute: updates)
+}

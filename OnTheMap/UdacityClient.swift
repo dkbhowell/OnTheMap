@@ -36,6 +36,26 @@ class UdacityClient {
         }
     }
     
+    func authenticateWithFacebook(fbToken: String, completionForFbAuth: @escaping (Result) -> Void) {
+        login(withFacebookToken: fbToken) { (userIdResult) in
+            switch userIdResult {
+            case .success(let userId):
+                print(userId)
+                self.getUserInfo(userId: userId, completionForUserInfo: { (userResult) in
+                    switch userResult {
+                    case .success(let user):
+                        self.state.setUser(user: user)
+                        completionForFbAuth(.success("FB Authentication Successful"))
+                    case .failure(let appError):
+                        completionForFbAuth(.failure("FB Authentication Unsuccessful: \(appError)"))
+                    }
+                })
+            case .failure(let appError):
+                print(appError)
+            }
+        }
+    }
+    
     func login(username: String, password: String, completionForLogin: @escaping (DataResult<String, AppError>) -> () ) {
         var body = [String:Any]()
         var udacityDict = [String:String]()
@@ -46,8 +66,6 @@ class UdacityClient {
         _ = taskForPOST(Methods.SESSION, params: nil, jsonDataForBody: body) { (result) in
             switch result {
             case .success(let data):
-                let stringValue = String(data: data, encoding: .utf8)!
-                print(stringValue)
                 guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
                     completionForLogin(.failure(.ParseError(domain: "UdacityClient", description: "Error converting result to dict")))
                     return
@@ -90,6 +108,49 @@ class UdacityClient {
                 completionForLogin(.failure(.NetworkingError(domain: "UdacityClient", description: "Error with request: \(error)")))
             }
         }
+    }
+    
+    func login(withFacebookToken token: String, completionForFBLogin: @escaping (DataResult<String, AppError>) -> Void ) {
+        var body = [String:Any]()
+        var facebookDict = [String:String]()
+        facebookDict[RequestParamNames.ACCESS_TOKEN] = token
+        body[RequestParamNames.FB_MOBILE] = facebookDict
+        
+        _ = taskForPOST(Methods.SESSION, params: nil, jsonDataForBody: body, completion: { (dataResult) in
+            switch dataResult {
+            case .success(let data):
+                guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
+                    completionForFBLogin(.failure(.ParseError(domain: "UdacityClient", description: "Error parsing data into json object")))
+                    return
+                }
+                
+                guard let accountData = result[ResponseKeys.ACCOUNT] as? [String:Any] else {
+                    completionForFBLogin(.failure(.ParseError(domain: "UdacityClient", description: "Could not find entry for key '\(ResponseKeys.ACCOUNT)' in dict: \(result)")))
+                    return
+                }
+                
+                guard let sessionData = result[ResponseKeys.SESSION] as? [String:Any] else {
+                    completionForFBLogin(.failure(.ParseError(domain: "UdacityClient", description: "Could not find entry for key '\(ResponseKeys.SESSION)' in dict: \(result)")))
+                    return
+                }
+                
+                guard let userId = accountData[ResponseKeys.USER_ID] as? String else {
+                    completionForFBLogin(.failure(.ParseError(domain: "UdacityClient", description: "Could not find entry for key '\(ResponseKeys.USER_ID)' in dict: \(accountData)")))
+                    return
+                }
+                
+                guard let sessionId = sessionData[ResponseKeys.SESSION_ID] as? String else {
+                    completionForFBLogin(.failure(.ParseError(domain: "UdacityClient", description: "Could not find entry for key '\(ResponseKeys.SESSION_ID)' in dict: \(sessionData)")))
+                    return
+                }
+                
+                self.sessionId = sessionId
+                completionForFBLogin(.success(userId))
+                
+            case .failure(let appError):
+                completionForFBLogin(.failure(appError))
+            }
+        })
     }
     
     func getUserInfo(userId: String, completionForUserInfo: @escaping (DataResult<User, AppError>) -> () ) {

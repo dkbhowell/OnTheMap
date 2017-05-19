@@ -31,6 +31,7 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
         
         usernameTextField.text = Constants.Debug.MY_USERNAME
         fbLoginButton.delegate = self
+        FBSDKProfile.enableUpdates(onAccessTokenChange: true)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -44,13 +45,40 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         // TODO
         print("Login Error parameter: \(error)")
-        if result.isCancelled {
-            print("user cancelled login attempt")
-            return
-        }
         print("Login token: \(result.token)")
         print("Granted permissions: \(result.grantedPermissions)")
         print("Denied permissions: \(result.declinedPermissions)")
+        guard !result.isCancelled else {
+            print("user cancelled login attempt")
+            return
+        }
+        guard result.declinedPermissions.count <= 0 else {
+            print("user denied permissions; sign in unsuccesful")
+            return
+        }
+        guard result.grantedPermissions.count >= 0 else {
+            print("No permissions granted to the app; sign in unsuccessful")
+            return
+        }
+        
+        if let accountKey = FBSDKAccessToken.current().tokenString {
+            let udacityClient = UdacityClient.sharedInstance()
+            udacityClient.authenticateWithFacebook(fbToken: accountKey, completionForFbAuth: { (result) in
+                switch result {
+                case .success(_):
+                    performUpdatesOnMain {
+                        print("FB Auth Success!!!! 😀")
+                        self.completeLogin()
+                    }
+                case .failure(let appError):
+                    print("FB Auth Fail!!!! 😩")
+                    print(appError)
+                }
+            })
+        } else {
+            print("FB Access Token not found")
+        }
+        
     }
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
