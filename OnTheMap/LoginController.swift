@@ -32,6 +32,11 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
         usernameTextField.text = Constants.Debug.MY_USERNAME
         fbLoginButton.delegate = self
         FBSDKProfile.enableUpdates(onAccessTokenChange: true)
+        
+        if let fbAccessToken = FBSDKAccessToken.current() {
+            print("Found FB Access Token -- logging in with Facebook")
+            loginWithFacebook(usingAccessToken: fbAccessToken)
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -61,20 +66,8 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
             return
         }
         
-        if let accountKey = FBSDKAccessToken.current().tokenString {
-            let udacityClient = UdacityClient.sharedInstance()
-            udacityClient.authenticateWithFacebook(fbToken: accountKey, completionForFbAuth: { (result) in
-                switch result {
-                case .success(_):
-                    performUpdatesOnMain {
-                        print("FB Auth Success!!!! 😀")
-                        self.completeLogin()
-                    }
-                case .failure(let appError):
-                    print("FB Auth Fail!!!! 😩")
-                    print(appError)
-                }
-            })
+        if let accessToken = FBSDKAccessToken.current() {
+            loginWithFacebook(usingAccessToken: accessToken)
         } else {
             print("FB Access Token not found")
         }
@@ -82,7 +75,27 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
     }
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
-        // TODO
+        print("login button did log out")
+    }
+    
+    func loginWithFacebook(usingAccessToken token: FBSDKAccessToken) {
+        guard let tokenString = token.tokenString else {
+            print("Token does not have a token string")
+            return
+        }
+        let udacityClient = UdacityClient.sharedInstance()
+        udacityClient.authenticateWithFacebook(fbToken: tokenString, completionForFbAuth: { (result) in
+            switch result {
+            case .success(_):
+                performUpdatesOnMain {
+                    print("FB Auth Success!!!! 😀")
+                    self.completeLogin()
+                }
+            case .failure(let appError):
+                print("FB Auth Fail!!!! 😩")
+                print(appError)
+            }
+        })
     }
     
     @IBAction func login(_ sender: UIButton) {
