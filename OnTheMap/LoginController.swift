@@ -1,4 +1,4 @@
-//
+
 //  LoginController.swift
 //  OnTheMap
 //
@@ -7,8 +7,10 @@
 //
 
 import UIKit
+//import FacebookLogin
+import FBSDKLoginKit
 
-class LoginController: UIViewController, UITextFieldDelegate {
+class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
     
     let state = StateController.sharedInstance
     
@@ -17,6 +19,7 @@ class LoginController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var fbLoginButton: FBSDKLoginButton!
     
 
     override func viewDidLoad() {
@@ -27,8 +30,8 @@ class LoginController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
         
         usernameTextField.text = Constants.Debug.MY_USERNAME
+        fbLoginButton.delegate = self
     }
-    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -36,6 +39,22 @@ class LoginController: UIViewController, UITextFieldDelegate {
             login(loginButton)
         }
         return true
+    }
+    
+    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+        // TODO
+        print("Login Error parameter: \(error)")
+        if result.isCancelled {
+            print("user cancelled login attempt")
+            return
+        }
+        print("Login token: \(result.token)")
+        print("Granted permissions: \(result.grantedPermissions)")
+        print("Denied permissions: \(result.declinedPermissions)")
+    }
+    
+    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
+        // TODO
     }
     
     @IBAction func login(_ sender: UIButton) {

@@ -7,5 +7,7 @@ target 'OnTheMap' do
   # Pods for OnTheMap
   pod 'FacebookCore'
   pod 'FacebookLogin'
+  pod 'FacebookShare'
+  pod 'Reveal-SDK', :configurations => ['Debug']
 
 end
