@@ -39,6 +39,25 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        if FBSDKAccessToken.current() != nil {
+            showLoadingSpinner()
+        }
+    }
+    
+    func showLoadingSpinner() {
+        let alert = UIAlertController(title: "Please Wait", message: "Logging into Facebook...", preferredStyle: .alert)
+        
+        let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
+        loadingIndicator.startAnimating();
+        
+        alert.view.addSubview(loadingIndicator)
+        print("Presenting Alert Controller")
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         if let text = textField.text, text != "" {
@@ -67,6 +86,7 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
         }
         
         if let accessToken = FBSDKAccessToken.current() {
+            showLoadingSpinner()
             loginWithFacebook(usingAccessToken: accessToken)
         } else {
             print("FB Access Token not found")
@@ -85,6 +105,7 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
         }
         let udacityClient = UdacityClient.sharedInstance()
         udacityClient.authenticateWithFacebook(fbToken: tokenString, completionForFbAuth: { (result) in
+            self.dismiss(animated: true, completion: nil)
             switch result {
             case .success(_):
                 performUpdatesOnMain {
