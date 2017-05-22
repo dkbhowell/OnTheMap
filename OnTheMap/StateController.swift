@@ -12,7 +12,7 @@ import MapKit
 class StateController: StateSubject {
     // Singleton
     static let sharedInstance = StateController()
-    private init() { if AppDelegate.DEBUG { generateDummyData() } }
+    private init() { }
     
     // Properties
     private var students: [UdacityStudent] = []
