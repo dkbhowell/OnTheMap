@@ -210,60 +210,26 @@
                                 <rect key="frame" x="16" y="8" width="343" height="575"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" text="Where are you studying?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gHI-yo-YO8">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="0.0"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="33.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your Location..." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NmV-aW-ivG">
-                                        <rect key="frame" x="0.0" y="8" width="343" height="30"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your Location..." textAlignment="center" minimumFontSize="17" clearButtonMode="unlessEditing" translatesAutoresizingMaskIntoConstraints="NO" id="NmV-aW-ivG">
+                                        <rect key="frame" x="0.0" y="41.5" width="343" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="search"/>
                                     </textField>
-                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="800" verticalCompressionResistancePriority="800" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xvf-To-yip">
-                                        <rect key="frame" x="0.0" y="46" width="343" height="432"/>
-                                    </mapView>
-                                    <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="i66-el-PzZ" userLabel="Confirm stackview">
-                                        <rect key="frame" x="0.0" y="486" width="343" height="79"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Update Location?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MfG-CK-QfS">
-                                                <rect key="frame" x="0.0" y="0.0" width="343" height="29"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zjc-41-Zyf" userLabel="Confirm buttons Stack View">
-                                                <rect key="frame" x="0.0" y="37" width="343" height="42"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GgN-DP-ClL">
-                                                        <rect key="frame" x="0.0" y="0.0" width="167.5" height="42"/>
-                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
-                                                        <state key="normal" title="Yes"/>
-                                                        <connections>
-                                                            <action selector="yesClicked:" destination="bvK-kD-TZL" eventType="touchUpInside" id="xWd-Bw-iDu"/>
-                                                        </connections>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hOG-Xt-Dkb">
-                                                        <rect key="frame" x="175.5" y="0.0" width="167.5" height="42"/>
-                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="25"/>
-                                                        <state key="normal" title="No">
-                                                            <color key="titleColor" red="1" green="0.20096592729573748" blue="0.42613363532463033" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="noClicked:" destination="bvK-kD-TZL" eventType="touchUpInside" id="Xfa-7T-TRI"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                            </stackView>
-                                        </subviews>
-                                    </stackView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="300" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9pE-Go-yQT" userLabel="Error Label">
-                                        <rect key="frame" x="0.0" y="573" width="343" height="2"/>
+                                        <rect key="frame" x="0.0" y="79.5" width="343" height="55.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="1" green="0.094634552506652425" blue="0.08782851529311686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="800" verticalCompressionResistancePriority="800" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xvf-To-yip">
+                                        <rect key="frame" x="0.0" y="143" width="343" height="432"/>
+                                    </mapView>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -282,12 +248,17 @@
                                 <action selector="cancel:" destination="bvK-kD-TZL" id="C5A-34-qWF"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Next" id="CSc-pa-wdj">
+                            <connections>
+                                <action selector="nextClicked:" destination="bvK-kD-TZL" id="FxT-M7-9lv"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="confirmationButtons" destination="i66-el-PzZ" id="JCg-Br-vGj"/>
                         <outlet property="errorLabel" destination="9pE-Go-yQT" id="mAJ-4H-Xt1"/>
                         <outlet property="locationTextField" destination="NmV-aW-ivG" id="Tgs-GA-YfT"/>
                         <outlet property="mapView" destination="xvf-To-yip" id="PlP-rR-jX3"/>
+                        <outlet property="nextButton" destination="CSc-pa-wdj" id="i5n-8C-tXO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kKm-05-4ee" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -425,35 +396,30 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="XZ1-bl-erm">
-                                <rect key="frame" x="16" y="72" width="343" height="575"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="XZ1-bl-erm">
+                                <rect key="frame" x="16" y="80" width="343" height="567"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zgm-as-nGQ">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="110"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="754" verticalCompressionResistancePriority="754" ambiguous="YES" text="What website would you like to show?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gGF-e7-3wQ">
-                                        <rect key="frame" x="0.0" y="110" width="343" height="67"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="255" verticalHuggingPriority="255" horizontalCompressionResistancePriority="754" verticalCompressionResistancePriority="754" text="What website would you like to show?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gGF-e7-3wQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="67"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="754" verticalCompressionResistancePriority="754" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your Website..." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v0I-fp-s2u">
-                                        <rect key="frame" x="0.0" y="177" width="343" height="30"/>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="754" verticalCompressionResistancePriority="754" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your Website..." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v0I-fp-s2u">
+                                        <rect key="frame" x="0.0" y="75" width="343" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="252" ambiguous="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H5d-ZX-dXj" userLabel="Error Label">
-                                        <rect key="frame" x="0.0" y="207" width="343" height="32.5"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="245" verticalHuggingPriority="245" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H5d-ZX-dXj" userLabel="Error Label">
+                                        <rect key="frame" x="0.0" y="113" width="343" height="17"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="1" green="0.094634552509999997" blue="0.087828515290000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9lb-ff-7as">
-                                        <rect key="frame" x="0.0" y="239.5" width="343" height="335.5"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </view>
+                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="240" verticalHuggingPriority="240" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Edn-yI-pwn">
+                                        <rect key="frame" x="0.0" y="138" width="343" height="429"/>
+                                    </mapView>
                                 </subviews>
                             </stackView>
                         </subviews>
@@ -462,7 +428,7 @@
                             <constraint firstItem="XZ1-bl-erm" firstAttribute="leading" secondItem="QOA-Rz-aff" secondAttribute="leadingMargin" id="08n-ps-TcI"/>
                             <constraint firstItem="oRM-3p-jav" firstAttribute="top" secondItem="XZ1-bl-erm" secondAttribute="bottom" constant="20" id="hdC-if-Gin"/>
                             <constraint firstAttribute="trailingMargin" secondItem="XZ1-bl-erm" secondAttribute="trailing" id="pvB-ol-wDL"/>
-                            <constraint firstItem="XZ1-bl-erm" firstAttribute="top" secondItem="HXg-qC-BDa" secondAttribute="bottom" constant="8" id="ttP-4t-kFT"/>
+                            <constraint firstItem="XZ1-bl-erm" firstAttribute="top" secondItem="HXg-qC-BDa" secondAttribute="bottom" constant="16" id="ttP-4t-kFT"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="KLX-py-ne1">
@@ -471,10 +437,17 @@
                                 <action selector="cancel:" destination="nJY-mx-DXa" id="P75-Ns-ddl"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="esw-uf-v79">
+                            <connections>
+                                <action selector="doneTapped:" destination="nJY-mx-DXa" id="Vhh-i0-MVV"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="doneButton" destination="esw-uf-v79" id="ytF-K2-MUz"/>
                         <outlet property="errorLabel" destination="H5d-ZX-dXj" id="fi0-r0-ZnF"/>
+                        <outlet property="mapView" destination="Edn-yI-pwn" id="S9c-XE-26K"/>
                         <outlet property="subtitleTextField" destination="v0I-fp-s2u" id="ela-iD-i9C"/>
                     </connections>
                 </viewController>
@@ -504,6 +477,7 @@
         <!--Navigation Controller-->
         <scene sceneID="fWX-Nq-HXD">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="do4-Pb-iAk" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="AddLocationNavController" automaticallyAdjustsScrollViewInsets="NO" id="V3A-oP-QiB" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="c7U-Oh-jNW">
@@ -515,7 +489,6 @@
                         <segue destination="bvK-kD-TZL" kind="relationship" relationship="rootViewController" id="vbE-l3-hT6"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="do4-Pb-iAk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2353" y="555"/>
         </scene>

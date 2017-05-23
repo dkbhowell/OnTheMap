@@ -7,32 +7,41 @@
 //
 
 import UIKit
+import MapKit
 
 class AddSubtitleViewController: UIViewController, UITextFieldDelegate, KeyboardAdaptable {
 
     @IBOutlet weak var subtitleTextField: UITextField!
     @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var doneButton: UIBarButtonItem!
     
     var coordinates: (Double, Double)!
+    var mapPin: MapPin!
     weak var pinDelegate: PostPinDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         subtitleTextField.delegate = self
-        addKeyboardNotificationObservers()
-        
+        let userName = StateController.sharedInstance.getUser()?.name ?? "New Location"
+        mapPin = MapPin(lat: coordinates.0, lng: coordinates.1, title: userName, subtitle: "")
+        mapView.addAnnotation(mapPin)
+        mapView.centerMapOnLocation(lat: mapPin.coordinate.latitude, lng: mapPin.coordinate.longitude, zoomLevel: 5)
+        mapView.selectAnnotation(mapPin, animated: true)
+        doneButton.isEnabled = false
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
+        print("Cancelling from Addsubtitle")
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        
-        if let text = textField.text {
-            pinDelegate.postPin(lat: coordinates.0, lng: coordinates.1, subtitle: text)
+    @IBAction func doneTapped(_ sender: UIBarButtonItem) {
+        if let text = subtitleTextField.text {
+            postPin(withSubtitle: text)
+        } else {
+            postPin(withSubtitle: "")
         }
-        return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -40,9 +49,25 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate, Keyboard
         return true
     }
     
-    func textFieldDidEndEditing(_ textField: UITextField) {
-//        self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
-        self.navigationController?.dismiss(animated: true, completion: nil)
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        var newString = string
+        if let existingText = textField.text {
+            newString = NSString(string: existingText).replacingCharacters(in: range, with: string)
+        }
+        
+        if isValidURL(urlString: newString) {
+            textField.backgroundColor = nil
+            clearErrorMessage()
+            doneButton.isEnabled = true
+            mapPin.subtitle = newString
+            mapView.deselectAnnotation(mapPin, animated: false)
+            mapView.selectAnnotation(mapPin, animated: false)
+        } else {
+            textField.backgroundColor = UIColor.red
+            showErrorMessage(msg: "Invalid URL: Please enter a valid URL")
+            doneButton.isEnabled = false
+        }
+        return true
     }
     
     func addKeyboardNotificationObservers() {
@@ -56,5 +81,61 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate, Keyboard
     
     func keyboardHide(notification: NSNotification) {
         keyboardWillHide(notification: notification)
+    }
+    
+    private func showErrorMessage(msg: String) {
+        errorLabel.text = msg
+    }
+    
+    private func clearErrorMessage() {
+        errorLabel.text = ""
+    }
+    
+    private func isValidURL(urlString: String?) -> Bool {
+        guard let urlString = urlString else {
+            return false
+        }
+        
+        let httpPrefix = "http://"
+        let httpsPrefix = "https://"
+        
+        var prefixedString = urlString
+        if !urlString.hasPrefix(httpPrefix) && !urlString.hasPrefix(httpsPrefix) {
+            prefixedString = "\(httpPrefix)\(urlString)"
+        }
+        
+        guard let url = URL(string: prefixedString) else {
+            print("invalid URL: \(prefixedString)")
+            return false
+        }
+        
+        guard UIApplication.shared.canOpenURL(url) else {
+            print("Cannot open URL: \(url)")
+            return false
+        }
+        
+        return true
+    }
+    
+    private func postPin(withSubtitle subtitle: String) {
+        pinDelegate.postPin(lat: coordinates.0, lng: coordinates.1, subtitle: subtitle)
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+}
+
+class MapPin: NSObject, MKAnnotation {
+    var coordinate: CLLocationCoordinate2D
+    var title: String?
+    var subtitle: String?
+    
+    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String) {
+        self.coordinate = coordinate
+        self.title = title
+        self.subtitle = subtitle
+    }
+    
+    convenience init(lat: Double, lng: Double, title: String, subtitle: String) {
+        let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+        self.init(coordinate: coordinate, title: title, subtitle: subtitle)
     }
 }

@@ -11,9 +11,6 @@ import MapKit
 
 class MapViewDelegate: NSObject, MKMapViewDelegate {
     
-    let httpPrefix = "http://"
-    let httpsPrefix = "https://"
-    
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         print("Control tapped!!! 😀 :\(control)")
         
@@ -22,18 +19,8 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
             return
         }
         
-        var urlString = subtitleText
-        if !urlString.hasPrefix(httpPrefix) && !urlString.hasPrefix(httpsPrefix) {
-            urlString = "\(httpsPrefix)\(urlString)"
-        }
-        
-        guard let url = URL(string: urlString) else {
-            print("subtitle is invalid URL")
-            return
-        }
-        
-        guard UIApplication.shared.canOpenURL(url) else {
-            print("Cannot open URL")
+        guard let url = urlFromString(urlString: subtitleText) else {
+            print("Cannon create URL from String")
             return
         }
         
@@ -47,6 +34,32 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         defaultView.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         
         return defaultView
+    }
+    
+    private func urlFromString(urlString: String?) -> URL? {
+        guard let urlString = urlString else {
+            return nil
+        }
+        
+        let httpPrefix = "http://"
+        let httpsPrefix = "https://"
+        
+        var prefixedString = urlString
+        if !urlString.hasPrefix(httpPrefix) && !urlString.hasPrefix(httpsPrefix) {
+            prefixedString = "\(httpsPrefix)\(urlString)"
+        }
+        
+        guard let url = URL(string: prefixedString) else {
+            print("invalid URL: \(prefixedString)")
+            return nil
+        }
+        
+        guard UIApplication.shared.canOpenURL(url) else {
+            print("Cannot open URL: \(url)")
+            return nil
+        }
+        
+        return url
     }
     
 }

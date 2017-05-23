@@ -14,7 +14,8 @@ class AddLocationViewController: UIViewController {
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var confirmationButtons: UIStackView!
+    @IBOutlet weak var nextButton: UIBarButtonItem!
+    
     let regionRadius: CLLocationDistance = 1000
     let initialLocation = CLLocation(latitude: 21.282778, longitude: -157.829444)
     var lastLocation: MKAnnotation?
@@ -29,33 +30,31 @@ class AddLocationViewController: UIViewController {
         super.viewDidLoad()
         tfDelegate = LocationTextFieldDelegate(textField: locationTextField, hostController: self, errorLabel: errorLabel)
         resetMapview(animated: false)
+        enableNext(enabled: false)
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
-    
-    @IBAction func yesClicked(_ sender: UIButton) {
+    @IBAction func nextClicked(_ sender: UIBarButtonItem) {
         guard let lastLocation = lastLocation else {
             print("Last Location empty when it should have a value")
             return
         }
-        
-        let controller = storyboard!.instantiateViewController(withIdentifier: "AddSubtitleController") as! AddSubtitleViewController
-        let coordinates = (lastLocation.coordinate.latitude, lastLocation.coordinate.longitude)
-        controller.coordinates = coordinates
-        controller.pinDelegate = pinDelegate
-//        present(controller, animated: true, completion: nil)
-        self.navigationController?.pushViewController(controller, animated: true)
+        selectLocation(location: lastLocation)
     }
     
-    @IBAction func noClicked(_ sender: UIButton) {
-        resetUI()
+    private func selectLocation(location: MKAnnotation) {
+        let controller = storyboard!.instantiateViewController(withIdentifier: "AddSubtitleController") as! AddSubtitleViewController
+        let coordinates = (location.coordinate.latitude, location.coordinate.longitude)
+        controller.coordinates = coordinates
+        controller.pinDelegate = pinDelegate
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     private func resetUI() {
         locationTextField.text = nil
-        confirmationButtons.isHidden = true
+        self.enableNext(enabled: false)
         mapView.removeAnnotations(mapView.annotations)
         lastLocation = nil
         resetMapview()
@@ -65,8 +64,8 @@ class AddLocationViewController: UIViewController {
     func showErrorMessageAndReset(errorMsg: String) {
         executeOnMain {
             self.errorLabel.text = errorMsg
-            self.confirmationButtons.isHidden = true
             self.resetMapview()
+            self.enableNext(enabled: false)
         }
     }
     
@@ -82,8 +81,8 @@ class AddLocationViewController: UIViewController {
             self.mapView.addAnnotation(annotation)
             self.mapView.centerMapOnLocation(lat: annotation.coordinate.latitude, lng: annotation.coordinate.longitude, zoomLevel: 5)
             self.lastLocation = annotation
-            self.confirmationButtons.isHidden = false
             self.mapView.selectAnnotation(annotation, animated: true)
+            self.enableNext(enabled: true)
         }
     }
     
@@ -92,6 +91,10 @@ class AddLocationViewController: UIViewController {
         let span = MKCoordinateSpan(latitudeDelta: 180, longitudeDelta: 360)
         let region = MKCoordinateRegion(center: CLLocationCoordinate2DMake(self.centerOfUS.0, self.centerOfUS.1) , span: span)
         mapView.setRegion(region, animated: animated)
+    }
+    
+    private func enableNext(enabled: Bool) {
+        nextButton.isEnabled = enabled
     }
     
 }
