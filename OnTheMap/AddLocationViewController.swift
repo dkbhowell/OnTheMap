@@ -21,29 +21,14 @@ class AddLocationViewController: UIViewController {
     
     var tfDelegate: UITextFieldDelegate?
     weak var pinDelegate: PostPinDelegate!
+    
+    //39.8282° N, 98.5795° W
+    let centerOfUS = (39.8282, -98.5795)
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tfDelegate = LocationTextFieldDelegate(textField: locationTextField, hostController: self, errorLabel: errorLabel)
-        centerMapOnLocation(location: initialLocation)
-        print("FIRST RESPONDER")
-        let firstResponder = UIResponder.currentFirstResponder()
-        print(firstResponder)
-        print("RESPONDER CHAIN")
-        printResponderChain(responder: firstResponder)
-    }
-    
-    func printResponderChain(responder: UIResponder?) {
-        guard let responder = responder else {
-            return
-        }
-        print(responder)
-        printResponderChain(responder: responder.next)
-    }
-    
-    func centerMapOnLocation(location: CLLocation) {
-        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate, regionRadius * 2.0, regionRadius * 2.0)
-        mapView.setRegion(coordinateRegion, animated: true)
+        resetMapview(animated: false)
     }
     
     @IBAction func yesClicked(_ sender: UIButton) {
@@ -68,22 +53,40 @@ class AddLocationViewController: UIViewController {
         confirmationButtons.isHidden = true
         mapView.removeAnnotations(mapView.annotations)
         lastLocation = nil
+        resetMapview()
     }
-    
     
     // Delegate Functions
     func showErrorMessageAndReset(errorMsg: String) {
         performUpdatesOnMain {
             self.errorLabel.text = errorMsg
+            self.confirmationButtons.isHidden = true
+            self.resetMapview()
+        }
+    }
+    
+    func clearErrorMessage() {
+        performUpdatesOnMain {
+            self.errorLabel.text = ""
+            self.mapView.removeAnnotations(self.mapView.annotations)
         }
     }
     
     func showAnnotation(annotation: MKAnnotation) {
         performUpdatesOnMain {
-            self.mapView.showAnnotations([annotation], animated: true)
+            self.mapView.addAnnotation(annotation)
+            self.mapView.centerMapOnLocation(lat: annotation.coordinate.latitude, lng: annotation.coordinate.longitude, zoomLevel: 5)
             self.lastLocation = annotation
             self.confirmationButtons.isHidden = false
+            self.mapView.selectAnnotation(annotation, animated: true)
         }
+    }
+    
+    private func resetMapview(animated: Bool = true) {
+        mapView.removeAnnotations(mapView.annotations)
+        let span = MKCoordinateSpan(latitudeDelta: 180, longitudeDelta: 360)
+        let region = MKCoordinateRegion(center: CLLocationCoordinate2DMake(self.centerOfUS.0, self.centerOfUS.1) , span: span)
+        mapView.setRegion(region, animated: animated)
     }
     
 }

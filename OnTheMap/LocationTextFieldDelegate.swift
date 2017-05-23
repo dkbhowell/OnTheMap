@@ -31,6 +31,8 @@ class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
         textField.resignFirstResponder()
         if let location = textField.text {
             
+            self.hostController.clearErrorMessage()
+            
             CLGeocoder().geocodeAddressString(location, completionHandler: { (placemark, err) in
                 if let err = err {
                     print("Geocode Error: \(err)")
@@ -76,10 +78,12 @@ class LocationTextFieldDelegate: NSObject, UITextFieldDelegate {
     }
     
     private func showErrorMessage(msg: String) {
-        performUpdatesOnMain {
-            self.errorLabel.text = msg
-        }
+        hostController.showErrorMessageAndReset(errorMsg: msg)
     }
+    
+//    private func showLocation(lat: Double, lng: Double) {
+//        hostController.showLocation(lat: lat, lng: lng)
+//    }
     
     
 }

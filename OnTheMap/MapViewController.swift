@@ -101,8 +101,9 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
             print("Error: No user pin despite just setting it")
             return
         }
-        
-        mapView.showAnnotations([userPin], animated: true)
+        mapView.addAnnotation(userPin)
+        mapView.centerMapOnLocation(lat: userPin.coordinate.latitude, lng: userPin.coordinate.longitude, zoomLevel: 5)
+        mapView.selectAnnotation(userPin, animated: true)
     }
     
     private func startPostPinFlow() {
@@ -174,4 +175,13 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
         mapView.setRegion(coordinateRegion, animated: true)
     }
 
+}
+
+extension MKMapView {
+    func centerMapOnLocation(lat: Double, lng: Double, zoomLevel: Int = 2) {
+        let location = CLLocationCoordinate2DMake(lat, lng)
+        let zoomConstant: Double = 1000
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location, zoomConstant * Double(zoomLevel), zoomConstant * Double(zoomLevel))
+        setRegion(coordinateRegion, animated: true)
+    }
 }
