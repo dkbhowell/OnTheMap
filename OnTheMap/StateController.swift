@@ -74,7 +74,7 @@ class StateController: StateSubject {
     
     func notifyObservers(newStudents: [UdacityStudent]) {
         for observer in observers {
-            performUpdatesOnMain {
+            executeOnMain {
                 observer.studentsUpdated(students: newStudents)
             }
         }

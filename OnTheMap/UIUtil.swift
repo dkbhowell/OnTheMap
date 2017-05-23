@@ -8,12 +8,12 @@
 
 import Foundation
 
-func performUpdatesOnMain(_ updates: @escaping () -> Void) {
-    DispatchQueue.main.async {
-        updates()
+func executeOnMain(withDelayInSeconds delay: Double? = nil, _ updates: @escaping () -> Void) {
+    if let delay = delay {
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute: updates)
+    } else {
+        DispatchQueue.main.async {
+            updates()
+        }
     }
-}
-
-func performUpdatesOnMain(delayedSeconds: Double, _ updates: @escaping () -> Void) {
-    DispatchQueue.main.asyncAfter(deadline: .now() + delayedSeconds, execute: updates)
 }

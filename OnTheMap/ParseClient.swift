@@ -229,7 +229,7 @@ class ParseClient {
         
         let statusCode = ((resp as? HTTPURLResponse)?.statusCode).map { "\($0)" } ?? "None"
         
-        return .failure(AppError.NetworkingError(domain: "Parse Client", description: "Status Code: \(statusCode) \nError: \(err)"))
+        return .failure(AppError.NetworkError(domain: "Parse Client", description: "Status Code: \(statusCode) \nError: \(err)"))
     }
     
     private func parse(data: Data) -> [String:Any]? {

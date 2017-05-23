@@ -105,7 +105,7 @@ class UdacityClient {
                 completionForLogin(.success(userId))
                 
             case .failure(let error):
-                completionForLogin(.failure(.NetworkingError(domain: "UdacityClient", description: "Error with request: \(error)")))
+                completionForLogin(.failure(.NetworkError(domain: "UdacityClient", description: "Error with request: \(error)")))
             }
         }
     }
@@ -168,7 +168,7 @@ class UdacityClient {
                     completionForUserInfo(.failure(.ParseError(domain: "UdacityClient", description: "Error parsing data into user")))
                 }
             case .failure(let error):
-                completionForUserInfo(.failure(.NetworkingError(domain: "UdacityClient", description: "Error with request: \(error)")))
+                completionForUserInfo(.failure(.NetworkError(domain: "UdacityClient", description: "Error with request: \(error)")))
             }
         })
     }
@@ -248,7 +248,7 @@ class UdacityClient {
             return .failure(AppError.UnexpectedResult(domain: "Udacity", description: "Error is nil"))
         }
         
-        return .failure(AppError.NetworkingError(domain: "Udacity", description: "Response Code: \(responseCode) Error: \(error)"))
+        return .failure(AppError.NetworkError(domain: "Udacity", description: "Response Code: \(responseCode) Error: \(error)"))
     }
     
     func reset() {

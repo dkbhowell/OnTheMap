@@ -108,7 +108,7 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
             self.dismiss(animated: true, completion: nil)
             switch result {
             case .success(_):
-                performUpdatesOnMain {
+                executeOnMain {
                     print("FB Auth Success!!!! 😀")
                     self.completeLogin()
                 }
@@ -127,12 +127,12 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
             switch result {
             case .success( _):
                 print("Success!!!! 😀")
-                performUpdatesOnMain {
+                executeOnMain {
                     self.completeLogin()
                 }
             case .failure(let msg):
                 print("Failure!!!! 😩")
-                performUpdatesOnMain {
+                executeOnMain {
                     self.errorLabel.text = msg
                 }
             }

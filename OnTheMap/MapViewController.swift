@@ -142,7 +142,7 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
             switch result {
             case .success(let updatedAtString):
                 print("Successful update at: \(updatedAtString)")
-                performUpdatesOnMain {
+                executeOnMain {
                     self.updateUserPin(lat: lat, lng: lng, subtitle: subtitle)
 //                    self.centerMapOnLocation(lat: lat, lng: lng, regionDistance: 6000)
                 }
@@ -157,7 +157,7 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
             switch result {
             case .success(let objectId):
                 print("Location Added Successfully!\n---Object ID: \(objectId)")
-                performUpdatesOnMain {
+                executeOnMain {
                     self.updateUserPin(lat: lat, lng: lng, subtitle: subtitle)
 //                    self.centerMapOnLocation(lat: lat, lng: lng, regionDistance: 6000)
                 }

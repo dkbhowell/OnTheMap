@@ -9,14 +9,14 @@
 import Foundation
 
 enum AppError: Error, CustomStringConvertible {
-    case NetworkingError(domain: String, description: String)
+    case NetworkError(domain: String, description: String)
     case ParseError(domain: String, description: String)
     case UnexpectedResult(domain: String, description: String)
     
     var description: String {
         switch self {
-        case .NetworkingError(let domain, let desc):
-            return "Networking Error \n---Domain: \(domain) \n---Description: \(desc)"
+        case .NetworkError(let domain, let desc):
+            return "Network Error \n---Domain: \(domain) \n---Description: \(desc)"
         case .ParseError(let domain, let desc):
             return "Parse Error \n---Domain: \(domain) \n---Description: \(desc)"
         case .UnexpectedResult(let domain, let desc):

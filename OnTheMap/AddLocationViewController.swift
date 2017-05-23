@@ -63,7 +63,7 @@ class AddLocationViewController: UIViewController {
     
     // Delegate Functions
     func showErrorMessageAndReset(errorMsg: String) {
-        performUpdatesOnMain {
+        executeOnMain {
             self.errorLabel.text = errorMsg
             self.confirmationButtons.isHidden = true
             self.resetMapview()
@@ -71,14 +71,14 @@ class AddLocationViewController: UIViewController {
     }
     
     func clearErrorMessage() {
-        performUpdatesOnMain {
+        executeOnMain {
             self.errorLabel.text = ""
             self.mapView.removeAnnotations(self.mapView.annotations)
         }
     }
     
     func showAnnotation(annotation: MKAnnotation) {
-        performUpdatesOnMain {
+        executeOnMain {
             self.mapView.addAnnotation(annotation)
             self.mapView.centerMapOnLocation(lat: annotation.coordinate.latitude, lng: annotation.coordinate.longitude, zoomLevel: 5)
             self.lastLocation = annotation
@@ -97,8 +97,6 @@ class AddLocationViewController: UIViewController {
 }
 
 extension UIResponder {
-    // Swift 1.2 finally supports static vars!. If you use 1.1 see:
-    // http://stackoverflow.com/a/24924535/385979
     private weak static var _currentFirstResponder: UIResponder? = nil
     
     public class func currentFirstResponder() -> UIResponder? {
