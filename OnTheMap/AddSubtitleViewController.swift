@@ -23,6 +23,10 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate, Keyboard
         
     }
     
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         
         if let text = textField.text {
@@ -37,7 +41,8 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate, Keyboard
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+//        self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     func addKeyboardNotificationObservers() {

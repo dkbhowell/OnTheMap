@@ -31,6 +31,10 @@ class AddLocationViewController: UIViewController {
         resetMapview(animated: false)
     }
     
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        self.navigationController?.dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func yesClicked(_ sender: UIButton) {
         guard let lastLocation = lastLocation else {
             print("Last Location empty when it should have a value")
@@ -41,7 +45,8 @@ class AddLocationViewController: UIViewController {
         let coordinates = (lastLocation.coordinate.latitude, lastLocation.coordinate.longitude)
         controller.coordinates = coordinates
         controller.pinDelegate = pinDelegate
-        present(controller, animated: true, completion: nil)
+//        present(controller, animated: true, completion: nil)
+        self.navigationController?.pushViewController(controller, animated: true)
     }
     
     @IBAction func noClicked(_ sender: UIButton) {

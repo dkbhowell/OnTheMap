@@ -109,7 +109,10 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
     private func startPostPinFlow() {
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "AddLocationController") as! AddLocationViewController
         controller.pinDelegate = self
-        self.present(controller, animated: true, completion: nil)
+//        self.present(controller, animated: true, completion: nil)
+//        self.navigationController?.pushViewController(controller, animated: true)
+        let newNavController = UINavigationController(rootViewController: controller)
+        self.present(newNavController, animated: true, completion: nil)
     }
     
     func postPin(lat: Double, lng: Double, subtitle: String) {
