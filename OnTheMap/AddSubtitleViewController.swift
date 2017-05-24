@@ -29,6 +29,7 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate, Keyboard
         mapView.centerMapOnLocation(lat: mapPin.coordinate.latitude, lng: mapPin.coordinate.longitude, zoomLevel: 5)
         mapView.selectAnnotation(mapPin, animated: true)
         doneButton.isEnabled = false
+        mapView.isScrollEnabled = false
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {

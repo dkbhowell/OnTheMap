@@ -13,6 +13,7 @@ import FBSDKLoginKit
 class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
     
     let state = StateController.sharedInstance
+    let signUpURL = "https://www.udacity.com/account/auth#!/signup"
     
     // Outlets
     @IBOutlet weak var usernameTextField: UITextField!
@@ -146,6 +147,17 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
         let controller = storyboard!.instantiateViewController(withIdentifier: "HomeTabViewController") as! HomeTabViewController
         present(controller, animated: true, completion: nil)
     }
+    
+    @IBAction func signUpTapped(_ sender: UIButton) {
+        let url = URL(string: signUpURL)
+        guard let signUpURL = url else {
+            print("URL creation for sign up failed")
+            return
+        }
+        UIApplication.shared.open(signUpURL, options: [:], completionHandler: nil)
+    }
+    
+    
 }
 
 extension LoginController {
