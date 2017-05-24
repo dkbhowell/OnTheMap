@@ -21,26 +21,32 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
     
     // variables
     private var students: [UdacityStudent] = StateController.sharedInstance.getStudents()
-    
-    // Locations
-    let mountainView = (37.3861, -122.0839)
-    let sunnyVale = (37.365848, -122.036310)
-    let paloAlto = (37.440896, -122.153891)
-    let subtitle = "www.atp.fm"
+    private var studentPins: [MKAnnotation] = []
+    private var userPin: MKAnnotation?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         state.addObserver(self)
         mapView.delegate = delegate
         let students = state.getStudents()
-        let markers = getMarkersFromStudents(students: students)
-        refreshPins(markers: markers)
+        let userStudent = state.userStudent
+        studentPins = getMarkersFromStudents(students: students)
+        userPin = userStudent?.locationMarker
+        print("Refreshing Map from ViewDidLoad")
+        refreshPins(newStudentPins: studentPins, newUserPin: userPin)
     }
     
     func studentsUpdated(students: [UdacityStudent]) {
         // students do not include user
         let markers = getMarkersFromStudents(students: students)
-        refreshPins(markers: markers)
+        print("Refreshing Map from studentsUpdated")
+        refreshPins(newStudentPins: markers)
+    }
+    
+    func userStudentUpdated(userStudent: UdacityStudent) {
+        if let pin = userStudent.locationMarker {
+            refreshPins(newUserPin: pin)
+        }
     }
     
     private func getMarkersFromStudents(students: [UdacityStudent]) -> [MKAnnotation] {
@@ -75,13 +81,20 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
     }
     
     // removes existing markers, adds markers for other students, adds user marker and focus if exists
-    private func refreshPins(markers: [MKAnnotation]) {
-        mapView.removeAnnotations(mapView.annotations)
-        mapView.addAnnotations(markers)
-        //mapView.showAnnotations(markers, animated: true)
-        if let user = state.userStudent, let userPin = user.locationMarker {
-            mapView.showAnnotations([userPin], animated: true)
-//            centerMapOnLocation(lat: userPin.coordinate.latitude, lng: userPin.coordinate.longitude, regionDistance: 3000)
+    private func refreshPins(newStudentPins: [MKAnnotation]? = nil, newUserPin: MKAnnotation? = nil) {
+        if let newStudentPins = newStudentPins {
+            mapView.removeAnnotations(studentPins)
+            mapView.addAnnotations(newStudentPins)
+            studentPins = newStudentPins
+        }
+        
+        if let newUserPin = newUserPin {
+            if let userPin = self.userPin {
+                mapView.removeAnnotation(userPin)
+            }
+            mapView.addAnnotation(newUserPin)
+            self.userPin = newUserPin
+            mapView.centerMapOnLocation(lat: newUserPin.coordinate.latitude, lng: (newUserPin.coordinate.longitude), zoomLevel: 5)
         }
     }
     

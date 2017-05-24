@@ -18,7 +18,13 @@ class StateController: StateSubject {
     private var students: [UdacityStudent] = []
     private var observers: [StateObserver] = []
     private var user: User?
-    var userStudent: UdacityStudent?
+    var userStudent: UdacityStudent? {
+        didSet {
+            if let student = userStudent {
+                notifyObservers(newUserStudent: student)
+            }
+        }
+    }
     
     func getStudents() -> [UdacityStudent] {
         return students
@@ -52,6 +58,7 @@ class StateController: StateSubject {
     }
     
     func setUser(user: User) {
+        print("Setting User")
         self.user = user
     }
     
@@ -80,6 +87,14 @@ class StateController: StateSubject {
         }
     }
     
+    func notifyObservers(newUserStudent: UdacityStudent) {
+        for observer in observers {
+            executeOnMain {
+                observer.userStudentUpdated(userStudent: newUserStudent)
+            }
+        }
+    }
+    
     func resetState() {
         students = []
         user = nil
@@ -104,10 +119,12 @@ class StateController: StateSubject {
 
 protocol StateObserver: class {
     func studentsUpdated(students: [UdacityStudent])
+    func userStudentUpdated(userStudent: UdacityStudent)
 }
 
 protocol StateSubject: class {
     func addObserver(_ observer: StateObserver)
     func removeObserver(_ observer: StateObserver)
     func notifyObservers(newStudents: [UdacityStudent])
+    func notifyObservers(newUserStudent: UdacityStudent)
 }

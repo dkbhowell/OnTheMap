@@ -409,8 +409,8 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="swa-cl-SyF" kind="relationship" relationship="viewControllers" id="uZ1-eR-IE3"/>
                         <segue destination="WPU-9r-iFO" kind="relationship" relationship="viewControllers" id="g2d-Hq-rpu"/>
+                        <segue destination="swa-cl-SyF" kind="relationship" relationship="viewControllers" id="uZ1-eR-IE3"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ymu-dG-sUk" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -15,6 +15,7 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        students = StateController.sharedInstance.getStudents()
         StateController.sharedInstance.addObserver(self)
         
         print("loaded with \(students.count) students")
@@ -50,13 +51,60 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
         print("State Changed from Table View Controller!")
     }
     
+    func userStudentUpdated(userStudent: UdacityStudent) {
+        //TODO
+        print("New User Student in Table View")
+    }
+    
     func getMapController() -> MapViewController? {
-        let navController = self.tabBarController?.viewControllers?[1] as? UINavigationController
-        return navController?.viewControllers[0] as? MapViewController
+        guard let controllers = self.tabBarController?.viewControllers else {
+            print("Problem accessing view controlers in tab bar controller")
+            return nil
+        }
+        for controller in controllers {
+            // check for direct controller as mapview
+            if controller is MapViewController {
+                return controller as? MapViewController
+            }
+            // check for mapcontroller as root view controller in navigation controller
+            if let navController = controller as? UINavigationController,
+                let mapController = navController.viewControllers.first as? MapViewController
+            {
+                return mapController
+            }
+        }
+        return nil
+    }
+    
+    private func getMapNavController(fromNavControllers controllers: [UINavigationController]) -> UINavigationController? {
+        for controller in controllers {
+            // check for mapcontroller as root view controller in navigation controller
+            if controller.viewControllers.first is MapViewController
+            {
+                return controller
+            }
+        }
+        return nil
     }
     
     func goToMapController() {
-        self.tabBarController?.selectedIndex = 1
+        guard let controllers = self.tabBarController?.viewControllers?.filter({ (vc) -> Bool in
+            vc is UINavigationController
+        }).map({ (vc) -> UINavigationController in
+            vc as! UINavigationController
+        }) else {
+            print("Problem acessing view controllers in tab bar controller")
+            return
+        }
+        guard let mapNavController = getMapNavController(fromNavControllers: controllers) else {
+            print("No map nav controller found in controllers")
+            return
+        }
+        guard let index = controllers.index(of: mapNavController) else {
+            print("Map Nav controller now found in controller list")
+            return
+        }
+        self.tabBarController?.selectedIndex = index
     }
     
     @IBAction func postPin(_ sender: Any) {
@@ -72,6 +120,5 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
     @IBAction func logout(_ sender: Any) {
         (self.tabBarController as? HomeTabViewController)?.logout()
     }
-    
     
 }
