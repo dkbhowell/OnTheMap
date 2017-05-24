@@ -21,6 +21,7 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var fbLoginButton: FBSDKLoginButton!
+    @IBOutlet weak var imageView: UIImageView!
     
 
     override func viewDidLoad() {
@@ -38,6 +39,16 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
             print("Found FB Access Token -- logging in with Facebook")
             loginWithFacebook(usingAccessToken: fbAccessToken)
         }
+        
+        // change size of fb button
+        for constraint in fbLoginButton.constraints {
+            if constraint.firstAttribute == NSLayoutAttribute.height {
+                print("Changing fb height")
+                constraint.constant = 40
+            }
+        }
+        
+        imageView.layer.cornerRadius = 8.0
     }
     
     override func viewDidAppear(_ animated: Bool) {
