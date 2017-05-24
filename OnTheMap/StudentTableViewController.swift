@@ -8,14 +8,27 @@
 
 import UIKit
 
-class StudentTableViewController: UIViewController, StateObserver, UITableViewDataSource {
+class StudentTableViewController: UIViewController, StateObserver, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet weak var tableView: UITableView!
     
     var students = StateController.sharedInstance.getStudents()
+    var userStudent = StateController.sharedInstance.userStudent
+    var allStudents: [UdacityStudent] {
+        get {
+            if let userStudent = userStudent {
+                var allStudents = students
+                allStudents.insert(userStudent, at: 0)
+                return allStudents
+            } else {
+                return students
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         students = StateController.sharedInstance.getStudents()
+        userStudent = StateController.sharedInstance.userStudent
         StateController.sharedInstance.addObserver(self)
         
         print("loaded with \(students.count) students")
@@ -23,7 +36,7 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return students.count
+        return allStudents.count
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -31,7 +44,7 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let student = students[indexPath.row]
+        let student = allStudents[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "StudentTableCell")
         
         guard let newCell = cell  else {
@@ -41,6 +54,17 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
         
         newCell.textLabel?.text = student.name
         newCell.detailTextLabel?.text = student.data
+        
+        if student == userStudent {
+//            let currentFont = newCell.textLabel?.font!
+            newCell.textLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
+            newCell.detailTextLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
+            newCell.backgroundColor = UIColor(redVal: 255, greenVal: 211, blueVal: 137, alpha: 1)
+        } else {
+            newCell.textLabel?.font = UIFont.systemFont(ofSize: 16.0)
+            newCell.detailTextLabel?.font = UIFont.systemFont(ofSize: 10.0)
+            newCell.backgroundColor = nil
+        }
     
         return newCell
     }
@@ -54,6 +78,8 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
     func userStudentUpdated(userStudent: UdacityStudent) {
         //TODO
         print("New User Student in Table View")
+        self.userStudent = userStudent
+        tableView.reloadData()
     }
     
     func getMapController() -> MapViewController? {
@@ -121,4 +147,13 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
         (self.tabBarController as? HomeTabViewController)?.logout()
     }
     
+}
+
+extension UIColor {
+    convenience init(redVal: Int, greenVal: Int, blueVal: Int, alpha: Float) {
+        let redDecimal = Float(Float(redVal) / 255)
+        let greenDecimal = Float(Float(greenVal) / 255)
+        let blueDecimal = Float(Float(blueVal) / 255)
+        self.init(colorLiteralRed: redDecimal, green: greenDecimal, blue: blueDecimal, alpha: alpha)
+    }
 }
