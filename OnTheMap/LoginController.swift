@@ -60,13 +60,24 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        if let text = textField.text, text != "" {
-            login(loginButton)
+        print("Text field shoudl return..........")
+        switch textField {
+        case usernameTextField:
+            passwordTextField.becomeFirstResponder()
+        case passwordTextField:
+            if let userText = usernameTextField.text, let pwdText = passwordTextField.text,
+                userText != "", pwdText != ""
+            {
+                login(UIButton())
+            }
+            textField.resignFirstResponder()
+        default:
+            textField.resignFirstResponder()
         }
         return true
     }
     
+    // Facebook login button delegate methods
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         // TODO
         print("Login Error parameter: \(error)")
@@ -122,8 +133,10 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
     
     @IBAction func login(_ sender: UIButton) {
         let udacityClient = UdacityClient.sharedInstance()
-        let username = usernameTextField.text!
-        let pwd = passwordTextField.text!
+        guard let username = usernameTextField.text, let pwd = passwordTextField.text else {
+            print("No username or password")
+            return
+        }
         udacityClient.authenticate(username: username, password: pwd) { (result) in
             switch result {
             case .success( _):
@@ -131,10 +144,26 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
                 executeOnMain {
                     self.completeLogin()
                 }
-            case .failure(let msg):
+            case .failure(let appError):
                 print("Failure!!!! 😩")
+                var errorText = "Something Went Wrong"
+                switch appError {
+                case .NetworkError:
+                    errorText = "Authentication Failed: Unable to reach network -- please check your connection and try again"
+                case .ParseError:
+                    errorText = "Authentication Failed: Unexpected value in request or response, please try again"
+                case .AuthenticationError:
+                    errorText = "Authentication Failed: Invalid username or password, please try again"
+                case .UnexpectedResult:
+                    errorText = "Authentication Failed: Invalid credentials, please try again"
+                }
                 executeOnMain {
-                    self.errorLabel.text = msg
+                    let alertController = UIAlertController(title: "Authentication Failure", message: errorText, preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "OK", style: .cancel) { action in
+                        self.resetViews()
+                        self.dismiss(animated: true, completion: nil)
+                    })
+                    self.present(alertController, animated: true, completion: nil)
                 }
             }
         }
@@ -155,6 +184,11 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
             return
         }
         UIApplication.shared.open(signUpURL, options: [:], completionHandler: nil)
+    }
+    
+    private func resetViews() {
+        usernameTextField.text = ""
+        passwordTextField.text = ""
     }
     
     

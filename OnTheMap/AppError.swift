@@ -11,6 +11,7 @@ import Foundation
 enum AppError: Error, CustomStringConvertible {
     case NetworkError(domain: String, description: String)
     case ParseError(domain: String, description: String)
+    case AuthenticationError(domain: String, description: String)
     case UnexpectedResult(domain: String, description: String)
     
     var description: String {
@@ -19,9 +20,10 @@ enum AppError: Error, CustomStringConvertible {
             return "Network Error \n---Domain: \(domain) \n---Description: \(desc)"
         case .ParseError(let domain, let desc):
             return "Parse Error \n---Domain: \(domain) \n---Description: \(desc)"
+        case .AuthenticationError(let domain, let desc):
+            return "Authentication Error \n---Domain: \(domain) \n---Description: \(desc)"
         case .UnexpectedResult(let domain, let desc):
             return "Unexpected Result \n---Domain: \(domain) \n---Description: \(desc)"
-            
         }
     }
 }

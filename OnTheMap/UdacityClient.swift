@@ -15,7 +15,7 @@ class UdacityClient {
     let state = StateController.sharedInstance
     var sessionId: String?
     
-    func authenticate(username: String, password: String, completionForAuth: @escaping (Result) -> () ) {
+    func authenticate(username: String, password: String, completionForAuth: @escaping (DataResult<String, AppError>) -> () ) {
         login(username: username, password: password) { (result) in
             switch result {
             case .success(let userId):
@@ -24,14 +24,14 @@ class UdacityClient {
                     case .success(let user):
                         self.state.setUser(user: user)
                         completionForAuth(.success("Login Successful"))
-                    case .failure(let description):
+                    case .failure(let appError):
                         self.reset()
-                        completionForAuth(.failure("Login Unsuccessful: \(description)"))
+                        completionForAuth(.failure(appError))
                     }
                 })
-            case .failure(let description):
+            case .failure(let appError):
                 self.reset()
-                completionForAuth(.failure("Login Unsuccessful: \(description)"))
+                completionForAuth(.failure(appError))
             }
         }
     }
@@ -66,8 +66,17 @@ class UdacityClient {
         _ = taskForPOST(Methods.SESSION, params: nil, jsonDataForBody: body) { (result) in
             switch result {
             case .success(let data):
+                let dataString = String(data: data, encoding: .utf8)
+                print("UDACITY AUTH DATA STRING: \(dataString!)")
+                
                 guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
                     completionForLogin(.failure(.ParseError(domain: "UdacityClient", description: "Error converting result to dict")))
+                    return
+                }
+                
+                if let status = result["status"] as? Int, status == 403 {
+                    let statusMessage = (result["error"] as? String) ?? "Invalid Credentials"
+                    completionForLogin(.failure(.AuthenticationError(domain: "UdacityClient", description: statusMessage)))
                     return
                 }
                 
