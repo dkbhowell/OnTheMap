@@ -155,7 +155,8 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
     }
     
     @IBAction func refreshPins(_ sender: Any) {
-        
+        // need to reload pins from the network
+        (self.tabBarController as? HomeTabViewController)?.refreshData()
     }
     
     @IBAction func logout(_ sender: Any) {

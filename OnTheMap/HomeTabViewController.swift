@@ -35,6 +35,22 @@ class HomeTabViewController: UITabBarController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    func refreshData() {
+        let parseClient = ParseClient.sharedInstance
+        parseClient.getStudents { (studentRayResult) in
+            switch studentRayResult {
+            case .success(let students):
+                let state = StateController.sharedInstance
+                state.setStudents(students: students)
+            case .failure(let appError):
+                print(appError)
+                let alertController = UIAlertController(title: "Error refreshing data from network", message: "Please check your connection and try again", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
+            }
+        }
+    }
+    
     private func loadUserPin() {
         let parseClient = ParseClient.sharedInstance
         if let id = StateController.sharedInstance.getUser()?.id {

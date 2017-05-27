@@ -76,8 +76,7 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
     }
     
     @IBAction func reloadPins(_ sender: UIBarButtonItem) {
-        // TODO
-        print("Need to reload pins from network")
+        (self.tabBarController as? HomeTabViewController)?.refreshData()
     }
     
     // removes existing markers, adds markers for other students, adds user marker and focus if exists
