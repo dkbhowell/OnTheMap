@@ -19,13 +19,8 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
             return
         }
         
-        guard let url = urlFromString(urlString: subtitleText) else {
-            print("Cannon create URL from String")
-            return
-        }
-        
-        print("opening url")
-        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        let url = NetworkUtil.validUrl(fromString: subtitleText, addPrefixIfNecessary: true)
+        NetworkUtil.openUrl(url: url)
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -34,32 +29,6 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
         defaultView.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
         
         return defaultView
-    }
-    
-    private func urlFromString(urlString: String?) -> URL? {
-        guard let urlString = urlString else {
-            return nil
-        }
-        
-        let httpPrefix = "http://"
-        let httpsPrefix = "https://"
-        
-        var prefixedString = urlString
-        if !urlString.hasPrefix(httpPrefix) && !urlString.hasPrefix(httpsPrefix) {
-            prefixedString = "\(httpsPrefix)\(urlString)"
-        }
-        
-        guard let url = URL(string: prefixedString) else {
-            print("invalid URL: \(prefixedString)")
-            return nil
-        }
-        
-        guard UIApplication.shared.canOpenURL(url) else {
-            print("Cannot open URL: \(url)")
-            return nil
-        }
-        
-        return url
     }
     
 }

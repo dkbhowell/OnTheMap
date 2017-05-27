@@ -33,6 +33,7 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
         
         print("loaded with \(students.count) students")
         tableView.dataSource = self
+        tableView.delegate = self
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -67,6 +68,15 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
         }
     
         return newCell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let student = allStudents[indexPath.row]
+        guard let urlString = student.data else {
+            print("No subtitle/data associated with student")
+            return
+        }
+        openURL(fromString: urlString)
     }
     
     func studentsUpdated(students: [UdacityStudent]) {
@@ -111,6 +121,11 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
             }
         }
         return nil
+    }
+    
+    private func openURL(fromString string: String) {
+        let url = NetworkUtil.validUrl(fromString: string, addPrefixIfNecessary: true)
+        NetworkUtil.openUrl(url: url)
     }
     
     func goToMapController() {
