@@ -141,7 +141,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
             
             // show location on mapview
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-            let name = StateController.sharedInstance.getUser()?.name
+            let name = StateController.shared.getUser()?.name
             let mapPin = MapPin(coordinate: coordinate , title: name ?? "New Location", subtitle: "")
             self.continueToSubtitle(pin: mapPin)
         })

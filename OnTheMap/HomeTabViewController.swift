@@ -14,33 +14,30 @@ class HomeTabViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let parseClient = ParseClient.sharedInstance
+        let parseClient = ParseClient.shared
         parseClient.getStudents { (studentsResult) in
             switch studentsResult {
             case .success(let students):
-                print("Successfully got students from Tab Controller")
-                StateController.sharedInstance.setStudents(students: students)
+                StateController.shared.setStudents(students: students)
             case .failure(let appError):
                 print(appError)
             }
         }
-        
         loadUserPin()
     }
     
     func logout() {
-        // TO DO
-        StateController.sharedInstance.resetState()
+        StateController.shared.resetState()
         FBSDKLoginManager().logOut()
         self.dismiss(animated: true, completion: nil)
     }
     
     func refreshData() {
-        let parseClient = ParseClient.sharedInstance
+        let parseClient = ParseClient.shared
         parseClient.getStudents { (studentRayResult) in
             switch studentRayResult {
             case .success(let students):
-                let state = StateController.sharedInstance
+                let state = StateController.shared
                 state.setStudents(students: students)
             case .failure(let appError):
                 print(appError)
@@ -52,15 +49,15 @@ class HomeTabViewController: UITabBarController {
     }
     
     private func loadUserPin() {
-        let parseClient = ParseClient.sharedInstance
-        if let id = StateController.sharedInstance.getUser()?.id {
+        let parseClient = ParseClient.shared
+        if let id = StateController.shared.getUser()?.id {
             parseClient.getStudent(withUdacityID: id, completion: { (result) in
                 switch result {
                 case .success(let student):
                     if let student = student {
                         print("Pin Exists for Student: \(student)")
                         // set user pin
-                        StateController.sharedInstance.userStudent = student
+                        StateController.shared.userStudent = student
                     } else {
                         print("No pin exists for student")
                     }

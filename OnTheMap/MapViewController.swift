@@ -11,19 +11,20 @@ import MapKit
 
 class MapViewController: UIViewController, PostPinDelegate, StateObserver {
     
-    // Outlets
+    // MARK: Outlets
     @IBOutlet weak var mapView: MKMapView!
     
-    let state = StateController.sharedInstance
-    let parseClient = ParseClient.sharedInstance
-    let udacityClient = UdacityClient.sharedInstance()
+    // MARK: Properties
+    let state = StateController.shared
+    let parseClient = ParseClient.shared
+    let udacityClient = UdacityClient.shared
     let delegate = MapViewDelegate()
     
-    // variables
-    private var students: [UdacityStudent] = StateController.sharedInstance.getStudents()
+    private var students: [UdacityStudent] = StateController.shared.getStudents()
     private var studentPins: [MKAnnotation] = []
     private var userPin: MKAnnotation?
 
+    // MARK: VC lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         state.addObserver(self)
@@ -36,6 +37,7 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
         refreshPins(newStudentPins: studentPins, newUserPin: userPin)
     }
     
+    // MARK: StateObserver
     func studentsUpdated(students: [UdacityStudent]) {
         // students do not include user
         let markers = getMarkersFromStudents(students: students)
@@ -49,12 +51,7 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
         }
     }
     
-    private func getMarkersFromStudents(students: [UdacityStudent]) -> [MKAnnotation] {
-        return students.map { $0.locationMarker }
-            .flatMap { $0 }
-    }
-    
-    // Actions
+    // MARK: Actions
     @IBAction func postPin(_ sender: UIBarButtonItem) {
         if let _ = state.userStudent?.locationMarker {
             // alert that there is already a pin, ask to update it
@@ -77,6 +74,12 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
     
     @IBAction func reloadPins(_ sender: UIBarButtonItem) {
         (self.tabBarController as? HomeTabViewController)?.refreshData()
+    }
+    
+    // MARK: Helper functions
+    private func getMarkersFromStudents(students: [UdacityStudent]) -> [MKAnnotation] {
+        return students.map { $0.locationMarker }
+            .flatMap { $0 }
     }
     
     // removes existing markers, adds markers for other students, adds user marker and focus if exists
@@ -121,14 +124,12 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
     private func startPostPinFlow() {
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "AddLocationController") as! AddLocationViewController
         controller.pinDelegate = self
-//        self.present(controller, animated: true, completion: nil)
-//        self.navigationController?.pushViewController(controller, animated: true)
         let newNavController = UINavigationController(rootViewController: controller)
         self.present(newNavController, animated: true, completion: nil)
     }
     
     func postPin(lat: Double, lng: Double, subtitle: String) {
-        if let id = StateController.sharedInstance.getUser()?.id {
+        if let id = StateController.shared.getUser()?.id {
             parseClient.getStudent(withUdacityID: id, completion: { (result) in
                 switch result {
                 case .success(let student):

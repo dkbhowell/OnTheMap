@@ -10,7 +10,7 @@ import UIKit
 
 class ParseClient {
     // Singleton
-    static let sharedInstance = ParseClient()
+    static let shared = ParseClient()
     private let httpClient = URLSession.shared
     
     // helper functions
@@ -87,7 +87,7 @@ class ParseClient {
     }
     
     func postStudentLocation(lat: Double, lng: Double, data: String, completion: @escaping (DataResult<String, AppError>) -> () ) {
-        if let user = StateController.sharedInstance.getUser() {
+        if let user = StateController.shared.getUser() {
             let studentDict = UdacityStudent.studentDict(fromUser: user, lat: lat, lng: lng, data: data)
             
             _ = runPostTask(method: "StudentLocation", bodyData: studentDict, completion: { (result) in
@@ -112,7 +112,7 @@ class ParseClient {
     }
     
     func updateStudentLocation(objectId: String, lat: Double, lng: Double, data: String, completion: @escaping (DataResult<String, AppError>) -> () ) {
-        if let user = StateController.sharedInstance.getUser() {
+        if let user = StateController.shared.getUser() {
             let studentDict = UdacityStudent.studentDict(fromUser: user, lat: lat, lng: lng, data: data)
             
             _ = runPutTask(method: "StudentLocation/\(objectId)", bodyData: studentDict, completion: { (result) in

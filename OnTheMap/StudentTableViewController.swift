@@ -9,10 +9,13 @@
 import UIKit
 
 class StudentTableViewController: UIViewController, StateObserver, UITableViewDataSource, UITableViewDelegate {
+    // MARK: Outlets
     @IBOutlet weak var tableView: UITableView!
     
-    var students = StateController.sharedInstance.getStudents()
-    var userStudent = StateController.sharedInstance.userStudent
+    // MARK: Properties
+    let state = StateController.shared
+    var students = StateController.shared.getStudents()
+    var userStudent = StateController.shared.userStudent
     var allStudents: [UdacityStudent] {
         get {
             if let userStudent = userStudent {
@@ -25,17 +28,19 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
         }
     }
 
+    // MARK: VC lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        students = StateController.sharedInstance.getStudents()
-        userStudent = StateController.sharedInstance.userStudent
-        StateController.sharedInstance.addObserver(self)
+        students = state.getStudents()
+        userStudent = state.userStudent
+        state.addObserver(self)
         
         print("loaded with \(students.count) students")
         tableView.dataSource = self
         tableView.delegate = self
     }
     
+    // MARK: TableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return allStudents.count
     }
@@ -46,30 +51,22 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let student = allStudents[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: "StudentTableCell")
-        
-        guard let newCell = cell  else {
-            print("Warning: Unable to Dequeue cell")
-            return UITableViewCell()
-        }
-        
-        newCell.textLabel?.text = student.name
-        newCell.detailTextLabel?.text = student.data
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "StudentTableCell") ?? UITableViewCell()
+        cell.textLabel?.text = student.name
+        cell.detailTextLabel?.text = student.data
         if student == userStudent {
-//            let currentFont = newCell.textLabel?.font!
-            newCell.textLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
-            newCell.detailTextLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
-            newCell.backgroundColor = UIColor(redVal: 255, greenVal: 211, blueVal: 137, alpha: 1)
+            cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
+            cell.detailTextLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
+            cell.backgroundColor = UIColor(redVal: 255, greenVal: 211, blueVal: 137, alpha: 1)
         } else {
-            newCell.textLabel?.font = UIFont.systemFont(ofSize: 16.0)
-            newCell.detailTextLabel?.font = UIFont.systemFont(ofSize: 10.0)
-            newCell.backgroundColor = nil
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 16.0)
+            cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 10.0)
+            cell.backgroundColor = nil
         }
-    
-        return newCell
+        return cell
     }
     
+    // MARK: TableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let student = allStudents[indexPath.row]
         guard let urlString = student.data else {
@@ -79,20 +76,34 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
         openURL(fromString: urlString)
     }
     
+    // MARK: Actions
+    @IBAction func postPin(_ sender: Any) {
+        goToMapController()
+        let mapController = getMapController()
+        mapController?.postPin(UIBarButtonItem())
+    }
+    
+    @IBAction func refreshPins(_ sender: Any) {
+        (self.tabBarController as? HomeTabViewController)?.refreshData()
+    }
+    
+    @IBAction func logout(_ sender: Any) {
+        (self.tabBarController as? HomeTabViewController)?.logout()
+    }
+    
+    // MARK: StateObserver
     func studentsUpdated(students: [UdacityStudent]) {
         self.students = students
         tableView.reloadData()
-        print("State Changed from Table View Controller!")
     }
     
     func userStudentUpdated(userStudent: UdacityStudent) {
-        //TODO
-        print("New User Student in Table View")
         self.userStudent = userStudent
         tableView.reloadData()
     }
     
-    func getMapController() -> MapViewController? {
+    // MARK: Helper methods
+    private func getMapController() -> MapViewController? {
         guard let controllers = self.tabBarController?.viewControllers else {
             print("Problem accessing view controlers in tab bar controller")
             return nil
@@ -128,7 +139,7 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
         NetworkUtil.openUrl(url: url)
     }
     
-    func goToMapController() {
+    private func goToMapController() {
         guard let controllers = self.tabBarController?.viewControllers?.filter({ (vc) -> Bool in
             vc is UINavigationController
         }).map({ (vc) -> UINavigationController in
@@ -146,30 +157,5 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
             return
         }
         self.tabBarController?.selectedIndex = index
-    }
-    
-    @IBAction func postPin(_ sender: Any) {
-        goToMapController()
-        let mapController = getMapController()
-        mapController?.postPin(UIBarButtonItem())
-    }
-    
-    @IBAction func refreshPins(_ sender: Any) {
-        // need to reload pins from the network
-        (self.tabBarController as? HomeTabViewController)?.refreshData()
-    }
-    
-    @IBAction func logout(_ sender: Any) {
-        (self.tabBarController as? HomeTabViewController)?.logout()
-    }
-    
-}
-
-extension UIColor {
-    convenience init(redVal: Int, greenVal: Int, blueVal: Int, alpha: Float) {
-        let redDecimal = Float(Float(redVal) / 255)
-        let greenDecimal = Float(Float(greenVal) / 255)
-        let blueDecimal = Float(Float(blueVal) / 255)
-        self.init(colorLiteralRed: redDecimal, green: greenDecimal, blue: blueDecimal, alpha: alpha)
     }
 }

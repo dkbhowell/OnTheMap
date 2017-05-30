@@ -13,6 +13,7 @@
 		DA4231151ED8DFD9002C883F /* NetworkUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4231141ED8DFD9002C883F /* NetworkUtil.swift */; };
 		DA4231661EDCB9A9002C883F /* MapPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4231651EDCB9A9002C883F /* MapPin.swift */; };
 		DA4231681EDCD523002C883F /* UIResponderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4231671EDCD523002C883F /* UIResponderExtension.swift */; };
+		DA42316A1EDD04F7002C883F /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA4231691EDD04F7002C883F /* UIColorExtension.swift */; };
 		DA47AD8F1E7C8BB800860249 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47AD8E1E7C8BB800860249 /* AppDelegate.swift */; };
 		DA47AD911E7C8BB800860249 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA47AD901E7C8BB800860249 /* LoginController.swift */; };
 		DA47AD941E7C8BB800860249 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA47AD921E7C8BB800860249 /* Main.storyboard */; };
@@ -46,6 +47,7 @@
 		DA4231141ED8DFD9002C883F /* NetworkUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkUtil.swift; sourceTree = "<group>"; };
 		DA4231651EDCB9A9002C883F /* MapPin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapPin.swift; sourceTree = "<group>"; };
 		DA4231671EDCD523002C883F /* UIResponderExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIResponderExtension.swift; sourceTree = "<group>"; };
+		DA4231691EDD04F7002C883F /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		DA47AD8B1E7C8BB800860249 /* OnTheMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OnTheMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA47AD8E1E7C8BB800860249 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA47AD901E7C8BB800860249 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				DA4231141ED8DFD9002C883F /* NetworkUtil.swift */,
 				DA4231651EDCB9A9002C883F /* MapPin.swift */,
 				DA4231671EDCD523002C883F /* UIResponderExtension.swift */,
+				DA4231691EDD04F7002C883F /* UIColorExtension.swift */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 				DA8BACA11ECB7BDF0056AD36 /* KeyboardAdaptable.swift in Sources */,
 				DAC9B4021E8D6234007C19AA /* StateController.swift in Sources */,
 				DA21C1E81E95515D0025E3EE /* AddLocationViewController.swift in Sources */,
+				DA42316A1EDD04F7002C883F /* UIColorExtension.swift in Sources */,
 				DAC9B3F91E8C2A52007C19AA /* UIUtil.swift in Sources */,
 				DAEA95A51E96D7D6008F0623 /* PostPinDelegate.swift in Sources */,
 				DAC9B4001E8C63B9007C19AA /* UdacityStudent.swift in Sources */,

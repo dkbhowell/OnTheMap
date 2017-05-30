@@ -14,7 +14,7 @@ class UdacityClient {
     
     let httpSession = URLSession.shared
     
-    let state = StateController.sharedInstance
+    let state = StateController.shared
     var sessionId: String?
     
     func authenticate(username: String, password: String, completionForAuth: @escaping (DataResult<String, AppError>) -> () ) {

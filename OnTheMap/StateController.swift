@@ -11,7 +11,7 @@ import MapKit
 
 class StateController: StateSubject {
     // Singleton
-    static let sharedInstance = StateController()
+    static let shared = StateController()
     private init() { }
     
     // Properties
