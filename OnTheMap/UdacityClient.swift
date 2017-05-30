@@ -9,14 +9,12 @@
 import Foundation
 
 class UdacityClient {
-    
     static let shared = UdacityClient()
-    
     let httpSession = URLSession.shared
-    
     let state = StateController.shared
     var sessionId: String?
     
+    // MARK: Udacity Composite API Methods
     func authenticate(username: String, password: String, completionForAuth: @escaping (DataResult<String, AppError>) -> () ) {
         login(username: username, password: password) { (result) in
             switch result {
@@ -58,7 +56,8 @@ class UdacityClient {
         }
     }
     
-    func login(username: String, password: String, completionForLogin: @escaping (DataResult<String, AppError>) -> () ) {
+    // MARK: Udacity API Methods
+    private func login(username: String, password: String, completionForLogin: @escaping (DataResult<String, AppError>) -> () ) {
         var body = [String:Any]()
         var udacityDict = [String:String]()
         udacityDict[RequestParamNames.USERNAME] = username
@@ -68,60 +67,44 @@ class UdacityClient {
         _ = taskForPOST(Methods.SESSION, params: nil, jsonDataForBody: body) { (result) in
             switch result {
             case .success(let data):
-                let dataString = String(data: data, encoding: .utf8)
-                print("UDACITY AUTH DATA STRING: \(dataString!)")
-                
                 guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
                     completionForLogin(.failure(.ParseError(domain: "UdacityClient", description: "Error converting result to dict")))
                     return
                 }
-                
                 if let status = result["status"] as? Int, status == 403 {
                     let statusMessage = (result["error"] as? String) ?? "Invalid Credentials"
                     completionForLogin(.failure(.AuthenticationError(domain: "UdacityClient", description: statusMessage)))
                     return
                 }
-                
                 guard let sessionData = result[ResponseKeys.SESSION] as? [String:Any] else {
                     completionForLogin(.failure(.ParseError(domain: "UdacityClient", description: "Error: No session data found in response")))
                     return
                 }
-                
                 guard let accountData = result[ResponseKeys.ACCOUNT] as? [String:Any] else {
                     completionForLogin(.failure(.ParseError(domain: "UdacityClient", description: "Error: No account data found in response")))
                     return
                 }
-                
                 guard let sessionId = sessionData[ResponseKeys.SESSION_ID] as? String else {
                     completionForLogin(.failure(.ParseError(domain: "UdacityClient", description: "error: Key named '\(ResponseKeys.SESSION_ID)' not found in response: \(sessionData)")))
                     return
                 }
-                
                 guard let userId = accountData[ResponseKeys.USER_ID] as? String else {
                     completionForLogin(.failure(.ParseError(domain: "UdacityClient", description: "error: Key named '\(ResponseKeys.USER_ID)' not found in response: \(accountData)")))
                     return
                 }
-                
-                guard let isRegistered = accountData[ResponseKeys.REGISTERED] as? Bool else {
+                guard let _ = accountData[ResponseKeys.REGISTERED] as? Bool else {
                     completionForLogin(.failure(.ParseError(domain: "UdacityClient", description: "error: Key named '\(ResponseKeys.REGISTERED)' not found in response: \(accountData)")))
                     return
                 }
-                
-                print("Login Success")
-                print("---Session id: \(sessionId)")
-                print("---User id: \(userId)")
-                print("---registered: \(isRegistered)")
                 self.sessionId = sessionId
-                
                 completionForLogin(.success(userId))
-                
             case .failure(let error):
-                completionForLogin(.failure(.NetworkError(domain: "UdacityClient", description: "Error with request: \(error)")))
+                completionForLogin(.failure(error))
             }
         }
     }
     
-    func login(withFacebookToken token: String, completionForFBLogin: @escaping (DataResult<String, AppError>) -> Void ) {
+    private func login(withFacebookToken token: String, completionForFBLogin: @escaping (DataResult<String, AppError>) -> Void ) {
         var body = [String:Any]()
         var facebookDict = [String:String]()
         facebookDict[RequestParamNames.ACCESS_TOKEN] = token
@@ -134,37 +117,31 @@ class UdacityClient {
                     completionForFBLogin(.failure(.ParseError(domain: "UdacityClient", description: "Error parsing data into json object")))
                     return
                 }
-                
                 guard let accountData = result[ResponseKeys.ACCOUNT] as? [String:Any] else {
                     completionForFBLogin(.failure(.ParseError(domain: "UdacityClient", description: "Could not find entry for key '\(ResponseKeys.ACCOUNT)' in dict: \(result)")))
                     return
                 }
-                
                 guard let sessionData = result[ResponseKeys.SESSION] as? [String:Any] else {
                     completionForFBLogin(.failure(.ParseError(domain: "UdacityClient", description: "Could not find entry for key '\(ResponseKeys.SESSION)' in dict: \(result)")))
                     return
                 }
-                
                 guard let userId = accountData[ResponseKeys.USER_ID] as? String else {
                     completionForFBLogin(.failure(.ParseError(domain: "UdacityClient", description: "Could not find entry for key '\(ResponseKeys.USER_ID)' in dict: \(accountData)")))
                     return
                 }
-                
                 guard let sessionId = sessionData[ResponseKeys.SESSION_ID] as? String else {
                     completionForFBLogin(.failure(.ParseError(domain: "UdacityClient", description: "Could not find entry for key '\(ResponseKeys.SESSION_ID)' in dict: \(sessionData)")))
                     return
                 }
-                
                 self.sessionId = sessionId
                 completionForFBLogin(.success(userId))
-                
             case .failure(let appError):
                 completionForFBLogin(.failure(appError))
             }
         })
     }
     
-    func getUserInfo(userId: String, completionForUserInfo: @escaping (DataResult<User, AppError>) -> () ) {
+    private func getUserInfo(userId: String, completionForUserInfo: @escaping (DataResult<User, AppError>) -> () ) {
         let newMethod = Methods.USER + "/\(userId)"
         _ = taskForGET(newMethod, params: nil, completion: { (result) in
             switch result {
@@ -184,9 +161,8 @@ class UdacityClient {
         })
     }
     
-    // Task Execution Methods
-    
-    func taskForGET(_ method: String, params: [String:Any]?, completion: @escaping (_ result: DataResult<Data, AppError>) -> Void) -> URLSessionDataTask {
+    // MARK: Helper functions
+    private func taskForGET(_ method: String, params: [String:Any]?, completion: @escaping (_ result: DataResult<Data, AppError>) -> Void) -> URLSessionDataTask {
         
         let url = udacityUrlFromParams(params, withPathExtension: method)
         print("URL: \(url)")
@@ -201,7 +177,7 @@ class UdacityClient {
         return task
     }
     
-    func taskForPOST(_ method: String, params: [String:Any]?, jsonDataForBody data: [String:Any]?, completion: @escaping (_ result: DataResult<Data, AppError>) -> Void) -> URLSessionDataTask {
+    private func taskForPOST(_ method: String, params: [String:Any]?, jsonDataForBody data: [String:Any]?, completion: @escaping (_ result: DataResult<Data, AppError>) -> Void) -> URLSessionDataTask {
         
         let url = udacityUrlFromParams(params, withPathExtension: method)
         print("URL: \(url)")
@@ -213,8 +189,6 @@ class UdacityClient {
         if let data = data {
             let body = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
             request.httpBody = body
-            let bodyString = String(data:body!, encoding: .utf8)
-            print("JSON Body: \n\(bodyString!)")
         }
         
         let task = httpSession.dataTask(with: request) { (data, resp, err) in
@@ -225,9 +199,8 @@ class UdacityClient {
         task.resume()
         return task
     }
-    
-    // Helper Methods
-    func udacityUrlFromParams(_ params: [String:Any]? = nil, withPathExtension: String? = nil) -> URL {
+
+    private func udacityUrlFromParams(_ params: [String:Any]? = nil, withPathExtension: String? = nil) -> URL {
         var components = URLComponents()
         components.scheme = UrlComponents.SCHEME
         components.host = UrlComponents.HOST
@@ -244,7 +217,7 @@ class UdacityClient {
         return components.url!
     }
     
-    func validateHttpResponse(data: Data?, response: URLResponse?, error: Error?) -> DataResult<Data, AppError> {
+    private func validateHttpResponse(data: Data?, response: URLResponse?, error: Error?) -> DataResult<Data, AppError> {
         if let data = data {
             let range = Range(5 ..< data.count)
             let newData = data.subdata(in: range) /* subset response data! */
@@ -262,25 +235,23 @@ class UdacityClient {
         return .failure(AppError.NetworkError(domain: "Udacity", description: "Response Code: \(responseCode) Error: \(error)"))
     }
     
-    func reset() {
+    private func reset() {
         sessionId = nil
     }
     
-    func prettyPrinted(dataAsJsonDict data: Data, doPrint:Bool = false) -> String {
+    private func prettyPrinted(dataAsJsonDict data: Data, doPrint:Bool = false) -> String {
         guard let result = (try? JSONSerialization.jsonObject(with: data, options: .allowFragments)) as? [String:Any] else {
             if doPrint{
                 print("Error parsing JSON Data: \(data)")
             }
             return "Error parsing JSON Data: \(data)"
         }
-        
         guard let prettyData = try? JSONSerialization.data(withJSONObject: result, options: .prettyPrinted) else {
             if doPrint {
                 print("Error serializing dictionary into Data")
             }
             return "Error serializaing dictionary into Data"
         }
-        
         let prettyString = String(data: prettyData, encoding: .utf8)!
         if doPrint {
             print(prettyString)

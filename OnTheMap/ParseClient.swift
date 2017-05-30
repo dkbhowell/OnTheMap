@@ -9,12 +9,10 @@
 import UIKit
 
 class ParseClient {
-    // Singleton
     static let shared = ParseClient()
     private let httpClient = URLSession.shared
     
-    // helper functions
-    
+    // MARK: Parse API Calls
     func getStudents(completion: @escaping (DataResult<[UdacityStudent], AppError>) -> () ) {
         let params = [
             RequestParamaterNames.LIMIT: 100
@@ -138,6 +136,7 @@ class ParseClient {
         }
     }
     
+    // MARK: Helper methods
     private func runGetTask(method: String, params: [String:Any]? = nil, completion: @escaping (DataResult<Data, AppError>) -> () ) -> URLSessionDataTask {
         let url = buildURL(params: params, withPathExtension: method)
         print("Parse Get URL: \(url)")
@@ -221,14 +220,10 @@ class ParseClient {
         if let data = data {
             return .success(data)
         }
-        
         guard let err = err else {
-            // something funky happened
             return .failure(AppError.UnexpectedResult(domain: "Parse Client", description: "No Data, No Error in Response"))
         }
-        
         let statusCode = ((resp as? HTTPURLResponse)?.statusCode).map { "\($0)" } ?? "None"
-        
         return .failure(AppError.NetworkError(domain: "Parse Client", description: "Status Code: \(statusCode) \nError: \(err)"))
     }
     

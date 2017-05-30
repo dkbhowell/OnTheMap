@@ -92,9 +92,10 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
             if let userPin = self.userPin {
                 mapView.removeAnnotation(userPin)
             }
-            mapView.addAnnotation(newUserPin)
             self.userPin = newUserPin
+            mapView.addAnnotation(newUserPin)
             mapView.centerMapOnLocation(lat: newUserPin.coordinate.latitude, lng: (newUserPin.coordinate.longitude), zoomLevel: 5)
+            mapView.selectAnnotation(newUserPin, animated: true)
         }
     }
     

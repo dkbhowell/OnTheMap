@@ -120,7 +120,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     
     private func resetMapview(animated: Bool = true) {
         executeOnMain {
-            self.mapView.removeAnnotations(mapView.annotations)
+            self.mapView.removeAnnotations(self.mapView.annotations)
             let span = MKCoordinateSpan(latitudeDelta: 180, longitudeDelta: 360)
             let region = MKCoordinateRegion(center: CLLocationCoordinate2DMake(self.centerOfUS.0, self.centerOfUS.1) , span: span)
             self.mapView.setRegion(region, animated: animated)
