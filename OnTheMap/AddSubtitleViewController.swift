@@ -11,14 +11,17 @@ import MapKit
 
 class AddSubtitleViewController: UIViewController, UITextFieldDelegate {
 
+    // MARK: Outlets
     @IBOutlet weak var subtitleTextField: UITextField!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var submitButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
     
+    // MARK: Properties
     var mapPin: MapPin!
     weak var pinDelegate: PostPinDelegate!
     
+    // MARK: VC lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         subtitleTextField.delegate = self
@@ -29,11 +32,11 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate {
         errorLabel.text = ""
     }
     
+    // MARK: Actions
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         print("Cancelling from Addsubtitle")
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
-    
     @IBAction func submitTapped(_ sender: UIButton) {
         guard let text = subtitleTextField.text, text.trimmingCharacters(in: CharacterSet.whitespaces) != "" else {
             let alertController = UIAlertController(title: "Empty Link Detected!", message: "Do you want to update your location with an empty link?", preferredStyle: .alert)
@@ -44,8 +47,7 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate {
             self.present(alertController, animated: true, completion: nil)
             return
         }
-        
-        guard isValidURL(urlString: text) else {
+        guard let _ = NetworkUtil.validUrl(fromString: text, addPrefixIfNecessary: true) else {
             let alertController = UIAlertController(title: "Invalid Link Detected!", message: "Do you want to update your location with an invalid link?", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (yesAction) in
                 self.postPin(withSubtitle: text)
@@ -54,22 +56,20 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate {
             self.present(alertController, animated: true, completion: nil)
             return
         }
-        
         postPin(withSubtitle: text)
     }
     
+    // MARK: TextFieldDelegate methods
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         var newString = string
         if let existingText = textField.text {
             newString = NSString(string: existingText).replacingCharacters(in: range, with: string)
         }
-        
-        if isValidURL(urlString: newString) {
+        if let _ = NetworkUtil.validUrl(fromString: newString, addPrefixIfNecessary: true) {
             textField.backgroundColor = nil
             errorLabel.text = ""
             mapPin.subtitle = newString
@@ -82,36 +82,10 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
+    // MARK: Helper functions
     private func showErrorMessage(msg: String) {
         showAlertController(hostController: self, title: "Error", msg: msg)
     }
-    
-    private func isValidURL(urlString: String?) -> Bool {
-        guard let urlString = urlString else {
-            return false
-        }
-        
-        let httpPrefix = "http://"
-        let httpsPrefix = "https://"
-        
-        var prefixedString = urlString
-        if !urlString.hasPrefix(httpPrefix) && !urlString.hasPrefix(httpsPrefix) {
-            prefixedString = "\(httpPrefix)\(urlString)"
-        }
-        
-        guard let url = URL(string: prefixedString) else {
-            print("invalid URL: \(prefixedString)")
-            return false
-        }
-        
-        guard UIApplication.shared.canOpenURL(url) else {
-            print("Cannot open URL: \(url)")
-            return false
-        }
-        
-        return true
-    }
-    
     private func postPin(withSubtitle subtitle: String) {
         pinDelegate.postPin(lat: mapPin.coordinate.latitude, lng: mapPin.coordinate.longitude, subtitle: subtitle)
         self.navigationController?.dismiss(animated: true, completion: nil)

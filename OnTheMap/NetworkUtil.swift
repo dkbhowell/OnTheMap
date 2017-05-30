@@ -11,6 +11,7 @@ class NetworkUtil {
     
     private static let validUrlSchemes = ["http://", "https://"]
     
+    // converts the string into a valid URL that can be opened by the application, or nil if not possible
     static func validUrl(fromString urlString: String, addPrefixIfNecessary: Bool = false) -> URL? {
         var stringToCheck = urlString
         
