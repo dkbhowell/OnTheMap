@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -271,16 +271,19 @@
                                         <rect key="frame" x="0.0" y="41.5" width="343" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="search"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="300" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9pE-Go-yQT" userLabel="Error Label">
-                                        <rect key="frame" x="0.0" y="79.5" width="343" height="55.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <color key="textColor" red="1" green="0.094634552506652425" blue="0.08782851529311686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="900" horizontalCompressionResistancePriority="800" verticalCompressionResistancePriority="800" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ygt-Cn-7bj">
+                                        <rect key="frame" x="0.0" y="79.5" width="343" height="34"/>
+                                        <color key="backgroundColor" red="1" green="0.63529411759999999" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                        <state key="normal" title="Find on the Map"/>
+                                        <connections>
+                                            <action selector="findOnMapClicked:" destination="bvK-kD-TZL" eventType="touchUpInside" id="aDw-tc-YtG"/>
+                                        </connections>
+                                    </button>
                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="200" verticalHuggingPriority="200" horizontalCompressionResistancePriority="800" verticalCompressionResistancePriority="800" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="xvf-To-yip">
-                                        <rect key="frame" x="0.0" y="143" width="343" height="432"/>
+                                        <rect key="frame" x="0.0" y="121.5" width="343" height="453.5"/>
                                     </mapView>
                                 </subviews>
                             </stackView>
@@ -295,22 +298,16 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="qeL-Sq-u0s">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="FTp-EY-Nt1">
+                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="FTp-EY-Nt1">
                             <connections>
                                 <action selector="cancel:" destination="bvK-kD-TZL" id="C5A-34-qWF"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Next" id="CSc-pa-wdj">
-                            <connections>
-                                <action selector="nextClicked:" destination="bvK-kD-TZL" id="FxT-M7-9lv"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="errorLabel" destination="9pE-Go-yQT" id="mAJ-4H-Xt1"/>
+                        <outlet property="findOnMapButton" destination="Ygt-Cn-7bj" id="7H4-Fl-Rta"/>
                         <outlet property="locationTextField" destination="NmV-aW-ivG" id="Tgs-GA-YfT"/>
                         <outlet property="mapView" destination="xvf-To-yip" id="PlP-rR-jX3"/>
-                        <outlet property="nextButton" destination="CSc-pa-wdj" id="i5n-8C-tXO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kKm-05-4ee" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -451,26 +448,36 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="XZ1-bl-erm">
                                 <rect key="frame" x="16" y="80" width="343" height="567"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="255" verticalHuggingPriority="255" horizontalCompressionResistancePriority="754" verticalCompressionResistancePriority="754" text="What website would you like to show?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gGF-e7-3wQ">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="300" verticalHuggingPriority="300" horizontalCompressionResistancePriority="754" verticalCompressionResistancePriority="754" text="What website would you like to show?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gGF-e7-3wQ">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="67"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="754" verticalCompressionResistancePriority="754" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your Website..." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v0I-fp-s2u">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="290" verticalHuggingPriority="290" horizontalCompressionResistancePriority="754" verticalCompressionResistancePriority="754" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your Website..." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v0I-fp-s2u">
                                         <rect key="frame" x="0.0" y="75" width="343" height="30"/>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="245" verticalHuggingPriority="245" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H5d-ZX-dXj" userLabel="Error Label">
-                                        <rect key="frame" x="0.0" y="113" width="343" height="17"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="500" verticalHuggingPriority="500" verticalCompressionResistancePriority="751" text=" " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D19-5y-pGx" userLabel="Error Label">
+                                        <rect key="frame" x="0.0" y="113" width="343" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <color key="textColor" red="1" green="0.094634552509999997" blue="0.087828515290000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="240" verticalHuggingPriority="240" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Edn-yI-pwn">
-                                        <rect key="frame" x="0.0" y="138" width="343" height="429"/>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="300" verticalHuggingPriority="300" horizontalCompressionResistancePriority="800" verticalCompressionResistancePriority="800" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RoA-QX-Xnw">
+                                        <rect key="frame" x="0.0" y="141.5" width="343" height="34"/>
+                                        <color key="backgroundColor" red="1" green="0.63529411759999999" blue="0.2274509804" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                                        <state key="normal" title="Submit"/>
+                                        <connections>
+                                            <action selector="findOnMapClicked:" destination="bvK-kD-TZL" eventType="touchUpInside" id="9md-BU-IQi"/>
+                                            <action selector="submitTapped:" destination="nJY-mx-DXa" eventType="touchUpInside" id="2aH-zh-2Jh"/>
+                                        </connections>
+                                    </button>
+                                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="5" verticalHuggingPriority="5" horizontalCompressionResistancePriority="900" verticalCompressionResistancePriority="1000" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Edn-yI-pwn">
+                                        <rect key="frame" x="0.0" y="183.5" width="343" height="383.5"/>
                                     </mapView>
                                 </subviews>
                             </stackView>
@@ -484,22 +491,17 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="KLX-py-ne1">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="OMT-vQ-bGl">
+                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="OMT-vQ-bGl">
                             <connections>
                                 <action selector="cancel:" destination="nJY-mx-DXa" id="P75-Ns-ddl"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="esw-uf-v79">
-                            <connections>
-                                <action selector="doneTapped:" destination="nJY-mx-DXa" id="Vhh-i0-MVV"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <outlet property="doneButton" destination="esw-uf-v79" id="ytF-K2-MUz"/>
-                        <outlet property="errorLabel" destination="H5d-ZX-dXj" id="fi0-r0-ZnF"/>
+                        <outlet property="errorLabel" destination="D19-5y-pGx" id="c2N-Re-4r3"/>
                         <outlet property="mapView" destination="Edn-yI-pwn" id="S9c-XE-26K"/>
+                        <outlet property="submitButton" destination="RoA-QX-Xnw" id="SwB-u1-mWv"/>
                         <outlet property="subtitleTextField" destination="v0I-fp-s2u" id="ela-iD-i9C"/>
                     </connections>
                 </viewController>
@@ -529,7 +531,6 @@
         <!--Navigation Controller-->
         <scene sceneID="fWX-Nq-HXD">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="do4-Pb-iAk" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="AddLocationNavController" automaticallyAdjustsScrollViewInsets="NO" id="V3A-oP-QiB" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="c7U-Oh-jNW">
@@ -541,6 +542,7 @@
                         <segue destination="bvK-kD-TZL" kind="relationship" relationship="rootViewController" id="vbE-l3-hT6"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="do4-Pb-iAk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2353" y="555"/>
         </scene>

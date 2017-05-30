@@ -9,80 +9,72 @@
 import UIKit
 import MapKit
 
-class AddLocationViewController: UIViewController {
+class AddLocationViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var locationTextField: UITextField!
-    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var nextButton: UIBarButtonItem!
+    @IBOutlet weak var findOnMapButton: UIButton!
     
     let regionRadius: CLLocationDistance = 1000
-    let initialLocation = CLLocation(latitude: 21.282778, longitude: -157.829444)
-    var lastLocation: MKAnnotation?
-    
-    var tfDelegate: UITextFieldDelegate?
+    var lastLocation: MapPin?
+
     weak var pinDelegate: PostPinDelegate!
     
-    //39.8282° N, 98.5795° W
     let centerOfUS = (39.8282, -98.5795)
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        tfDelegate = LocationTextFieldDelegate(textField: locationTextField, hostController: self, errorLabel: errorLabel)
+        locationTextField.delegate = self
         resetMapview(animated: false)
-        enableNext(enabled: false)
+        enableFind(enabled: false)
+        findOnMapButton.layer.cornerRadius = 10
+        findOnMapButton.clipsToBounds = true
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
-    @IBAction func nextClicked(_ sender: UIBarButtonItem) {
-        guard let lastLocation = lastLocation else {
-            print("Last Location empty when it should have a value")
+    
+    @IBAction func findOnMapClicked(_ sender: UIButton) {
+        guard let locationString = locationTextField.text else {
+            showErrorMessageAndReset(errorMsg: "Please enter a location in the text field")
             return
         }
-        selectLocation(location: lastLocation)
+        geocode(locationString: locationString)
     }
     
-    private func selectLocation(location: MKAnnotation) {
+    private func continueToSubtitle(pin: MapPin) {
         let controller = storyboard!.instantiateViewController(withIdentifier: "AddSubtitleController") as! AddSubtitleViewController
-        let coordinates = (location.coordinate.latitude, location.coordinate.longitude)
-        controller.coordinates = coordinates
+        controller.mapPin = pin
         controller.pinDelegate = pinDelegate
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
     private func resetUI() {
-        locationTextField.text = nil
-        self.enableNext(enabled: false)
-        mapView.removeAnnotations(mapView.annotations)
-        lastLocation = nil
-        resetMapview()
+        executeOnMain {
+            self.locationTextField.text = nil
+            self.enableFind(enabled: false)
+            self.resetMapview(animated: false)
+            self.lastLocation = nil
+        }
     }
     
     // Delegate Functions
     func showErrorMessageAndReset(errorMsg: String) {
         executeOnMain {
-            self.errorLabel.text = errorMsg
-            self.resetMapview()
-            self.enableNext(enabled: false)
+            self.resetUI()
+            let alertController = UIAlertController(title: "Geocode Error", message: "We had trouble finding that location, please try again", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     
-    func clearErrorMessage() {
+    func showAnnotation(pin: MapPin) {
         executeOnMain {
-            self.errorLabel.text = ""
-            self.mapView.removeAnnotations(self.mapView.annotations)
-        }
-    }
-    
-    func showAnnotation(annotation: MKAnnotation) {
-        executeOnMain {
-            self.mapView.addAnnotation(annotation)
-            self.mapView.centerMapOnLocation(lat: annotation.coordinate.latitude, lng: annotation.coordinate.longitude, zoomLevel: 5)
-            self.lastLocation = annotation
-            self.mapView.selectAnnotation(annotation, animated: true)
-            self.enableNext(enabled: true)
+            self.mapView.addAnnotation(pin)
+            self.mapView.centerMapOnLocation(lat: pin.coordinate.latitude, lng: pin.coordinate.longitude, zoomLevel: 5)
+            self.lastLocation = pin
+            self.mapView.selectAnnotation(pin, animated: true)
         }
     }
     
@@ -93,22 +85,66 @@ class AddLocationViewController: UIViewController {
         mapView.setRegion(region, animated: animated)
     }
     
-    private func enableNext(enabled: Bool) {
-        nextButton.isEnabled = enabled
+    private func enableFind(enabled: Bool) {
+        executeOnMain {
+            self.findOnMapButton.isEnabled = enabled
+        }
     }
     
-}
-
-extension UIResponder {
-    private weak static var _currentFirstResponder: UIResponder? = nil
-    
-    public class func currentFirstResponder() -> UIResponder? {
-        UIResponder._currentFirstResponder = nil
-        UIApplication.shared.sendAction(#selector(findFirstResponder(sender:)), to: nil, from: nil, for: nil)
-        return UIResponder._currentFirstResponder
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
-    internal func findFirstResponder(sender: AnyObject) {
-        UIResponder._currentFirstResponder = self
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let text = textField.text else {
+            enableFind(enabled: false)
+            print("No text in textfield")
+            return true
+        }
+        let newText = NSString(string: text).replacingCharacters(in: range, with: string)
+        if newText != "" {
+            enableFind(enabled: true)
+        } else {
+            enableFind(enabled: false)
+        }
+        return true
     }
+    
+    private func geocode(locationString string: String) {
+        enableFind(enabled: false)
+        CLGeocoder().geocodeAddressString(string, completionHandler: { (placemark, err) in
+            self.enableFind(enabled: true)
+            if let err = err {
+                print("Geocode Error: \(err)")
+                self.showErrorMessageAndReset(errorMsg: "Error Finding Location -- Please enter another city")
+                return
+            }
+            
+            guard let placesFound = placemark, placesFound.count > 0 else {
+                print("Error, No Placemark in Geocode result")
+                self.showErrorMessageAndReset(errorMsg: "Error Finding Location -- Please enter another city")
+                return
+            }
+            
+            let firstResult = placesFound[0]
+            let latOpt = firstResult.location?.coordinate.latitude
+            let lngOpt = firstResult.location?.coordinate.longitude
+            
+            guard let lat = latOpt, let lng = lngOpt else {
+                print("Error getting lat / lng coordinates from geocode result")
+                self.showErrorMessageAndReset(errorMsg: "Error Finding Location -- Please enter another city")
+                return
+            }
+            
+            print("Successful Geocode: \(string) is at Coordiates (\(lat),\(lng))")
+            
+            // show location on mapview
+            let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
+            let name = StateController.sharedInstance.getUser()?.name
+            let mapPin = MapPin(coordinate: coordinate , title: name ?? "New Location", subtitle: "")
+            self.continueToSubtitle(pin: mapPin)
+        })
+    }
+    
 }

@@ -9,27 +9,24 @@
 import UIKit
 import MapKit
 
-class AddSubtitleViewController: UIViewController, UITextFieldDelegate, KeyboardAdaptable {
+class AddSubtitleViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var subtitleTextField: UITextField!
-    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var doneButton: UIBarButtonItem!
+    @IBOutlet weak var submitButton: UIButton!
+    @IBOutlet weak var errorLabel: UILabel!
     
-    var coordinates: (Double, Double)!
     var mapPin: MapPin!
     weak var pinDelegate: PostPinDelegate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         subtitleTextField.delegate = self
-        let userName = StateController.sharedInstance.getUser()?.name ?? "New Location"
-        mapPin = MapPin(lat: coordinates.0, lng: coordinates.1, title: userName, subtitle: "")
         mapView.addAnnotation(mapPin)
         mapView.centerMapOnLocation(lat: mapPin.coordinate.latitude, lng: mapPin.coordinate.longitude, zoomLevel: 5)
         mapView.selectAnnotation(mapPin, animated: true)
-        doneButton.isEnabled = false
         mapView.isScrollEnabled = false
+        errorLabel.text = ""
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
@@ -37,12 +34,28 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate, Keyboard
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func doneTapped(_ sender: UIBarButtonItem) {
-        if let text = subtitleTextField.text {
-            postPin(withSubtitle: text)
-        } else {
-            postPin(withSubtitle: "")
+    @IBAction func submitTapped(_ sender: UIButton) {
+        guard let text = subtitleTextField.text, text.trimmingCharacters(in: CharacterSet.whitespaces) != "" else {
+            let alertController = UIAlertController(title: "Empty Link Detected!", message: "Do you want to update your location with an empty link?", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (yesAction) in
+                self.postPin(withSubtitle: "")
+            }))
+            alertController.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+            return
         }
+        
+        guard isValidURL(urlString: text) else {
+            let alertController = UIAlertController(title: "Invalid Link Detected!", message: "Do you want to update your location with an invalid link?", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Yes", style: .default, handler: { (yesAction) in
+                self.postPin(withSubtitle: text)
+            }))
+            alertController.addAction(UIAlertAction(title: "No", style: .default, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        postPin(withSubtitle: text)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -58,38 +71,19 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate, Keyboard
         
         if isValidURL(urlString: newString) {
             textField.backgroundColor = nil
-            clearErrorMessage()
-            doneButton.isEnabled = true
+            errorLabel.text = ""
             mapPin.subtitle = newString
             mapView.deselectAnnotation(mapPin, animated: false)
             mapView.selectAnnotation(mapPin, animated: false)
         } else {
             textField.backgroundColor = UIColor.red
-            showErrorMessage(msg: "Invalid URL: Please enter a valid URL")
-            doneButton.isEnabled = false
+            errorLabel.text = "Invalid URL -- please edit your URL"
         }
         return true
     }
     
-    func addKeyboardNotificationObservers() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-    }
-    
-    func keyboardShow(notification: NSNotification) {
-        keyboardWillShow(notification: notification)
-    }
-    
-    func keyboardHide(notification: NSNotification) {
-        keyboardWillHide(notification: notification)
-    }
-    
     private func showErrorMessage(msg: String) {
-        errorLabel.text = msg
-    }
-    
-    private func clearErrorMessage() {
-        errorLabel.text = ""
+        showAlertController(hostController: self, title: "Error", msg: msg)
     }
     
     private func isValidURL(urlString: String?) -> Bool {
@@ -119,24 +113,7 @@ class AddSubtitleViewController: UIViewController, UITextFieldDelegate, Keyboard
     }
     
     private func postPin(withSubtitle subtitle: String) {
-        pinDelegate.postPin(lat: coordinates.0, lng: coordinates.1, subtitle: subtitle)
+        pinDelegate.postPin(lat: mapPin.coordinate.latitude, lng: mapPin.coordinate.longitude, subtitle: subtitle)
         self.navigationController?.dismiss(animated: true, completion: nil)
-    }
-}
-
-class MapPin: NSObject, MKAnnotation {
-    var coordinate: CLLocationCoordinate2D
-    var title: String?
-    var subtitle: String?
-    
-    init(coordinate: CLLocationCoordinate2D, title: String, subtitle: String) {
-        self.coordinate = coordinate
-        self.title = title
-        self.subtitle = subtitle
-    }
-    
-    convenience init(lat: Double, lng: Double, title: String, subtitle: String) {
-        let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: lng)
-        self.init(coordinate: coordinate, title: title, subtitle: subtitle)
     }
 }
