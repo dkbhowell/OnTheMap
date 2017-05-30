@@ -12,10 +12,10 @@ import FBSDKLoginKit
 
 class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDelegate {
     
+    // MARK: Properties
     let state = StateController.sharedInstance
-    let signUpURL = "https://www.udacity.com/account/auth#!/signup"
     
-    // Outlets
+    // MARK: Outlets
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
@@ -23,14 +23,12 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
     @IBOutlet weak var fbLoginButton: FBSDKLoginButton!
     @IBOutlet weak var imageView: UIImageView!
     
-
+    // MARK: VC lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         usernameTextField.delegate = self
         passwordTextField.delegate = self
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
-        
+        addKeyboardNotificationObservers()
         usernameTextField.text = Constants.Debug.MY_USERNAME
         fbLoginButton.delegate = self
         FBSDKProfile.enableUpdates(onAccessTokenChange: true)
@@ -57,21 +55,19 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
         }
     }
     
-    func showLoadingSpinner() {
+    // MARK: Helper Methods
+    private func showLoadingSpinner() {
         let alert = UIAlertController(title: "Please Wait", message: "Logging into Facebook...", preferredStyle: .alert)
-        
         let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
         loadingIndicator.hidesWhenStopped = true
         loadingIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.gray
-        loadingIndicator.startAnimating();
-        
+        loadingIndicator.startAnimating()
         alert.view.addSubview(loadingIndicator)
-        print("Presenting Alert Controller")
         self.present(alert, animated: true, completion: nil)
     }
     
+    // MARK: TextFieldDelegate methods
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print("Text field shoudl return..........")
         switch textField {
         case usernameTextField:
             passwordTextField.becomeFirstResponder()
@@ -88,13 +84,8 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
         return true
     }
     
-    // Facebook login button delegate methods
+    // MARK: FBSDKLoginButtonDelegate methods
     func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
-        // TODO
-        print("Login Error parameter: \(error)")
-        print("Login token: \(result.token)")
-        print("Granted permissions: \(result.grantedPermissions)")
-        print("Denied permissions: \(result.declinedPermissions)")
         guard !result.isCancelled else {
             print("user cancelled login attempt")
             return
@@ -107,26 +98,25 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
             print("No permissions granted to the app; sign in unsuccessful")
             return
         }
-        
         if let accessToken = FBSDKAccessToken.current() {
             showLoadingSpinner()
             loginWithFacebook(usingAccessToken: accessToken)
         } else {
             print("FB Access Token not found")
         }
-        
     }
     
     func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         print("login button did log out")
     }
     
+    // MARK: Login with Facebook
     func loginWithFacebook(usingAccessToken token: FBSDKAccessToken) {
         guard let tokenString = token.tokenString else {
             print("Token does not have a token string")
             return
         }
-        let udacityClient = UdacityClient.sharedInstance()
+        let udacityClient = UdacityClient.shared
         udacityClient.authenticateWithFacebook(fbToken: tokenString, completionForFbAuth: { (result) in
             self.dismiss(animated: true, completion: nil)
             switch result {
@@ -142,8 +132,10 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
         })
     }
     
+    
+    // MARK: Login with Udacity
     @IBAction func login(_ sender: UIButton) {
-        let udacityClient = UdacityClient.sharedInstance()
+        let udacityClient = UdacityClient.shared
         guard let username = usernameTextField.text, let pwd = passwordTextField.text else {
             print("No username or password")
             return
@@ -180,6 +172,7 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
         }
     }
     
+    // MARK: Core methods
     func completeLogin() {
         errorLabel.text = ""
         usernameTextField.text = ""
@@ -189,7 +182,7 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
     }
     
     @IBAction func signUpTapped(_ sender: UIButton) {
-        let url = URL(string: signUpURL)
+        let url = URL(string: UdacityClient.StaticURL.signup)
         guard let signUpURL = url else {
             print("URL creation for sign up failed")
             return
@@ -206,9 +199,13 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
 }
 
 extension LoginController {
+    func addKeyboardNotificationObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
     func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            print("show keyboard size: \(keyboardSize)")
             if self.view.frame.origin.y == 0{
                 self.view.frame.origin.y -= keyboardSize.height
             }
@@ -216,8 +213,7 @@ extension LoginController {
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            print("hdie keyboard size: \(keyboardSize)")
+        if ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue) != nil {
             if self.view.frame.origin.y != 0{
                 self.view.frame.origin.y = 0
             }

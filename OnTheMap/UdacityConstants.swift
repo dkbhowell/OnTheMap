@@ -9,6 +9,11 @@
 import Foundation
 
 extension UdacityClient {
+    
+    struct StaticURL {
+        static let signup = "https://www.udacity.com/account/auth#!/signup"
+    }
+    
     struct UrlComponents {
         static let SCHEME = "https"
         static let HOST = "www.udacity.com"

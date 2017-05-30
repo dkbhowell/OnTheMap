@@ -10,6 +10,8 @@ import Foundation
 
 class UdacityClient {
     
+    static let shared = UdacityClient()
+    
     let httpSession = URLSession.shared
     
     let state = StateController.sharedInstance
@@ -284,14 +286,5 @@ class UdacityClient {
             print(prettyString)
         }
         return prettyString
-    }
-    
-    
-    // Singleton
-    class func sharedInstance() -> UdacityClient {
-        struct Singleton {
-            static var sharedInstance = UdacityClient()
-        }
-        return Singleton.sharedInstance
     }
 }
