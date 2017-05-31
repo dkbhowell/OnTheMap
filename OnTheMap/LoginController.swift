@@ -212,8 +212,9 @@ extension LoginController {
     }
     
     func keyboardWillShow(notification: NSNotification) {
+        let delta: CGFloat = UIApplication.shared.statusBarOrientation == .portrait ? 40 : 20
         if self.view.frame.origin.y == 0 {
-            self.view.frame.origin.y -= 20
+            self.view.frame.origin.y -= delta
         }
     }
     func keyboardWillHide(notification: NSNotification) {
