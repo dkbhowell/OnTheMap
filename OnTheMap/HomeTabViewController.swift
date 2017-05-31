@@ -21,6 +21,7 @@ class HomeTabViewController: UITabBarController {
                 StateController.shared.setStudents(students: students)
             case .failure(let appError):
                 print(appError)
+                showAlertController(hostController: self, title: "Error Loading Student Data", msg: "Please check your connection and try refreshing")
             }
         }
         loadUserPin()
