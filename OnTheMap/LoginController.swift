@@ -28,11 +28,9 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
         super.viewDidLoad()
         usernameTextField.delegate = self
         passwordTextField.delegate = self
-        addKeyboardNotificationObservers()
         usernameTextField.text = Constants.Debug.MY_USERNAME
         fbLoginButton.delegate = self
         FBSDKProfile.enableUpdates(onAccessTokenChange: true)
-        
         // change size of fb button
         for constraint in fbLoginButton.constraints {
             if constraint.firstAttribute == NSLayoutAttribute.height {
@@ -48,6 +46,14 @@ class LoginController: UIViewController, UITextFieldDelegate, FBSDKLoginButtonDe
             showLoadingSpinner()
             loginWithFacebook(usingAccessToken: fbAccessToken)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        addKeyboardNotificationObservers()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        removeKeyboardNotificationObservers()
     }
     
     // MARK: TextFieldDelegate methods
@@ -199,18 +205,20 @@ extension LoginController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
+    
+    func removeKeyboardNotificationObservers() {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+    
     func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0{
-                self.view.frame.origin.y -= keyboardSize.height
-            }
+        if self.view.frame.origin.y == 0 {
+            self.view.frame.origin.y -= 20
         }
     }
     func keyboardWillHide(notification: NSNotification) {
-        if ((notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue) != nil {
-            if self.view.frame.origin.y != 0{
-                self.view.frame.origin.y = 0
-            }
+        if self.view.frame.origin.y != 0{
+            self.view.frame.origin.y = 0
         }
     }
 }
