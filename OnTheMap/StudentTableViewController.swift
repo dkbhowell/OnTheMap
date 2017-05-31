@@ -14,34 +14,20 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
     
     // MARK: Properties
     let state = StateController.shared
-    var students = StateController.shared.getStudents()
-    var userStudent = StateController.shared.userStudent
-    var allStudents: [UdacityStudent] {
-        get {
-            if let userStudent = userStudent {
-                var allStudents = students
-                allStudents.insert(userStudent, at: 0)
-                return allStudents
-            } else {
-                return students
-            }
-        }
-    }
 
     // MARK: VC lifecycle methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        students = state.getStudents()
-        userStudent = state.userStudent
+        
         state.addObserver(self)
         
-        print("loaded with \(students.count) students")
         tableView.dataSource = self
         tableView.delegate = self
     }
     
     // MARK: TableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        let allStudents = state.getStudents(includeUser: true)
         return allStudents.count
     }
     
@@ -50,10 +36,12 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let allStudents = state.getStudents(includeUser: true)
         let student = allStudents[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "StudentTableCell") ?? UITableViewCell()
         cell.textLabel?.text = student.name
         cell.detailTextLabel?.text = student.data
+        let userStudent = state.userStudent
         if student == userStudent {
             cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 20.0)
             cell.detailTextLabel?.font = UIFont.boldSystemFont(ofSize: 14.0)
@@ -68,6 +56,7 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
     
     // MARK: TableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let allStudents = state.getStudents(includeUser: true)
         let student = allStudents[indexPath.row]
         guard let urlString = student.data else {
             print("No subtitle/data associated with student")
@@ -93,12 +82,10 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
     
     // MARK: StateObserver
     func studentsUpdated(students: [UdacityStudent]) {
-        self.students = students
         tableView.reloadData()
     }
     
     func userStudentUpdated(userStudent: UdacityStudent) {
-        self.userStudent = userStudent
         tableView.reloadData()
     }
     

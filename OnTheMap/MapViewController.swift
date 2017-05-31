@@ -20,7 +20,6 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
     let udacityClient = UdacityClient.shared
     let delegate = MapViewDelegate()
     
-    private var students: [UdacityStudent] = StateController.shared.getStudents()
     private var studentPins: [MKAnnotation] = []
     private var userPin: MKAnnotation?
 

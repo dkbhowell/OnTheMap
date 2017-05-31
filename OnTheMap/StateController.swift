@@ -26,7 +26,12 @@ class StateController: StateSubject {
         }
     }
     
-    func getStudents() -> [UdacityStudent] {
+    func getStudents(includeUser: Bool = false) -> [UdacityStudent] {
+        if includeUser, let userStudent = userStudent  {
+            var allStudents = students
+            allStudents.insert(userStudent, at: 0)
+            return allStudents
+        }
         return students
     }
     
