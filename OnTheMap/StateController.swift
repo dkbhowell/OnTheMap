@@ -57,6 +57,13 @@ class StateController: StateSubject {
         notifyObservers(newStudents: self.students)
     }
     
+    func setUserLocationMarker(lat: Double, lng: Double, subtitle: String? = nil) {
+        userStudent?.setLocationMarker(lat: lat, lng: lng, subtitle: subtitle)
+        if let userStudent = userStudent {
+            notifyObservers(newUserStudent: userStudent)
+        }
+    }
+    
     func setUser(user: User) {
         print("Setting User")
         self.user = user

@@ -99,24 +99,6 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
         }
     }
     
-    private func updateUserPin(lat: Double, lng: Double, subtitle: String? = nil) {
-        guard let user = state.userStudent else {
-            print("No User to Update Pin For")
-            return
-        }
-        if let oldUserPin = user.locationMarker {
-            mapView.removeAnnotation(oldUserPin)
-        }
-        user.setLocationMarker(lat: lat, lng: lng, subtitle: subtitle)
-        guard let userPin = user.locationMarker else {
-            print("Error: No user pin despite just setting it")
-            return
-        }
-        mapView.addAnnotation(userPin)
-        mapView.centerMapOnLocation(lat: userPin.coordinate.latitude, lng: userPin.coordinate.longitude, zoomLevel: 5)
-        mapView.selectAnnotation(userPin, animated: true)
-    }
-    
     private func startPostPinFlow() {
         let controller = self.storyboard?.instantiateViewController(withIdentifier: "AddLocationController") as! AddLocationViewController
         controller.pinDelegate = self
@@ -125,47 +107,18 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
     }
     
     func postPin(lat: Double, lng: Double, subtitle: String) {
-        if let id = StateController.shared.getUser()?.id {
-            parseClient.getStudent(withUdacityID: id, completion: { (result) in
-                switch result {
-                case .success(let student):
-                    if let student = student {
-                        // if pin exists, update it
-                        self.updateExistingStudentLocation(id: student.id, lat: lat, lng: lng, subtitle: subtitle)
-                    } else {
-                        // if pin does not exist, create a new one
-                        self.postNewPin(lat: lat, lng: lng, subtitle: subtitle)
-                    }
-                case .failure(let error):
-                    print("Error: \(error)")
-                }
-            })
+        guard let userId = StateController.shared.getUser()?.id else {
+            print("No user id to use to post/update location")
+            return
         }
-    }
-    
-    private func updateExistingStudentLocation(id: String, lat: Double, lng: Double, subtitle: String) {
-        parseClient.updateStudentLocation(objectId: id, lat: lat, lng: lng, data: subtitle) { (result) in
+        parseClient.postPin(studentId: userId, lat: lat, lng: lng, subtitle: subtitle) { (result) in
             switch result {
             case .success( _):
-                executeOnMain {
-                    self.updateUserPin(lat: lat, lng: lng, subtitle: subtitle)
-                }
-            case .failure(let error):
-                print("Error updating student location: \(error)")
+                print("Successfully posted/updated user lcoation")
+            case .failure( _):
+                print("failed to update user pin")
+                showAlertController(hostController: self, title: "Error Posting Location", msg: "Please check your connection and try again")
             }
         }
-    }
-    
-    private func postNewPin(lat: Double, lng: Double, subtitle: String) {
-        self.parseClient.postStudentLocation(lat: lat, lng: lng, data: subtitle, completion: { (result) in
-            switch result {
-            case .success( _):
-                executeOnMain {
-                    self.updateUserPin(lat: lat, lng: lng, subtitle: subtitle)
-                }
-            case .failure(let error):
-                print("Location Add Unsuccessful!\n---\(error)")
-            }
-        })
     }
 }

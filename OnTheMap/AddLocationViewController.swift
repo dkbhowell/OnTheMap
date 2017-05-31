@@ -86,7 +86,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     private func continueToSubtitle(pin: MapPin) {
         let controller = storyboard!.instantiateViewController(withIdentifier: "AddSubtitleController") as! AddSubtitleViewController
         controller.mapPin = pin
-        controller.pinDelegate = pinDelegate
+        controller.pinDelegate = self.pinDelegate
         self.navigationController?.pushViewController(controller, animated: true)
     }
     

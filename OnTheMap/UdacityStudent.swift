@@ -22,6 +22,8 @@ class UdacityStudent: Equatable {
     }
     var uniqueKey: String?
     
+    private var createdAtString: String?
+    
     var name: String {
         return firstName + " " + lastName
     }
@@ -49,6 +51,7 @@ class UdacityStudent: Equatable {
             return nil
         }
         
+        let createdAtString = dictionary[Keys.CREATED_AT] as? String
         let uniqueKey = dictionary[Keys.UNIQUE_KEY] as? String
         let mediaUrl = dictionary[Keys.MEDIA_URL] as? String
         let lat = dictionary[Keys.LAT] as? Double
@@ -56,6 +59,7 @@ class UdacityStudent: Equatable {
         
         self.init(id: objectId, firstName: firstName, lastName: lastName, data: mediaUrl)
         self.uniqueKey = uniqueKey
+        self.createdAtString = createdAtString
         if let lat = lat, let lng = lng {
             self.setLocationMarker(lat: lat, lng: lng)
         }

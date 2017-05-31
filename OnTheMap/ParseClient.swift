@@ -14,8 +14,9 @@ class ParseClient {
     
     // MARK: Parse API Calls
     func getStudents(completion: @escaping (DataResult<[UdacityStudent], AppError>) -> () ) {
-        let params = [
-            RequestParamaterNames.LIMIT: 100
+        let params: [String:Any] = [
+            RequestParamaterNames.LIMIT: 100,
+            RequestParamaterNames.ORDER: "updatedAt"
         ]
         _ = runGetTask(method: "StudentLocation", params: params) { (networkResult) in
             switch networkResult {
@@ -82,6 +83,39 @@ class ParseClient {
                 completion(.failure(error))
             }
         }
+    }
+    
+    func postPin(studentId: String, lat: Double, lng: Double, subtitle: String, completion: @escaping (DataResult<String, AppError>) -> Void) {
+        getStudent(withUdacityID: studentId, completion: { (result) in
+            switch result {
+            case .success(let student):
+                if let student = student {
+                    // if pin exists, update it
+                    self.updateStudentLocation(objectId: student.id, lat: lat, lng: lng, data: subtitle) { (result) in
+                        switch result {
+                        case .success( _):
+                            StateController.shared.setUserLocationMarker(lat: lat, lng: lng, subtitle: subtitle)
+                            completion(.success("Successfully updated student location"))
+                        case .failure(let appError):
+                            completion(.failure(appError))
+                        }
+                    }
+                } else {
+                    // if pin does not exist, create a new one
+                    self.postStudentLocation(lat: lat, lng: lng, data: subtitle, completion: { (result) in
+                        switch result {
+                        case .success( _):
+                            StateController.shared.setUserLocationMarker(lat: lat, lng: lng, subtitle: subtitle)
+                            completion(.success("Successfully posted new student location"))
+                        case .failure(let appError):
+                            completion(.failure(appError))
+                        }
+                    })
+                }
+            case .failure(let appError):
+                completion(.failure(appError))
+            }
+        })
     }
     
     func postStudentLocation(lat: Double, lng: Double, data: String, completion: @escaping (DataResult<String, AppError>) -> () ) {
