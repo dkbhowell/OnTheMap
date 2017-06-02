@@ -16,7 +16,7 @@ class ParseClient {
     func getStudents(completion: @escaping (DataResult<[StudentInformation], AppError>) -> () ) {
         let params: [String:Any] = [
             RequestParamaterNames.LIMIT: 100,
-            RequestParamaterNames.ORDER: "updatedAt"
+            RequestParamaterNames.ORDER: "-updatedAt"
         ]
         _ = runGetTask(method: "StudentLocation", params: params) { (networkResult) in
             switch networkResult {

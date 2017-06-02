@@ -14,17 +14,8 @@ class HomeTabViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let parseClient = ParseClient.shared
-        parseClient.getStudents { (studentsResult) in
-            switch studentsResult {
-            case .success(let students):
-                StateController.shared.setStudents(students: students)
-            case .failure(let appError):
-                print(appError)
-                showAlertController(hostController: self, title: "Error Loading Student Data", msg: "Please check your connection and try refreshing")
-            }
-        }
         loadUserPin()
+        getStudents()
     }
     
     func logout() {
@@ -66,6 +57,19 @@ class HomeTabViewController: UITabBarController {
                     print("Error: \(error)")
                 }
             })
+        }
+    }
+    
+    private func getStudents() {
+        let parseClient = ParseClient.shared
+        parseClient.getStudents { (studentsResult) in
+            switch studentsResult {
+            case .success(let students):
+                StateController.shared.setStudents(students: students)
+            case .failure(let appError):
+                print(appError)
+                showAlertController(hostController: self, title: "Error Loading Student Data", msg: "Please check your connection and try refreshing")
+            }
         }
     }
 }

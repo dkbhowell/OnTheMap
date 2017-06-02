@@ -21,6 +21,11 @@ class StateController: StateSubject {
     var userStudent: StudentInformation? {
         didSet {
             if let student = userStudent {
+                if students.contains(student) {
+                    students = students.filter({ (member) -> Bool in
+                        member != student
+                    })
+                }
                 notifyObservers(newUserStudent: student)
             }
         }
