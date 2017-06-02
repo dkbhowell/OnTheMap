@@ -36,12 +36,12 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
     }
     
     // MARK: StateObserver
-    func studentsUpdated(students: [UdacityStudent]) {
+    func studentsUpdated(students: [StudentInformation]) {
         let markers = getMarkersFromStudents(students: students)
         refreshPins(newStudentPins: markers)
     }
     
-    func userStudentUpdated(userStudent: UdacityStudent) {
+    func userStudentUpdated(userStudent: StudentInformation) {
         if let pin = userStudent.locationMarker {
             refreshPins(newUserPin: pin)
         }
@@ -74,7 +74,7 @@ class MapViewController: UIViewController, PostPinDelegate, StateObserver {
     }
     
     // MARK: Helper functions
-    private func getMarkersFromStudents(students: [UdacityStudent]) -> [MKAnnotation] {
+    private func getMarkersFromStudents(students: [StudentInformation]) -> [MKAnnotation] {
         return students.map { $0.locationMarker }
             .flatMap { $0 }
     }

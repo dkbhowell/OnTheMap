@@ -8,7 +8,7 @@
 
 import MapKit
 
-class UdacityStudent: Equatable {
+struct StudentInformation: Equatable {
     let id: String
     let firstName: String
     let lastName: String
@@ -37,8 +37,7 @@ class UdacityStudent: Equatable {
         self.data = data
     }
     
-    convenience init?(dictionary: [String:Any]) {
-        // TODO
+    init?(dictionary: [String:Any]) {
         guard let firstName = dictionary[Keys.FIRST_NAME] as? String else {
             return nil
         }
@@ -65,7 +64,7 @@ class UdacityStudent: Equatable {
         }
     }
     
-    func setLocationMarker(lat: Double, lng: Double, subtitle: String? = nil) {
+    mutating func setLocationMarker(lat: Double, lng: Double, subtitle: String? = nil) {
         let location = CLLocationCoordinate2D(latitude: lat, longitude: lng)
         if let marker = locationMarker {
             marker.coordinate = location
@@ -78,12 +77,12 @@ class UdacityStudent: Equatable {
         }
     }
     
-    static func ==(lhs: UdacityStudent, rhs: UdacityStudent) -> Bool {
+    static func ==(lhs: StudentInformation, rhs: StudentInformation) -> Bool {
         return lhs.id == rhs.id
     }
 }
 
-extension UdacityStudent {
+extension StudentInformation {
     
     class StudentLocationMarker: NSObject, MKAnnotation {
         var coordinate: CLLocationCoordinate2D
@@ -99,7 +98,7 @@ extension UdacityStudent {
 }
 
 // Serialization
-extension UdacityStudent {
+extension StudentInformation {
     
     struct Keys {
         static let FIRST_NAME = "firstName"
@@ -128,12 +127,12 @@ extension UdacityStudent {
     
     static func studentDict(fromUser user: User, lat: Double, lng: Double, data: String?) -> [String:Any] {
         var dict = [String:Any]()
-        dict[UdacityStudent.Keys.FIRST_NAME] = user.firstName
-        dict[UdacityStudent.Keys.LAST_NAME] = user.lastName
-        dict[UdacityStudent.Keys.UNIQUE_KEY] = user.id
-        dict[UdacityStudent.Keys.MEDIA_URL] = data
-        dict[UdacityStudent.Keys.LAT] = lat
-        dict[UdacityStudent.Keys.LNG] = lng
+        dict[StudentInformation.Keys.FIRST_NAME] = user.firstName
+        dict[StudentInformation.Keys.LAST_NAME] = user.lastName
+        dict[StudentInformation.Keys.UNIQUE_KEY] = user.id
+        dict[StudentInformation.Keys.MEDIA_URL] = data
+        dict[StudentInformation.Keys.LAT] = lat
+        dict[StudentInformation.Keys.LNG] = lng
         return dict
     }
     

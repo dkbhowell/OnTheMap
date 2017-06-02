@@ -81,11 +81,11 @@ class StudentTableViewController: UIViewController, StateObserver, UITableViewDa
     }
     
     // MARK: StateObserver
-    func studentsUpdated(students: [UdacityStudent]) {
+    func studentsUpdated(students: [StudentInformation]) {
         tableView.reloadData()
     }
     
-    func userStudentUpdated(userStudent: UdacityStudent) {
+    func userStudentUpdated(userStudent: StudentInformation) {
         tableView.reloadData()
     }
     

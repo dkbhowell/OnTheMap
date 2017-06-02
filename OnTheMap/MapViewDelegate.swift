@@ -14,7 +14,7 @@ class MapViewDelegate: NSObject, MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         print("Control tapped!!! 😀 :\(control)")
         
-        guard let subtitleText = (view.annotation as? UdacityStudent.StudentLocationMarker)?.subtitle else {
+        guard let subtitleText = (view.annotation as? StudentInformation.StudentLocationMarker)?.subtitle else {
             print("no subtitle for annotation")
             return
         }

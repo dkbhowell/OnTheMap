@@ -15,10 +15,10 @@ class StateController: StateSubject {
     private init() { }
     
     // Properties
-    private var students: [UdacityStudent] = []
+    private var students: [StudentInformation] = []
     private var observers: [StateObserver] = []
     private var user: User?
-    var userStudent: UdacityStudent? {
+    var userStudent: StudentInformation? {
         didSet {
             if let student = userStudent {
                 notifyObservers(newUserStudent: student)
@@ -26,7 +26,7 @@ class StateController: StateSubject {
         }
     }
     
-    func getStudents(includeUser: Bool = false) -> [UdacityStudent] {
+    func getStudents(includeUser: Bool = false) -> [StudentInformation] {
         if includeUser, let userStudent = userStudent  {
             var allStudents = students
             allStudents.insert(userStudent, at: 0)
@@ -35,11 +35,11 @@ class StateController: StateSubject {
         return students
     }
     
-    func addStudent(student: UdacityStudent) {
+    func addStudent(student: StudentInformation) {
         students.append(student)
     }
     
-    func removeStudent(student: UdacityStudent) {
+    func removeStudent(student: StudentInformation) {
         let i = students.index { (stud) -> Bool in
             stud.firstName == student.firstName &&
             stud.lastName == student.lastName
@@ -50,7 +50,7 @@ class StateController: StateSubject {
         }
     }
     
-    func setStudents(students: [UdacityStudent]) {
+    func setStudents(students: [StudentInformation]) {
         if let userStudent = userStudent {
             let onlyOthers = students.filter({ (student) -> Bool in
                 student != userStudent
@@ -91,7 +91,7 @@ class StateController: StateSubject {
         }
     }
     
-    func notifyObservers(newStudents: [UdacityStudent]) {
+    func notifyObservers(newStudents: [StudentInformation]) {
         for observer in observers {
             executeOnMain {
                 observer.studentsUpdated(students: newStudents)
@@ -99,7 +99,7 @@ class StateController: StateSubject {
         }
     }
     
-    func notifyObservers(newUserStudent: UdacityStudent) {
+    func notifyObservers(newUserStudent: StudentInformation) {
         for observer in observers {
             executeOnMain {
                 observer.userStudentUpdated(userStudent: newUserStudent)
@@ -116,7 +116,7 @@ class StateController: StateSubject {
     private func generateDummyData() {
         let dummyStudentData = [("Joe", "Smith", 37.390750, -122.079061), ("Mary", "North", 37.392991, -122.080928), ("Tom", "White", 37.388125, -122.079705)]
         for stud in dummyStudentData {
-            let student = UdacityStudent(id: "Dummy", firstName: stud.0, lastName: stud.1)
+            var student = StudentInformation(id: "Dummy", firstName: stud.0, lastName: stud.1)
             if student.firstName == "Mary" {
                 student.data = "http://www.google.com"
             }
@@ -130,13 +130,13 @@ class StateController: StateSubject {
 }
 
 protocol StateObserver: class {
-    func studentsUpdated(students: [UdacityStudent])
-    func userStudentUpdated(userStudent: UdacityStudent)
+    func studentsUpdated(students: [StudentInformation])
+    func userStudentUpdated(userStudent: StudentInformation)
 }
 
 protocol StateSubject: class {
     func addObserver(_ observer: StateObserver)
     func removeObserver(_ observer: StateObserver)
-    func notifyObservers(newStudents: [UdacityStudent])
-    func notifyObservers(newUserStudent: UdacityStudent)
+    func notifyObservers(newStudents: [StudentInformation])
+    func notifyObservers(newUserStudent: StudentInformation)
 }

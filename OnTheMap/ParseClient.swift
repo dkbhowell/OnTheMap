@@ -13,7 +13,7 @@ class ParseClient {
     private let httpClient = URLSession.shared
     
     // MARK: Parse API Calls
-    func getStudents(completion: @escaping (DataResult<[UdacityStudent], AppError>) -> () ) {
+    func getStudents(completion: @escaping (DataResult<[StudentInformation], AppError>) -> () ) {
         let params: [String:Any] = [
             RequestParamaterNames.LIMIT: 100,
             RequestParamaterNames.ORDER: "updatedAt"
@@ -33,10 +33,10 @@ class ParseClient {
                     return
                 }
                 
-                var students = [UdacityStudent]()
+                var students = [StudentInformation]()
                 for studentDict in results {
                     // REQUIRED
-                    if let newStudent = UdacityStudent(dictionary: studentDict) {
+                    if let newStudent = StudentInformation(dictionary: studentDict) {
                             students.append(newStudent)
                     }
                 }
@@ -48,7 +48,7 @@ class ParseClient {
         }
     }
     
-    func getStudent(withUdacityID id: String, completion: @escaping (DataResult<UdacityStudent?, AppError>) -> () ) {
+    func getStudent(withUdacityID id: String, completion: @escaping (DataResult<StudentInformation?, AppError>) -> () ) {
         let whereClause = "{\"uniqueKey\":\"\(id)\"}"
         let params = [
             RequestParamaterNames.WHERE: whereClause
@@ -70,7 +70,7 @@ class ParseClient {
                 if results.count > 0 {
                     print("Found \(results.count) results for student with id \(id) -- Using First One")
                     let firstStudent = results[0]
-                    if let student = UdacityStudent(dictionary: firstStudent) {
+                    if let student = StudentInformation(dictionary: firstStudent) {
                         completion(.success(student))
                         return
                     } else {
@@ -120,7 +120,7 @@ class ParseClient {
     
     func postStudentLocation(lat: Double, lng: Double, data: String, completion: @escaping (DataResult<String, AppError>) -> () ) {
         if let user = StateController.shared.getUser() {
-            let studentDict = UdacityStudent.studentDict(fromUser: user, lat: lat, lng: lng, data: data)
+            let studentDict = StudentInformation.studentDict(fromUser: user, lat: lat, lng: lng, data: data)
             
             _ = runPostTask(method: "StudentLocation", bodyData: studentDict, completion: { (result) in
                 switch result {
@@ -145,7 +145,7 @@ class ParseClient {
     
     func updateStudentLocation(objectId: String, lat: Double, lng: Double, data: String, completion: @escaping (DataResult<String, AppError>) -> () ) {
         if let user = StateController.shared.getUser() {
-            let studentDict = UdacityStudent.studentDict(fromUser: user, lat: lat, lng: lng, data: data)
+            let studentDict = StudentInformation.studentDict(fromUser: user, lat: lat, lng: lng, data: data)
             
             _ = runPutTask(method: "StudentLocation/\(objectId)", bodyData: studentDict, completion: { (result) in
                 switch result {
