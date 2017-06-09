@@ -49,6 +49,7 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
     // MARK: Core functions
     private func geocode(locationString string: String) {
         enableFind(enabled: false)
+        showActivityIndicator()
         CLGeocoder().geocodeAddressString(string, completionHandler: { (placemark, err) in
             self.enableFind(enabled: true)
             if let err = err {
@@ -97,6 +98,19 @@ class AddLocationViewController: UIViewController, UITextFieldDelegate {
             self.enableFind(enabled: false)
             self.resetMapview(animated: false)
             self.lastLocation = nil
+        }
+    }
+    
+    private func showActivityIndicator() {
+        let halfx = self.mapView.bounds.width / 2
+        let halfy = self.mapView.bounds.height / 2
+        let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: halfx, y: halfy, width: 200, height: 200))
+        activityIndicator.activityIndicatorViewStyle = .gray
+        executeOnMain {
+            self.mapView.alpha = 0.3
+            self.mapView.addSubview(activityIndicator)
+            self.mapView.bringSubview(toFront: activityIndicator)
+            activityIndicator.startAnimating()
         }
     }
     
